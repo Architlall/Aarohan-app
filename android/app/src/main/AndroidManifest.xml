@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.aarohan">
+    package="com.app.aarohan.aarohanapp">
    <application
-        android:label="aarohan"
+        android:label="aarohan_fest_app"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
