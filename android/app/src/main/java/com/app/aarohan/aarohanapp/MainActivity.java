@@ -1,4 +1,4 @@
-package com.app.aarohan.aarohan_app;
+package com.app.aarohan.aarohanapp;
 
 import io.flutter.embedding.android.FlutterActivity;
 

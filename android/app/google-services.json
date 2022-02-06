@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "212343740804",
+    "project_id": "aarohan-app-d044a",
+    "storage_bucket": "aarohan-app-d044a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212343740804:android:a413af29f6424c1425e5d1",
+        "android_client_info": {
+          "package_name": "com.app.aarohan.aarohanapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "212343740804-8nldhoklj376flkntclmiuoo08p841tu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.aarohan.aarohanapp",
+            "certificate_hash": "dfa372f8a5e10f0dd063594e4b3c8787c870b143"
+          }
+        },
+        {
+          "client_id": "212343740804-gkk95hbveb89qd6lmf29h5j0lh48u712.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO36YqfEhCIHWfsWnl2lvQT9d2Bq6T7bU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "212343740804-gkk95hbveb89qd6lmf29h5j0lh48u712.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

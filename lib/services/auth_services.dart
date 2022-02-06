@@ -1,16 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class AuthService{
   static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final FirebaseDatabase database = FirebaseDatabase.instance;
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  Future _gSignIn() async{
+  Future gSignIn() async{
     try {
       final GoogleSignInAccount googleSignInAccount =
       await _googleSignIn.signIn();
+      print("HELLO");
       final GoogleSignInAuthentication googleSignInAuthentication =
       await googleSignInAccount.authentication;
 
@@ -34,25 +37,27 @@ class AuthService{
       assert(user.photoURL != null);
 
       DocumentSnapshot doc =
-      await _firestore.collection("/users").doc(user.uid).get();
+      await _firestore.collection("Users").doc(user.uid).get();
+
 
       if (!doc.exists) {
-        _firestore.collection("/users").doc(user.uid).set({
+        _firestore.collection("Users").doc(user.uid).set({
           "name": user.displayName,
           "email": user.email,
           "photoURL": user.photoURL,
           "id":user.uid
         });
+
       }
 
       print('Google Sign In succeeded');
-      return '$user';
+
     } on FirebaseAuthException catch (e) {
-      return e.message;
+       print(e.message);
     }
   }
 
-  Future _gSignOut() async{
+  Future gSignOut() async{
     await _googleSignIn.signOut();
     await _auth.signOut();
     print("User Sign Out");

@@ -1,4 +1,4 @@
-# aarohan_app
+# aarohanapp
 
 A new Flutter application.
 

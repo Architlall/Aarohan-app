@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:aarohan_app/models/event.dart';
 
 class FirebaseService{
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -7,6 +8,7 @@ class FirebaseService{
     // gets all the events list
     CollectionReference ref= _firestore.collection('Events');
     QuerySnapshot doc =await ref.get();
+    print(doc.docs);
     // return the data
   }
 
@@ -22,6 +24,13 @@ class FirebaseService{
     DocumentReference ref= _firestore.collection('Schedule').doc(day);
     DocumentSnapshot doc =await ref.get();
     // return the data
+  }
+
+  Future getSponsors() async{
+    // gets the sponsors list
+    CollectionReference ref= _firestore.collection('Sponsors');
+    QuerySnapshot doc =await ref.get();
+
   }
 
 
