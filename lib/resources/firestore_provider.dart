@@ -6,10 +6,12 @@ class FirebaseService{
 
   Future getEvents() async{
     // gets all the events list
-    CollectionReference ref= _firestore.collection('Events');
-    QuerySnapshot doc =await ref.get();
-    print(doc.docs);
-    // return the data
+    QuerySnapshot doc =await _firestore.collection('Events').get();
+    final List<DocumentSnapshot> documents = doc.docs;
+    List events = [];
+    documents.forEach((data) =>  events.add(data.id));
+    events.forEach((element)=> print(element));
+
   }
 
   Future getEventDetail(String eventName) async{

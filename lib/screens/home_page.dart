@@ -16,12 +16,13 @@ class HomePage extends StatelessWidget {
           builder: (context, UserRepository user,child){
             switch (user.status){
               case Status.Uninitialized:
-                return Login();
+                return CircularProgressIndicator();
               case Status.Unauthenticated:
                 return Login();
               case Status.Authenticating:
                 return CircularProgressIndicator();
               case Status.Authenticated:
+
                 return Dashboard();
             }
             return null;
