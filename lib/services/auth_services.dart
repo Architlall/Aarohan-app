@@ -9,7 +9,9 @@ class AuthService{
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final FirebaseDatabase database = FirebaseDatabase.instance;
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  static final GoogleSignIn _googleSignIn = GoogleSignIn();
+  static final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: ['email']
+  );
 
 
   // stores the user details to Firestore
@@ -42,6 +44,7 @@ class AuthService{
       await _auth.signInWithCredential(credential);
 
       final User user = authResult.user;
+
       Map<String,String> user_data = {
         "name": user.displayName,
         "email": user.email,
@@ -67,6 +70,8 @@ class AuthService{
       // assert(user.email != null);
       // assert(user.displayName != null);
       // assert(user.photoURL != null);
+
+
 
     } on FirebaseAuthException catch (e) {
 

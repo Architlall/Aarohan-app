@@ -22,13 +22,13 @@ class EventResponse {
   Map<String, dynamic> toJson() => {
     "EventItem": List<dynamic>.from(eventItem.map((x) => x.toJson())),
   };
+  static EventResponse eventResponse = EventResponse();
 }
 
 class EventItem {
   EventItem({
     this.title,
     this.body,
-    this.color,
     this.imageUrl,
     this.date,
     this.category,
@@ -40,7 +40,6 @@ class EventItem {
 
   String title;
   String body;
-  String color;
   String imageUrl;
   String date;
   String category;
@@ -52,7 +51,6 @@ class EventItem {
   factory EventItem.fromJson(Map<String, dynamic> json) => EventItem(
     title: json["title"],
     body: json["body"],
-    color: json["color"],
     imageUrl: json["imageUrl"],
     date: json["date"],
     category: json["category"],
@@ -65,7 +63,6 @@ class EventItem {
   Map<String, dynamic> toJson() => {
     "title": title,
     "body": body,
-    "color": color,
     "imageUrl": imageUrl,
     "date": date,
     "category": category,
@@ -74,4 +71,5 @@ class EventItem {
     "location": location,
     "contact": contact,
   };
+
 }

@@ -25,9 +25,10 @@ class _LoginState extends State<Login> {
                 child: Center(
                   child: SignInButton(
                     Buttons.GoogleDark,
-                    onPressed: (){
+                    onPressed: ()async{
                       AuthService authService = AuthService();
                       authService.gSignIn();
+
                     },
                   ),
                 ),

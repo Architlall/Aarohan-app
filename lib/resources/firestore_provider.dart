@@ -4,20 +4,42 @@ import 'package:aarohan_app/models/event.dart';
 class FirebaseService{
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future getEvents() async{
+
+
+   getEvents() async{
+
+    List events = [];
     // gets all the events list
     QuerySnapshot doc =await _firestore.collection('Events').get();
     final List<DocumentSnapshot> documents = doc.docs;
-    List events = [];
-    documents.forEach((data) =>  events.add(data.id));
-    events.forEach((element)=> print(element));
 
+   for(var element in documents) {
+      var data = await getEventDetail(element.id);
+
+      Map<String,String> event_data = {
+        'title':data['title'],
+        'body':data['body'],
+        'imageUrl':data['imageUrl'],
+        'date':data['date'],
+        'category':data['category'],
+        'tag':data['tag'],
+        'link':data['link'],
+        'location':data['location'],
+        'contact':data['contact']
+      };
+
+      events.add(event_data);
+    }
+      Map<String,dynamic> Event_Details = { "EventItem":events};
+      EventResponse.eventResponse = EventResponse.fromJson(Event_Details);
+      // print(Event_Details);
   }
 
-  Future getEventDetail(String eventName) async{
+  getEventDetail(String eventName) async{
     // gets all the details of a particular event
     DocumentReference ref= _firestore.collection('Events').doc(eventName);
     DocumentSnapshot doc =await ref.get();
+    return doc;
     // return the data
   }
 
