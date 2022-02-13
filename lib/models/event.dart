@@ -4,7 +4,10 @@
 
 import 'dart:convert';
 
-EventResponse eventResponseFromJson(String str) => EventResponse.fromJson(json.decode(str));
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+EventResponse eventResponseFromJson(String str) =>
+    EventResponse.fromJson(json.decode(str));
 
 String eventResponseToJson(EventResponse data) => json.encode(data.toJson());
 
@@ -16,7 +19,8 @@ class EventResponse {
   List<EventItem> eventItem;
 
   factory EventResponse.fromJson(Map<String, dynamic> json) => EventResponse(
-    eventItem: List<EventItem>.from(json["EventItem"].map((x) => EventItem.fromJson(x))),
+    eventItem: List<EventItem>.from(
+        json["EventItem"].map((x) => EventItem.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -43,7 +47,7 @@ class EventItem {
   String imageUrl;
   String date;
   String category;
-  String tag;
+  List tag;
   String link;
   String location;
   String contact;
@@ -60,6 +64,10 @@ class EventItem {
     contact: json["contact"],
   );
 
+  factory EventItem.fromFirestore(DocumentSnapshot documentSnapshot) {
+    return EventItem.fromJson(documentSnapshot.data());
+  }
+
   Map<String, dynamic> toJson() => {
     "title": title,
     "body": body,
@@ -71,5 +79,4 @@ class EventItem {
     "location": location,
     "contact": contact,
   };
-
 }

@@ -16,14 +16,18 @@ class AuthService{
 
   // stores the user details to Firestore
   Future storeUser(User user) async{
+    DocumentSnapshot doc =
+    await _firestore.collection("Users").doc(user.uid).get();
 
-    Map<String,String> user_data = {
+    Map<dynamic,dynamic> user_data = {
       "name": user.displayName,
       "email": user.email,
       "photoURL": user.photoURL,
-      "id":user.uid
-    };
+      "id":user.uid,
+      "calendar":doc['calendar']
 
+    };
+   print(doc['calendar']);
     Users.us =  Users.fromJson(user_data);
 
   }
@@ -45,11 +49,12 @@ class AuthService{
 
       final User user = authResult.user;
 
-      Map<String,String> user_data = {
+      Map<String,dynamic> user_data = {
         "name": user.displayName,
         "email": user.email,
         "photoURL": user.photoURL,
-        "id":user.uid
+        "id":user.uid,
+        "calendar":[]
       };
 
       // assert(!user.isAnonymous);
@@ -59,7 +64,7 @@ class AuthService{
       DocumentSnapshot doc =
       await _firestore.collection("Users").doc(user.uid).get();
       if (!doc.exists) {
-        _firestore.collection("Users").doc(user.uid).set(user_data);
+        _firestore.collection("Users").doc(user.uid).set(user_data, SetOptions(merge: true));
 
       }
 

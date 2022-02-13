@@ -14,26 +14,31 @@ class Users {
     this.email,
     this.photoURL,
     this.id,
+    this.calendar
   });
 
   String name;
   String email;
   String photoURL;
   String id;
+  List calendar;
 
-  factory Users.fromJson(Map<String, String> json) => Users(
+  factory Users.fromJson(Map<dynamic, dynamic> json) => Users(
     name: json["name"],
     email: json["email"],
     photoURL: json["photoURL"],
     id: json["id"],
+    calendar: json["calendar"]
   );
 
-  Map<String, String> toJson() => {
+  Map<dynamic, dynamic> toJson() => {
     "name": name,
     "email": email,
     "photoURL": photoURL,
     "id": id,
+    "calendar" :calendar
   };
   static Users us = Users();
+
 }
 
