@@ -1,3 +1,4 @@
+import 'package:aarohan_app/screens/event_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aarohan_app/resources/firestore_provider.dart';
 import 'package:provider/provider.dart';
@@ -12,16 +13,12 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
-  List<EventItem> arr = [];
   GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
-  List<EventItem> eventItems;
+
   @override
   void initState() {
     super.initState();
-    setState(() {
-      eventItems = Provider.of<List<EventItem>>(context, listen: false);
-      arr = eventItems;
-    });
+
     ctrl.addListener(() {
       int next = ctrl.page.round();
 
@@ -31,7 +28,6 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
         });
       }
     });
-  
   }
 
   int currentPage = 0;
@@ -39,7 +35,9 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
 
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 4, vsync: this);
-
+    List<EventItem> eventItems =
+        Provider.of<List<EventItem>>(context, listen: false);
+    List<EventItem> arr = eventItems;
     return Sizer(builder: (context, orientation, deviceType) {
       return SafeArea(
         child: Container(
@@ -131,14 +129,14 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              arr = eventItems.where(
-                                  (element) => element.category == "Workshop");
-                              // arr = [];
-                              // for (int i = 0; i < eventItems.length; i++) {
-                              //   if (eventItems[i].category == "Workshop") {
-                              //     arr.add(eventItems[i]);
-                              //   }
-                              // }
+                              // arr = eventItems.where(
+                              //     (element) => element.category == "Workshop");
+                              arr = [];
+                              for (int i = 0; i < eventItems.length; i++) {
+                                if (eventItems[i].category == "Workshop") {
+                                  arr.add(eventItems[i]);
+                                }
+                              }
                               print(arr[0].category);
                             });
                           },
@@ -236,27 +234,43 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                                         ),
                                       ],
                                     ),
-                                    child: ClipRRect(
-                                      child: Image.network(
-                                        '${arr[index].imageUrl}',
-                                        fit: BoxFit.fill,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.pushNamed(context, '/eventpage',
+                                  arguments: {'eventItem': arr[index]});
+                                      },
+                                      child: Container(
+                                        child: ClipRRect(
+                                          child: Image.network(
+                                            '${arr[index].imageUrl}',
+                                            fit: BoxFit.fill,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(18.sp),
+                                        ),
                                       ),
-                                      borderRadius:
-                                          BorderRadius.circular(18.sp),
                                     ),
                                   ),
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 10, 0, 0),
                                     child: Center(
-                                      child: Text(
-                                        "${arr[index].title}",
-                                        style: TextStyle(
-                                            fontFamily: 'Mons',
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15.sp,
-                                            letterSpacing: 1.1),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                           Navigator.pushNamed(context, '/eventpage',
+                                  arguments: {'eventItem': arr[index]});
+                                        },
+                                        child: Container(
+                                          child: Text(
+                                            "${arr[index].title}",
+                                            style: TextStyle(
+                                                fontFamily: 'Mons',
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15.sp,
+                                                letterSpacing: 1.1),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   )
