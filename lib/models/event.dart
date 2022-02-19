@@ -40,6 +40,7 @@ class EventItem {
     this.link,
     this.location,
     this.contact,
+    this.time
   });
 
   String title;
@@ -51,6 +52,7 @@ class EventItem {
   String link;
   String location;
   String contact;
+  String time;
 
   factory EventItem.fromJson(Map<String, dynamic> json) => EventItem(
     title: json["title"],
@@ -62,6 +64,7 @@ class EventItem {
     link: json["link"],
     location: json["location"],
     contact: json["contact"],
+    time: json['time']
   );
 
   factory EventItem.fromFirestore(DocumentSnapshot documentSnapshot) {
@@ -78,5 +81,6 @@ class EventItem {
     "link": link,
     "location": location,
     "contact": contact,
+    "time":time
   };
 }

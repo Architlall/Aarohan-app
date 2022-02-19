@@ -1,41 +1,50 @@
 // To parse this JSON data, do
 //
-//     final scheduleItem = scheduleItemFromJson(jsonString);
+//     final scheduleResponse = scheduleResponseFromJson(jsonString);
 
 import 'dart:convert';
 
-ScheduleItem scheduleItemFromJson(String str) => ScheduleItem.fromJson(json.decode(str));
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-String scheduleItemToJson(ScheduleItem data) => json.encode(data.toJson());
+ScheduleResponse scheduleResponseFromJson(String str) =>
+    ScheduleResponse.fromJson(json.decode(str));
 
-class ScheduleItem {
-  ScheduleItem({
-    this.key,
-    this.name,
-    this.category,
-    this.time,
-    this.completed,
+String scheduleResponseToJson(ScheduleResponse data) => json.encode(data.toJson());
+
+class ScheduleResponse {
+  ScheduleResponse({
+    this.dayItem,
   });
 
-  String key;
-  String name;
-  String category;
-  String time;
-  bool completed;
+  List<DayItem> dayItem;
 
-  factory ScheduleItem.fromJson(Map<String, dynamic> json) => ScheduleItem(
-    key: json["key"],
-    name: json["name"],
-    category: json["category"],
-    time: json["time"],
-    completed: json["completed"],
+  factory ScheduleResponse.fromJson(Map<String, dynamic> json) => ScheduleResponse(
+    dayItem: List<DayItem>.from(
+        json["DayItem"].map((x) => DayItem.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "key": key,
-    "name": name,
-    "category": category,
-    "time": time,
-    "completed": completed,
+    "DayItem": List<dynamic>.from(dayItem.map((x) => x.toJson())),
+  };
+  static ScheduleResponse scheduleResponse = ScheduleResponse();
+}
+
+class DayItem {
+  DayItem({
+    this.events
+  });
+
+  List events;
+
+  factory DayItem.fromJson(Map<String, dynamic> json) => DayItem(
+    events: json['events']
+  );
+
+  factory DayItem.fromFirestore(DocumentSnapshot documentSnapshot) {
+    return DayItem.fromJson(documentSnapshot.data());
+  }
+
+  Map<String, dynamic> toJson() => {
+    "events":events
   };
 }

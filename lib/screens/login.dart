@@ -26,7 +26,10 @@ class _LoginState extends State<Login> {
                 child: Column(
                   children: [
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.2,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.2,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(15.0),
@@ -55,11 +58,11 @@ class _LoginState extends State<Login> {
                               color: Colors.white,
                               fontWeight: FontWeight.w400)),
                     ),
-                   GestureDetector(
-                     onTap: () async{
-                          AuthService authService = AuthService();
-                      authService.gSignIn();
-                     },
+                    GestureDetector(
+                      onTap: () async {
+                        AuthService authService = AuthService();
+                        authService.gSignIn();
+                      },
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
                         child: Container(
@@ -67,17 +70,23 @@ class _LoginState extends State<Login> {
                           height: 7.h,
                           child: Container(
                             decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white, width: 1),
+                                border: Border.all(
+                                    color: Colors.white, width: 1),
                                 color: fromCssColor('#ff0000').withOpacity(0.4),
                                 borderRadius: BorderRadius.circular(10.sp)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                               Padding(
-                                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                                 child: Image(image: AssetImage('assets/google.png')),
-                               ),
-                               Text('Sign In With Google', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 17))
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      0, 8, 0, 8),
+                                  child: Image(
+                                      image: AssetImage('assets/google.png')),
+                                ),
+                                Text('Sign In With Google', style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 17))
                               ],
                             ),
                           ),

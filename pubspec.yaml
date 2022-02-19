@@ -26,7 +26,6 @@ dependencies:
   firebase_database:
   firebase_core:
   google_sign_in:
-  from_css_color: ^2.0.0
   provider: ^6.0.2
   flutter_signin_button:
   sizer:
@@ -35,7 +34,12 @@ dependencies:
   googleapis_auth:
   url_launcher:
   flutter_dotenv:
+  carousel_slider:
+  bottom_drawer:
+  from_css_color:
+  background_app_bar:
   flutter:
+
     sdk: flutter
 
 
@@ -58,8 +62,6 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-     
-
   # To add assets to your application, add an assets section, like this:
   assets:
      - assets/
@@ -81,6 +83,18 @@ flutter:
     - family: Mons
       fonts:
          - asset: fonts/Mons Olympia.otf
+    - family: Staat
+      fonts:
+         - asset: fonts/Staatliches-Regular.ttf
+    - family: Gugi
+      fonts:
+         - asset: fonts/Gugi-Regular.ttf
+    - family: Poppins
+      fonts:
+         - asset: fonts/Poppins-Regular.ttf
+    - family: Bebas
+      fonts:
+         - asset: fonts/BebasNeue-Regular.ttf
 
   #   - family: Trajan Pro
   #     fonts:

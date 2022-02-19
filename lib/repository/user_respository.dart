@@ -44,9 +44,10 @@ class UserRepository with ChangeNotifier {
     } else {
       _user = firebaseUser;
       _status = Status.Authenticated;
-      AuthService authService = AuthService();
-      await authService.storeUser(firebaseUser);
+      // AuthService authService = AuthService();
+      // await authService.storeUser(firebaseUser);
     }
     notifyListeners();
+
   }
 }

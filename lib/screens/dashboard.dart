@@ -1,43 +1,45 @@
-import 'package:aarohan_app/screens/event_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:aarohan_app/resources/firestore_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:aarohan_app/models/user.dart';
-import 'package:aarohan_app/widgets/drawer.dart';
+import 'package:aarohan_app/widgets/menu_widget.dart';
 import 'package:aarohan_app/models/event.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_controller.dart';
+import 'package:bottom_drawer/bottom_drawer.dart';
+import 'package:aarohan_app/widgets/custom_gesture_detector.dart';
+import 'package:from_css_color/from_css_color.dart';
+import 'package:aarohan_app/models/user.dart';
 
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
-  GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
-
+class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
+  String selectedcategory = "All";
+  int x =0;
+  CarouselController buttonCarouselController = CarouselController();
+  BottomDrawerController controller = BottomDrawerController();
+  List<EventItem> arr = [];
+  // GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
+  bool showBottomMenu = false;
   @override
   void initState() {
     super.initState();
 
-    ctrl.addListener(() {
-      int next = ctrl.page.round();
-
-      if (currentPage != next) {
-        setState(() {
-          currentPage = next;
-        });
-      }
-    });
   }
 
-  int currentPage = 0;
-  final PageController ctrl = PageController(viewportFraction: 0.85);
-
   Widget build(BuildContext context) {
-    TabController tabController = TabController(length: 4, vsync: this);
-    List<EventItem> eventItems =
-        Provider.of<List<EventItem>>(context, listen: false);
-    List<EventItem> arr = eventItems;
+    List<EventItem> eventItems = Provider.of<List<EventItem>>(context);
+
+    setState(() {
+      if(x==0 && eventItems.length!=0) {
+       arr = eventItems;x++;
+     }
+    });
+    double height= MediaQuery.of(context).size.height;  double width= MediaQuery.of(context).size.width;
+    double threshold = 100;
     return Sizer(builder: (context, orientation, deviceType) {
       return SafeArea(
         child: Container(
@@ -47,391 +49,331 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
           ),
           child: Scaffold(
             backgroundColor: Colors.transparent,
-            drawer: Drawer(
-              child: DrawerWidget(Users.us.name, Users.us.photoURL),
-            ),
-            key: _scaffold,
-            body: SafeArea(
-              child: Column(
-                children: [
-                  Container(
-                    height: 11.h,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: <Color>[
-                          Color(0xFF21305C).withOpacity(0.7),
-                          Color(0xFF284863).withOpacity(0.8)
-                        ],
+            body: CustomGestureDetector(
+              axis: CustomGestureDetector.AXIS_Y,
+              velocity: threshold,
+              onSwipeUp: (){
+                this.setState((){
+                  showBottomMenu = true;
+                });
+              },
+              onSwipeDown: (){
+                this.setState((){
+                  showBottomMenu = false;
+                });
+              },
+              child: Stack(
+                  children: [
+                    Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        height: 13.h,
+                        decoration: BoxDecoration(
+                         color: fromCssColor('#E2F5FF')
+                            .withOpacity(0.4),
+                          border: Border(bottom: BorderSide(
+                            color: Colors.white70,
+                            width: 1,
+                            style: BorderStyle.solid
+                          ))
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 2.h),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                                child: CircleAvatar(
+                                  radius: 20,
+                                  backgroundImage:
+                                      AssetImage('assets/aarohan-logo 1.png'),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                                child: Text(
+                                  "Aarohan",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Mons',
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 28.w,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: fromCssColor('#E2F5FF')
+                                      .withOpacity(0.3),
+                                  border: Border.all(color: Colors.white70,width: 0.1.w),
+                                  borderRadius: BorderRadius.circular(2.w)
+                                ),
+                                child:
+                              Padding(
+                                padding:  EdgeInsets.only(top: 0.5.h),
+                                child: Image.asset('assets/search.png'),
+                              ),
+                                height: 40,width: 40,),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                          child: CircleAvatar(
-                            radius: 20,
-                            backgroundImage:
-                                AssetImage('assets/aarohan-logo 1.png'),
-                          ),
+                      Container(
+                        height: 8.h,
+                        decoration: BoxDecoration(
+                            color: fromCssColor('#E2F5FF')
+                                .withOpacity(0.25),
+                            border: Border(bottom: BorderSide(
+                                color: Colors.white70,
+                                width: 0.5,
+                                style: BorderStyle.solid
+                            ))
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                          child: Text(
-                            "Aarohan",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Mons',
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 30.w,
-                        ),
-                        Icon(
-                          Icons.search,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: 8.h,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: <Color>[Color(0xD5343548), Color(0xE43E4E7C)],
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              arr = eventItems;
-                            });
-                          },
-                          child: Container(
-                            child: Text(
-                              "All",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Mons',
-                                  fontSize: 3.9.w,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              // arr = eventItems.where(
-                              //     (element) => element.category == "Workshop");
-                              arr = [];
-                              for (int i = 0; i < eventItems.length; i++) {
-                                if (eventItems[i].category == "Workshop") {
-                                  arr.add(eventItems[i]);
-                                }
-                              }
-                              print(arr[0].category);
-                            });
-                          },
-                          child: Container(
-                            child: Text(
-                              "Workshops",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Mons',
-                                  fontSize: 3.9.w,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              arr = [];
-                              for (int i = 0; i < eventItems.length; i++) {
-                                if (eventItems[i].category == "Event") {
-                                  arr.add(eventItems[i]);
-                                }
-                              }
-                            });
-                          },
-                          child: Container(
-                            child: Text(
-                              "Events",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Mons',
-                                  fontSize: 3.9.w,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              arr = [];
-                              for (int i = 0; i < eventItems.length; i++) {
-                                if (eventItems[i].category == "Talk") {
-                                  arr.add(eventItems[i]);
-                                }
-                              }
-                            });
-                          },
-                          child: Container(
-                            child: Text(
-                              "Talks",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Mons',
-                                  fontSize: 3.9.w,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: double.maxFinite,
-                    height: 53.h,
-                    child: TabBarView(
-                      physics: NeverScrollableScrollPhysics(),
-                      controller: tabController,
-                      children: [
-                        PageView.builder(
-                          controller: ctrl,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: arr.length,
-                          itemBuilder: (context, index) {
-                            bool active = index == currentPage;
-                            final double top = active ? 15 : 35;
-                            final double opacity = active ? 0.5 : 0;
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  AnimatedContainer(
-                                    curve: Curves.easeOutQuint,
-                                    duration: Duration(milliseconds: 800),
-                                    margin: EdgeInsets.only(
-                                        top: top, bottom: 0, right: 8, left: 8),
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.greenAccent
-                                              .withOpacity(opacity),
-                                          spreadRadius: 0.2,
-                                          blurRadius: 25.sp,
-                                          offset: Offset(0,
-                                              5), // changes position of shadow
-                                        ),
-                                      ],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  arr = eventItems;
+                                  selectedcategory = "All";
+                                });
+                              },
+                              child: Container(
+                                height: 8.h,
+                                width: 24.w,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "ALL",
+                                      style: TextStyle(
+                                           color: (selectedcategory=="All")?Color(0xFF00FFFF):Colors.white,
+                                          fontFamily: 'Staat',
+                                          fontSize: 3.75.w,
+                                          fontWeight: FontWeight.w900),
                                     ),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.pushNamed(context, '/eventpage',
-                                  arguments: {'eventItem': arr[index]});
-                                      },
+                                    SizedBox(height: 3.5),
+                                    Visibility(
+                                      visible: (selectedcategory=="All"),
                                       child: Container(
-                                        child: ClipRRect(
-                                          child: Image.network(
-                                            '${arr[index].imageUrl}',
-                                            fit: BoxFit.fill,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(18.sp),
+                                        height: 5,width: 5,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFF00FFFF),
+                                          shape: BoxShape.circle
                                         ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  arr = eventItems.where((element) => element.category=="Workshop").toList();
+                                  selectedcategory = "Workshop";
+                                });
+                              },
+                              child: Container(
+                                height: 8.h,
+                                width: 24.w,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "WORKSHOPS",
+                                      style: TextStyle(
+                                          color: (selectedcategory=="Workshop")?Color(0xFF00FFFF):Colors.white,
+                                          fontFamily: 'Staat',
+                                          fontSize: 3.75.w,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                    SizedBox(height: 3.5),
+                                    Visibility(
+                                      visible: (selectedcategory=="Workshop"),
+                                      child: Container(
+                                        height: 5,width: 5,
+                                        decoration: BoxDecoration(
+                                            color: Color(0xFF00FFFF),
+                                            shape: BoxShape.circle
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  arr = eventItems.where((element) => element.category=="Event").toList();
+                                  selectedcategory = "Event";
+                                });
+                              },
+                              child: Container(
+                                height: 8.h,
+                                width: 24.w,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "EVENTS",
+                                      style: TextStyle(
+                                          color: (selectedcategory=="Event")?Color(0xFF00FFFF):Colors.white,
+                                          fontFamily: 'Staat',
+                                          fontSize: 3.75.w,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                    SizedBox(height: 3.5),
+                                    Visibility(
+                                      visible: (selectedcategory=="Event"),
+                                      child: Container(
+                                        height: 5,width: 5,
+                                        decoration: BoxDecoration(
+                                            color: Color(0xFF00FFFF),
+                                            shape: BoxShape.circle
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  arr = eventItems.where((element) => element.category=="Talk").toList();
+                                  selectedcategory = "Talk";
+                                });
+                              },
+                              child: Container(
+                                height: 8.h,
+                                width: 24.w,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "TALKS",
+                                      style: TextStyle(
+                                          color: (selectedcategory=="Talk")?Color(0xFF00FFFF):Colors.white,
+                                          fontFamily: 'Staat',
+                                          fontSize: 3.75.w,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                    SizedBox(height: 3.5),
+                                    Visibility(
+                                      visible: (selectedcategory=="Talk"),
+                                      child: Container(
+                                        height: 5,width: 5,
+                                        decoration: BoxDecoration(
+                                            color: Color(0xFF00FFFF),
+                                            shape: BoxShape.circle
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Container(
+                        // padding: EdgeInsets.only(bottom: 3.h),
+                        // color: Colors.cyanAccent,
+                        margin: EdgeInsets.only(top: 2.h),
+                        height: 49.h,
+                        child: (arr.length!=0)?CarouselSlider.builder(
+                          itemCount: arr.length,
+                            options: CarouselOptions(
+                              height: 53.5.h,
+                              aspectRatio: 1.15,
+                              viewportFraction: 0.75,
+                              initialPage: 0,
+                              enableInfiniteScroll: true,
+                              reverse: false,
+                              autoPlay: true,
+                              autoPlayInterval: Duration(seconds: 3),
+                              autoPlayAnimationDuration: Duration(milliseconds: 800),
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                              enlargeCenterPage: true,
+                              scrollDirection: Axis.horizontal,
+                            ),
+                          carouselController: buttonCarouselController,
+                          itemBuilder: (BuildContext context, int index, int pageViewIndex) =>
+                              Column(
+                                children: [
+                                  InkWell(
+                                    onTap: (){
+                                      Navigator.pushNamed(context, '/eventpage',arguments: {'eventItem':eventItems[index]});
+                                    },
+                                    child: Container(
+                                      height: 40.h,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(18.sp),
+                                        image:  DecorationImage(
+                                            fit: BoxFit.fill,
+                                         image: NetworkImage(
+                                           '${arr[index].imageUrl}',
+                                         )
+                                        )
                                       ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                    child: Center(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                           Navigator.pushNamed(context, '/eventpage',
-                                  arguments: {'eventItem': arr[index]});
-                                        },
-                                        child: Container(
-                                          child: Text(
-                                            "${arr[index].title}",
-                                            style: TextStyle(
-                                                fontFamily: 'Mons',
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 15.sp,
-                                                letterSpacing: 1.1),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                  SizedBox(height: 1.h,),
+                                  Text(
+                                    "${arr[index].title}",
+                                    style: TextStyle(
+                                        fontFamily: 'Mons',
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 15.sp,
+                                        letterSpacing: 1.2),
                                   )
                                 ],
-                              ),
-                            );
-                          },
-                        ),
-                        Text("LATER"),
-                        Text("LATER"),
-                        Text("LATER"),
-                      ],
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      "Fest Dates",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Mons',
-                          fontSize: 19.sp,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.white.withOpacity(0.3),
-                                spreadRadius: 0.2,
-                                blurRadius: 22.sp,
-                                offset:
-                                    Offset(0, 5), // changes position of shadow
-                              ),
-                            ],
-                            color: Colors.grey.shade600.withOpacity(0.7),
-                            borderRadius: BorderRadius.circular(5.sp)),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Text("3",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Mons',
-                                        fontSize: 11.sp,
-                                        fontWeight: FontWeight.w500)),
-                                SizedBox(
-                                  height: 1.h,
-                                ),
-                                Text("THU",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Mons',
-                                        fontSize: 11.sp,
-                                        fontWeight: FontWeight.w500)),
-                              ],
-                            ),
-                          ),
-                        ),
+                              )
+                        ):Center(child: CircularProgressIndicator(),)
+
+
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.white.withOpacity(0.28),
-                                spreadRadius: 0.2,
-                                blurRadius: 22.sp,
-                                offset:
-                                    Offset(0, 5), // changes position of shadow
-                              ),
-                            ],
-                            color: Colors.grey.shade600.withOpacity(0.7),
-                            borderRadius: BorderRadius.circular(5.sp)),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Text("3",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Mons',
-                                        fontSize: 11.sp,
-                                        fontWeight: FontWeight.w500)),
-                                SizedBox(
-                                  height: 1.h,
-                                ),
-                                Text("THU",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Mons',
-                                        fontSize: 11.sp,
-                                        fontWeight: FontWeight.w500)),
-                              ],
-                            ),
-                          ),
-                        ),
+                      Text(
+                        "Fest Dates",
+                        style: TextStyle(
+                            color: Colors.white,
+                            letterSpacing: 1.2,
+                            fontFamily: 'Mons',
+                            fontSize: 19.sp,
+                            fontWeight: FontWeight.w500),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.white.withOpacity(0.28),
-                                spreadRadius: 0.2,
-                                blurRadius: 22.sp,
-                                offset:
-                                    Offset(0, 5), // changes position of shadow
-                              ),
-                            ],
-                            color: Colors.grey.shade600.withOpacity(0.7),
-                            borderRadius: BorderRadius.circular(5.sp)),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Text("3",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Mons',
-                                        fontSize: 11.sp,
-                                        fontWeight: FontWeight.w500)),
-                                SizedBox(
-                                  height: 1.h,
-                                ),
-                                Text("THU",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Mons',
-                                        fontSize: 11.sp,
-                                        fontWeight: FontWeight.w500)),
-                              ],
-                            ),
-                          ),
-                        ),
+                      SizedBox(
+                        height: 2.h,
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.white.withOpacity(0.3),
-                                spreadRadius: 0.2,
-                                blurRadius: 22.sp,
-                                offset:
-                                    Offset(0, 5), // changes position of shadow
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            width: 12.w,
+                            height: 8.h,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.white70,
+                                width: 0.5.sp
                               ),
-                            ],
-                            color: Colors.grey.shade600.withOpacity(0.7),
-                            borderRadius: BorderRadius.circular(5.sp)),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+
+                                color: fromCssColor('#E2F5FF')
+                                    .withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(5.sp)),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text("3",
                                     style: TextStyle(
@@ -442,7 +384,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                                 SizedBox(
                                   height: 1.h,
                                 ),
-                                Text("THU",
+                                Text("Thu",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontFamily: 'Mons',
@@ -451,16 +393,123 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                               ],
                             ),
                           ),
-                        ),
+                          Container(
+                            width: 12.w,
+                            height: 8.h,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.white70,
+                                    width: 0.5.sp
+                                ),
+
+                                color: fromCssColor('#E2F5FF')
+                                    .withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(5.sp)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("4",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Mons',
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.w500)),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                Text("Fri",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Mons',
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.w500)),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 12.w,
+                            height: 8.h,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.white70,
+                                    width: 0.5.sp
+                                ),
+
+                                color: fromCssColor('#E2F5FF')
+                                    .withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(5.sp)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("5",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Mons',
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.w500)),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                Text("Sat",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Mons',
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.w500)),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 12.w,
+                            height: 8.h,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.white70,
+                                    width: 0.5.sp
+                                ),
+
+                                color: fromCssColor('#E2F5FF')
+                                    .withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(5.sp)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("6",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Mons',
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.w500)),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                Text("Sun",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Mons',
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.w500)),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
-                  )
-                ],
-              ),
+                  ),
+                    AnimatedPositioned(
+                        curve: Curves.easeInOut,
+                        width: width,
+                        duration: Duration(milliseconds: 500),
+                        bottom: (showBottomMenu)?height*0.125:-(height*0.65),
+                        child: MenuWidget(showBottomMenu))
+                    ,]
+                ),
             ),
+
           ),
         ),
       );
     });
   }
 }
+
