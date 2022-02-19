@@ -15,20 +15,20 @@ class Timeline extends StatefulWidget {
 }
 
 class _TimelineState extends State<Timeline> {
-  bool showBottomMenu = false; String day = "3rd";
+  Map<String,List> M={};
+  bool showBottomMenu = false; String day = "3rd"; int x=0;
   @override
   Widget build(BuildContext context) {
     double height= MediaQuery.of(context).size.height;  double width= MediaQuery.of(context).size.width;double threshold = 100;
     List<DayItem> dayItems = Provider.of<List<DayItem>>(context);
-    print(dayItems);
     Sort_Events sort  =Sort_Events();
-    Map<String,List> M;
-   if(dayItems!=[]){
-     print("hell");
-      setState(() {
-        M = sort.func(dayItems[0].events);
-      });
-   }
+    setState(() {
+      if(x==0 && dayItems.length!=0) {
+        M = sort.func(dayItems[0].events);x++;
+        print(dayItems);
+      }
+    });
+
 
     return Sizer(
       builder: (context,orientation,deviceType){
@@ -111,7 +111,7 @@ class _TimelineState extends State<Timeline> {
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(0, 0, 3.w, 0),
                                     child: Text(
-                                      "${day} March, Today",
+                                      "${day} March",
                                       style: TextStyle(
                                           color: Colors.white, letterSpacing: 1.1,
                                           fontFamily: 'Mons',
@@ -138,70 +138,110 @@ class _TimelineState extends State<Timeline> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(
-                                width: 12.w, height: 8.h,
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white70, width: 0.5.sp
-                                    ),
-                                    color: fromCssColor('#E2F5FF').withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(5.sp)),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("3", style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
-                                    SizedBox(height: 1.h,),
-                                    Text("Thu",
-                                        style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
-                                  ],
+                              InkWell(
+                                onTap: (){
+                                  setState(() {
+                                    day = "3rd";
+                                    M = {};
+                                    M = sort.func(dayItems[0].events);
+                                    print(M);
+                                  });
+                                },
+                                child: Container(
+                                  width: 12.w, height: 8.h,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white70, width: 0.5.sp
+                                      ),
+                                      color: (day=="3rd")?fromCssColor('#E2F5FF').withOpacity(0.4):fromCssColor('#E2F5FF').withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(5.sp)),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("3", style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
+                                      SizedBox(height: 1.h,),
+                                      Text("Thu",
+                                          style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              Container(
-                                width: 12.w, height: 8.h,
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white70, width: 0.5.sp
-                                    ),
-                                    color: fromCssColor('#E2F5FF').withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(5.sp)),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("4", style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
-                                    SizedBox(height: 1.h,),
-                                    Text("Fri",
-                                        style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
-                                  ],
+                              InkWell(
+                                onTap: (){
+                                  setState(() {
+                                    day = "4th";
+                                    M = {};
+                                    M = sort.func(dayItems[1].events);
+                                    print(M);
+                                  });
+                                },
+                                child: Container(
+                                  width: 12.w, height: 8.h,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white70, width: 0.5.sp
+                                      ),
+                                      color: (day=="4th")?fromCssColor('#E2F5FF').withOpacity(0.4):fromCssColor('#E2F5FF').withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(5.sp)),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("4", style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
+                                      SizedBox(height: 1.h,),
+                                      Text("Fri",
+                                          style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
+                                    ],
+                                  ),
                                 ),
-                              ),            Container(
-                                width: 12.w, height: 8.h,
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white70, width: 0.5.sp
-                                    ),
-                                    color: fromCssColor('#E2F5FF').withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(5.sp)),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("5", style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
-                                    SizedBox(height: 1.h,),
-                                    Text("Sat",
-                                        style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
-                                  ],
+                              ),            InkWell(
+                                onTap: (){
+                                  setState(() {
+                                    day = "5th";
+                                    M = {};
+                                    M = sort.func(dayItems[2].events);
+                                    print(M);
+                                  });
+                                },
+                                child: Container(
+                                  width: 12.w, height: 8.h,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white70, width: 0.5.sp
+                                      ),
+                                      color: (day=="5th")?fromCssColor('#E2F5FF').withOpacity(0.4):fromCssColor('#E2F5FF').withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(5.sp)),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("5", style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
+                                      SizedBox(height: 1.h,),
+                                      Text("Sat",
+                                          style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
+                                    ],
+                                  ),
                                 ),
-                              ),            Container(
-                                width: 12.w, height: 8.h,
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white70, width: 0.5.sp
-                                    ),
-                                    color: fromCssColor('#E2F5FF').withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(5.sp)),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("6", style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
-                                    SizedBox(height: 1.h,),
-                                    Text("Sun",
-                                        style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
-                                  ],
+                              ),            InkWell(
+                                onTap: (){
+                                  setState(() {
+                                    day = "6th";
+                                    M = {};
+                                    M = sort.func(dayItems[3].events);
+                                    print(M);
+                                  });
+                                },
+                                child: Container(
+                                  width: 12.w, height: 8.h,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white70, width: 0.5.sp
+                                      ),
+                                      color: (day=="6th")?fromCssColor('#E2F5FF').withOpacity(0.4):fromCssColor('#E2F5FF').withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(5.sp)),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("6", style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
+                                      SizedBox(height: 1.h,),
+                                      Text("Sun",
+                                          style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -213,27 +253,27 @@ class _TimelineState extends State<Timeline> {
                           child: Container(
                             height: 59.h,
                             // color: Colors.red,
-                            child: (dayItems!=[])?ListView.builder(
+                            child: (M.length!=0)?ListView.builder(
                               itemCount: M.length ,
                               itemBuilder: (context,index){
                                 return Padding(
                                   padding: EdgeInsets.fromLTRB(8.w, 0, 0, 2.h),
                                   child: Column(crossAxisAlignment:CrossAxisAlignment.start,
-                                      children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.circle, color: Colors.white,size: 10.sp,
-                                        ),
-                                        SizedBox(width: 2.5.w,),
-                                        Text("${M.keys.elementAt(index)}",style: TextStyle(color: Colors.white,fontFamily: 'Gugi',
-                                            fontSize: 15.sp, fontWeight: FontWeight.w500),),
-                                      ],
-                                    ),
-                                    SizedBox(height: 1.h,),
-                                    Timeline_List(M[M.keys.elementAt(index)])
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.circle, color: Colors.white,size: 10.sp,
+                                          ),
+                                          SizedBox(width: 2.5.w,),
+                                          Text("${M.keys.elementAt(index)}",style: TextStyle(color: Colors.white,fontFamily: 'Gugi',
+                                              fontSize: 15.sp, fontWeight: FontWeight.w500),),
+                                        ],
+                                      ),
+                                      SizedBox(height: 1.h,),
+                                      Timeline_List(M[M.keys.elementAt(index)])
 
-                                  ],),
+                                    ],),
                                 );
                               },
 

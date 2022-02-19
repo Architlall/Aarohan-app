@@ -13,8 +13,7 @@ class AuthService{
     scopes: ['email']
   );
 
-
-  Stream<Users> userStream() {
+   Stream<Users> userStream() {
     CollectionReference<Map<String, dynamic>> ref =
     _firestore.collection('Users');
     return ref.doc(_auth.currentUser.uid).snapshots().map((doc) => Users.fromFirestore(doc));
@@ -33,8 +32,7 @@ class AuthService{
       "calendar":doc['calendar']
 
     };
-    // Users.us =  Users.fromJson(user_data);
-
+    Users.us =  Users.fromJson(user_data);
   }
 
   Future gSignIn() async{
@@ -64,7 +62,7 @@ class AuthService{
 
       // assert(!user.isAnonymous);
       // assert(await user.getIdToken() != null);
-
+      Users.us =  Users.fromJson(user_data);
       final User currentUser = _auth.currentUser;
       DocumentSnapshot doc =
       await _firestore.collection("Users").doc(user.uid).get();

@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:aarohan_app/models/event.dart';
-import 'package:aarohan_app/models/user.dart';
+
 import 'package:aarohan_app/models/schedule.dart';
 import 'package:aarohan_app/models/sponsor.dart';
+import 'package:aarohan_app/models/contributor.dart';
 
 class FirebaseService{
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -16,15 +17,6 @@ class FirebaseService{
   }
 
 
-
-  // getEventDetail(String eventName) async{
-  //   // gets all the details of a particular event
-  //   DocumentReference ref= _firestore.collection('Events').doc(eventName);
-  //   DocumentSnapshot doc =await ref.get();
-  //   return doc;
-  //   // return the data
-  // }
-
   Stream<List<DayItem>> scheduleListStream() {
     CollectionReference<Map<String, dynamic>> ref =
     _firestore.collection('Schedule');
@@ -37,6 +29,13 @@ class FirebaseService{
     _firestore.collection('Sponsors');
     return ref.snapshots().map((events) =>
         events.docs.map((doc) => SponsorItem.fromFirestore(doc)).toList());
+  }
+
+   Stream<List<ContributorItem>> contributorStream() {
+    CollectionReference<Map<String, dynamic>> ref =
+    _firestore.collection('Contributor');
+    return ref.snapshots().map((events) =>
+        events.docs.map((doc) => ContributorItem.fromFirestore(doc)).toList());
   }
 
   

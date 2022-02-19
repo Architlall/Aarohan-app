@@ -43,7 +43,6 @@ class Users {
     "id": id,
     "calendar" :calendar
   };
-  // static Users us = Users();
+  static Users us = Users();
 
 }
-

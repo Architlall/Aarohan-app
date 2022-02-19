@@ -1,5 +1,8 @@
 import 'package:aarohan_app/models/event.dart';
 import 'package:aarohan_app/resources/firestore_provider.dart';
+import 'package:aarohan_app/screens/about.dart';
+import 'package:aarohan_app/screens/contributors.dart';
+import 'package:aarohan_app/screens/dashboard.dart';
 import 'package:aarohan_app/screens/sponsors.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,6 +14,8 @@ import 'package:aarohan_app/screens/timeline.dart';
 import 'package:aarohan_app/models/user.dart';
 import 'package:aarohan_app/services/auth_services.dart';
 import 'package:aarohan_app/models/sponsor.dart';
+import 'package:aarohan_app/models/contributor.dart';
+
 
 
 Future main() async {
@@ -23,11 +28,15 @@ Future main() async {
           create: (_) => FirebaseService().eventListStream(), initialData: []),
       StreamProvider<List<DayItem>>(
           create: (_) => FirebaseService().scheduleListStream(), initialData: []),
-      StreamProvider<Users>(
+            StreamProvider<Users>(
           create: (_) => AuthService().userStream(), initialData: Users(name: "",calendar: [],photoURL: "",email: ""),),
 
           StreamProvider<List<SponsorItem>>(
           create: (_) => FirebaseService().sponsorStream(), initialData: []),
+
+           StreamProvider<List<ContributorItem>>(
+          create: (_) => FirebaseService().contributorStream(), initialData: []),
+          
           
         
     ],
@@ -35,7 +44,10 @@ Future main() async {
       home: HomePage(),
       routes: {'/eventpage': (context) => Event_Detail(),
                '/timeline': (context)=> Timeline(),
-               '/sponsors': (context)=> Sponsor_Detail()
+               '/sponsors': (context)=> Sponsor_Detail(),
+               '/contributors' : (context)=> Contributor_Detail(),
+               '/about' : (context)=> About(),
+               '/home':(context)=> Dashboard()
       },
     ),
   ));

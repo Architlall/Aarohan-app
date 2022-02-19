@@ -112,7 +112,10 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                                   borderRadius: BorderRadius.circular(2.w)
                                 ),
                                 child:
-                              Image.asset('assets/search.png'),
+                              Padding(
+                                padding:  EdgeInsets.only(top: 0.5.h),
+                                child: Image.asset('assets/search.png'),
+                              ),
                                 height: 40,width: 40,),
                             ],
                           ),
@@ -509,4 +512,3 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
     });
   }
 }
-
