@@ -4,6 +4,8 @@ import 'package:aarohan_app/services/auth_services.dart';
 import 'package:aarohan_app/models/user.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:provider/provider.dart';
+import 'package:aarohan_app/main.dart';
+import 'package:aarohan_app/screens/sponsors.dart';
 
 class MenuWidget extends StatefulWidget {
   bool showBottomMenu;
@@ -92,7 +94,11 @@ class _MenuWidgetState extends State<MenuWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(child:
-                        Image.asset('assets/msg.png'),
+                        GestureDetector(
+                          onTap: () {
+                             Navigator.pushNamed(context, '/sponsors');
+                          },
+                          child: Image.asset('assets/msg.png')),
                           height: height*0.06,width: width*0.11,),
                         Container(child:
                         Image.asset('assets/profile.png'),

@@ -72,7 +72,7 @@ class _Event_DetailState extends State<Event_Detail> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(7.sp),
                                 image: DecorationImage(
-
+                                  fit: BoxFit.fill,
                                   image: NetworkImage(eventItem.imageUrl),
                                 ),
                               ),
