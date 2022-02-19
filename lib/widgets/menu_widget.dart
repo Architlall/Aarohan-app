@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:aarohan_app/services/auth_services.dart';
 import 'package:aarohan_app/models/user.dart';
 import 'package:from_css_color/from_css_color.dart';
+import 'package:provider/provider.dart';
 
 class MenuWidget extends StatefulWidget {
   bool showBottomMenu;
@@ -16,7 +17,8 @@ class _MenuWidgetState extends State<MenuWidget> {
   @override
   Widget build(BuildContext context) {
     // print(Users.us.photoURL);
-
+    Users users = Provider.of<Users>(context);
+    // print(users.name);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
@@ -60,19 +62,21 @@ class _MenuWidgetState extends State<MenuWidget> {
                           children: [
                             CircleAvatar(
                               radius: 27.0,
-                              backgroundImage: NetworkImage(Users.us.photoURL),
+                              backgroundImage: (users!=null)?NetworkImage(users.photoURL):AssetImage('assets/profile1.png'),
                             ),
                             SizedBox(width: width*0.06,),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                              Text("${Users.us.name}",style:TextStyle(
+                              Text(
+                                (users!=null)?"${users.name}":"",
+                                style:TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'Staat',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,letterSpacing: 1.2), ),
                               SizedBox(height: 1,),
-                              Text("${Users.us.email}",style:TextStyle(
+                              Text((users!=null)?"${users.email}":"",style:TextStyle(
                                   color: Colors.white,letterSpacing: 1.2,
                                   fontFamily: 'Poppins',
                                   fontSize: 12,
@@ -95,8 +99,10 @@ class _MenuWidgetState extends State<MenuWidget> {
                           height: height*0.06,width: width*0.11,),
                         InkWell(
                           onTap: (){
+
                             AuthService authService = AuthService();
                             authService.gSignOut();
+                            Navigator.pop(context);
                           },
                           child: Container(child:
                           Image.asset('assets/logout.png'),

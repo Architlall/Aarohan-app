@@ -3,6 +3,7 @@
 //     final user = userFromJson(jsonString);
 
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 Users userFromJson(String str) => Users.fromJson(json.decode(str));
 
@@ -31,6 +32,10 @@ class Users {
     calendar: json["calendar"]
   );
 
+  factory Users.fromFirestore(DocumentSnapshot documentSnapshot) {
+    return Users.fromJson(documentSnapshot.data());
+  }
+
   Map<dynamic, dynamic> toJson() => {
     "name": name,
     "email": email,
@@ -38,7 +43,7 @@ class Users {
     "id": id,
     "calendar" :calendar
   };
-  static Users us = Users();
+  // static Users us = Users();
 
 }
 

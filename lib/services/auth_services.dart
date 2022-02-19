@@ -14,6 +14,12 @@ class AuthService{
   );
 
 
+  Stream<Users> userStream() {
+    CollectionReference<Map<String, dynamic>> ref =
+    _firestore.collection('Users');
+    return ref.doc(_auth.currentUser.uid).snapshots().map((doc) => Users.fromFirestore(doc));
+  }
+
   // stores the user details to Firestore
   Future storeUser(User user) async{
     DocumentSnapshot doc =
@@ -27,8 +33,7 @@ class AuthService{
       "calendar":doc['calendar']
 
     };
-   print(doc['calendar']);
-    Users.us =  Users.fromJson(user_data);
+    // Users.us =  Users.fromJson(user_data);
 
   }
 

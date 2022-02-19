@@ -1,132 +1,512 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:aarohan_app/resources/firestore_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:aarohan_app/models/user.dart';
-import 'package:aarohan_app/widgets/drawer.dart';
+import 'package:aarohan_app/widgets/menu_widget.dart';
 import 'package:aarohan_app/models/event.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_controller.dart';
+import 'package:bottom_drawer/bottom_drawer.dart';
+import 'package:aarohan_app/widgets/custom_gesture_detector.dart';
+import 'package:from_css_color/from_css_color.dart';
+import 'package:aarohan_app/models/user.dart';
 
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
 }
 
-GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
-
-// Future getEvents()async{
-//   FirebaseService firebaseService = FirebaseService();
-//   try{
-//     await firebaseService.getEvents();
-//     return 1;
-//   }
-//   catch(e){
-//     return 0;
-//   }
-
-// }
-
-class _DashboardState extends State<Dashboard> {
+class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
+  String selectedcategory = "All";
+  int x =0;
+  CarouselController buttonCarouselController = CarouselController();
+  BottomDrawerController controller = BottomDrawerController();
+  List<EventItem> arr = [];
+  // GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
+  bool showBottomMenu = false;
   @override
+  void initState() {
+    super.initState();
+
+  }
+
   Widget build(BuildContext context) {
     List<EventItem> eventItems = Provider.of<List<EventItem>>(context);
+
+    setState(() {
+      if(x==0 && eventItems.length!=0) {
+       arr = eventItems;x++;
+     }
+    });
+    double height= MediaQuery.of(context).size.height;  double width= MediaQuery.of(context).size.width;
+    double threshold = 100;
     return Sizer(builder: (context, orientation, deviceType) {
-      return Scaffold(
-        drawer: Drawer(
-          child: DrawerWidget(Users.us.name, Users.us.photoURL),
-        ),
-        key: _scaffold,
-        body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 5.h,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 0, 5),
-                child: Row(
+      return SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/Aarohan_bg.png"), fit: BoxFit.fill),
+          ),
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: CustomGestureDetector(
+              axis: CustomGestureDetector.AXIS_Y,
+              velocity: threshold,
+              onSwipeUp: (){
+                this.setState((){
+                  showBottomMenu = true;
+                });
+              },
+              onSwipeDown: (){
+                this.setState((){
+                  showBottomMenu = false;
+                });
+              },
+              child: Stack(
                   children: [
-                    IconButton(
-                      onPressed: () {
-                        _scaffold.currentState.openDrawer();
-                      },
-                      icon: Icon(
-                        Icons.menu,
-                        size: 23.sp,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20.w,
-                    ),
-                    Text(
-                      "Aarohan",
-                      style: TextStyle(
-                          letterSpacing: 1.2,
-                          fontSize: 19.sp,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-                  child: ListView.builder(
-                      itemCount: eventItems.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(25, 3, 25, 3),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/eventpage',
-                                  arguments: {'eventItem': eventItems[index]});
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: <Color>[
-                                    Colors.purple.shade50,
-                                    Colors.purple.shade200
-                                  ],
+                    Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        height: 13.h,
+                        decoration: BoxDecoration(
+                         color: fromCssColor('#E2F5FF')
+                            .withOpacity(0.4),
+                          border: Border(bottom: BorderSide(
+                            color: Colors.white70,
+                            width: 1,
+                            style: BorderStyle.solid
+                          ))
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 2.h),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                                child: CircleAvatar(
+                                  radius: 20,
+                                  backgroundImage:
+                                      AssetImage('assets/aarohan-logo 1.png'),
                                 ),
-                                borderRadius: BorderRadius.circular(10.sp),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.shade400,
-                                    offset: const Offset(
-                                      4.0,
-                                      4.0,
-                                    ),
-                                    blurRadius: 8.0,
-                                    spreadRadius: 2.0,
-                                  ),
-                                ],
                               ),
-                              height: 9.h,
-                              child: Center(
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                                 child: Text(
-                                  "${eventItems[index].title}",
+                                  "Aarohan",
                                   style: TextStyle(
-                                      letterSpacing: 0.8,
-                                      fontSize: 13.sp,
+                                      color: Colors.white,
+                                      fontFamily: 'Mons',
+                                      fontSize: 20.sp,
                                       fontWeight: FontWeight.w500),
                                 ),
                               ),
+                              SizedBox(
+                                width: 28.w,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: fromCssColor('#E2F5FF')
+                                      .withOpacity(0.3),
+                                  border: Border.all(color: Colors.white70,width: 0.1.w),
+                                  borderRadius: BorderRadius.circular(2.w)
+                                ),
+                                child:
+                              Image.asset('assets/search.png'),
+                                height: 40,width: 40,),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 8.h,
+                        decoration: BoxDecoration(
+                            color: fromCssColor('#E2F5FF')
+                                .withOpacity(0.25),
+                            border: Border(bottom: BorderSide(
+                                color: Colors.white70,
+                                width: 0.5,
+                                style: BorderStyle.solid
+                            ))
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  arr = eventItems;
+                                  selectedcategory = "All";
+                                });
+                              },
+                              child: Container(
+                                height: 8.h,
+                                width: 24.w,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "ALL",
+                                      style: TextStyle(
+                                           color: (selectedcategory=="All")?Color(0xFF00FFFF):Colors.white,
+                                          fontFamily: 'Staat',
+                                          fontSize: 3.75.w,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                    SizedBox(height: 3.5),
+                                    Visibility(
+                                      visible: (selectedcategory=="All"),
+                                      child: Container(
+                                        height: 5,width: 5,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFF00FFFF),
+                                          shape: BoxShape.circle
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  arr = eventItems.where((element) => element.category=="Workshop").toList();
+                                  selectedcategory = "Workshop";
+                                });
+                              },
+                              child: Container(
+                                height: 8.h,
+                                width: 24.w,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "WORKSHOPS",
+                                      style: TextStyle(
+                                          color: (selectedcategory=="Workshop")?Color(0xFF00FFFF):Colors.white,
+                                          fontFamily: 'Staat',
+                                          fontSize: 3.75.w,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                    SizedBox(height: 3.5),
+                                    Visibility(
+                                      visible: (selectedcategory=="Workshop"),
+                                      child: Container(
+                                        height: 5,width: 5,
+                                        decoration: BoxDecoration(
+                                            color: Color(0xFF00FFFF),
+                                            shape: BoxShape.circle
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  arr = eventItems.where((element) => element.category=="Event").toList();
+                                  selectedcategory = "Event";
+                                });
+                              },
+                              child: Container(
+                                height: 8.h,
+                                width: 24.w,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "EVENTS",
+                                      style: TextStyle(
+                                          color: (selectedcategory=="Event")?Color(0xFF00FFFF):Colors.white,
+                                          fontFamily: 'Staat',
+                                          fontSize: 3.75.w,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                    SizedBox(height: 3.5),
+                                    Visibility(
+                                      visible: (selectedcategory=="Event"),
+                                      child: Container(
+                                        height: 5,width: 5,
+                                        decoration: BoxDecoration(
+                                            color: Color(0xFF00FFFF),
+                                            shape: BoxShape.circle
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  arr = eventItems.where((element) => element.category=="Talk").toList();
+                                  selectedcategory = "Talk";
+                                });
+                              },
+                              child: Container(
+                                height: 8.h,
+                                width: 24.w,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "TALKS",
+                                      style: TextStyle(
+                                          color: (selectedcategory=="Talk")?Color(0xFF00FFFF):Colors.white,
+                                          fontFamily: 'Staat',
+                                          fontSize: 3.75.w,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                    SizedBox(height: 3.5),
+                                    Visibility(
+                                      visible: (selectedcategory=="Talk"),
+                                      child: Container(
+                                        height: 5,width: 5,
+                                        decoration: BoxDecoration(
+                                            color: Color(0xFF00FFFF),
+                                            shape: BoxShape.circle
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Container(
+                        // padding: EdgeInsets.only(bottom: 3.h),
+                        // color: Colors.cyanAccent,
+                        margin: EdgeInsets.only(top: 2.h),
+                        height: 49.h,
+                        child: (arr.length!=0)?CarouselSlider.builder(
+                          itemCount: arr.length,
+                            options: CarouselOptions(
+                              height: 53.5.h,
+                              aspectRatio: 1.15,
+                              viewportFraction: 0.75,
+                              initialPage: 0,
+                              enableInfiniteScroll: true,
+                              reverse: false,
+                              autoPlay: true,
+                              autoPlayInterval: Duration(seconds: 3),
+                              autoPlayAnimationDuration: Duration(milliseconds: 800),
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                              enlargeCenterPage: true,
+                              scrollDirection: Axis.horizontal,
+                            ),
+                          carouselController: buttonCarouselController,
+                          itemBuilder: (BuildContext context, int index, int pageViewIndex) =>
+                              Column(
+                                children: [
+                                  InkWell(
+                                    onTap: (){
+                                      Navigator.pushNamed(context, '/eventpage',arguments: {'eventItem':eventItems[index]});
+                                    },
+                                    child: Container(
+                                      height: 40.h,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(18.sp),
+                                        image:  DecorationImage(
+                                            fit: BoxFit.fill,
+                                         image: NetworkImage(
+                                           '${arr[index].imageUrl}',
+                                         )
+                                        )
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 1.h,),
+                                  Text(
+                                    "${arr[index].title}",
+                                    style: TextStyle(
+                                        fontFamily: 'Mons',
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 15.sp,
+                                        letterSpacing: 1.2),
+                                  )
+                                ],
+                              )
+                        ):Center(child: CircularProgressIndicator(),)
+
+
+                      ),
+                      Text(
+                        "Fest Dates",
+                        style: TextStyle(
+                            color: Colors.white,
+                            letterSpacing: 1.2,
+                            fontFamily: 'Mons',
+                            fontSize: 19.sp,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            width: 12.w,
+                            height: 8.h,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.white70,
+                                width: 0.5.sp
+                              ),
+
+                                color: fromCssColor('#E2F5FF')
+                                    .withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(5.sp)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("3",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Mons',
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.w500)),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                Text("Thu",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Mons',
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.w500)),
+                              ],
                             ),
                           ),
-                        );
-                      }),
+                          Container(
+                            width: 12.w,
+                            height: 8.h,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.white70,
+                                    width: 0.5.sp
+                                ),
+
+                                color: fromCssColor('#E2F5FF')
+                                    .withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(5.sp)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("4",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Mons',
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.w500)),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                Text("Fri",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Mons',
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.w500)),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 12.w,
+                            height: 8.h,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.white70,
+                                    width: 0.5.sp
+                                ),
+
+                                color: fromCssColor('#E2F5FF')
+                                    .withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(5.sp)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("5",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Mons',
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.w500)),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                Text("Sat",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Mons',
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.w500)),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 12.w,
+                            height: 8.h,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.white70,
+                                    width: 0.5.sp
+                                ),
+
+                                color: fromCssColor('#E2F5FF')
+                                    .withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(5.sp)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("6",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Mons',
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.w500)),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                Text("Sun",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Mons',
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.w500)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                    AnimatedPositioned(
+                        curve: Curves.easeInOut,
+                        width: width,
+                        duration: Duration(milliseconds: 500),
+                        bottom: (showBottomMenu)?height*0.125:-(height*0.65),
+                        child: MenuWidget(showBottomMenu))
+                    ,]
                 ),
-              )
-            ],
+            ),
+
           ),
         ),
       );
     });
   }
 }
+

@@ -20,9 +20,11 @@ class _TimelineState extends State<Timeline> {
   Widget build(BuildContext context) {
     double height= MediaQuery.of(context).size.height;  double width= MediaQuery.of(context).size.width;double threshold = 100;
     List<DayItem> dayItems = Provider.of<List<DayItem>>(context);
+    print(dayItems);
     Sort_Events sort  =Sort_Events();
     Map<String,List> M;
-   if(dayItems[0].events!=[]){
+   if(dayItems!=[]){
+     print("hell");
       setState(() {
         M = sort.func(dayItems[0].events);
       });
@@ -211,7 +213,7 @@ class _TimelineState extends State<Timeline> {
                           child: Container(
                             height: 59.h,
                             // color: Colors.red,
-                            child: (dayItems[0].events!=[])?ListView.builder(
+                            child: (dayItems!=[])?ListView.builder(
                               itemCount: M.length ,
                               itemBuilder: (context,index){
                                 return Padding(
