@@ -1,5 +1,4 @@
 
-
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,8 +23,8 @@ class SponsorResponse {
       );
 
   Map<String, dynamic> toJson() => {
-        "SponsorItem": List<dynamic>.from(sponsorItem.map((x) => x.toJson())),
-      };
+    "SponsorItem": List<dynamic>.from(sponsorItem.map((x) => x.toJson())),
+  };
   static SponsorResponse sponsorResponse = SponsorResponse();
 }
 
@@ -44,10 +43,10 @@ class SponsorItem {
 
   factory SponsorItem.fromJson(Map<String, dynamic> json) =>
       SponsorItem(category: json['category'],
-      priority: json['priority'],
-      description: json['description'],
-      imageUrl: json['imageUrl'],
-      
+        priority: json['priority'],
+        description: json['description'],
+        imageUrl: json['imageUrl'],
+
       );
 
   factory SponsorItem.fromFirestore(DocumentSnapshot documentSnapshot) {
@@ -55,8 +54,8 @@ class SponsorItem {
   }
 
   Map<String, dynamic> toJson() => {"category" : category,
-  "description" : description,
-  "imageUrl" : imageUrl,
-  "priority" : priority
+    "description" : description,
+    "imageUrl" : imageUrl,
+    "priority" : priority
   };
 }

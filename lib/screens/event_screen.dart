@@ -15,12 +15,12 @@ class Event_Detail extends StatefulWidget {
 
 GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
 
-// bool checkCalendar(String eventName, List calendar) {
-//   for (var i = 0; i < calendar.length; i++) {
-//     if (calendar[i].toString() == eventName) return false;
-//   }
-//   return true;
-// }
+bool checkCalendar(String eventName, List calendar) {
+  for (var i = 0; i < calendar.length; i++) {
+    if (calendar[i].toString() == eventName) return false;
+  }
+  return true;
+}
 
 class _Event_DetailState extends State<Event_Detail>  {
   Map data = {};   bool showBottomMenu = false;
@@ -32,7 +32,7 @@ class _Event_DetailState extends State<Event_Detail>  {
     double threshold = 100;
     data = ModalRoute.of(context).settings.arguments;
     EventItem eventItem = data['eventItem'];
-    // bool vis = checkCalendar(eventItem.title,users.calendar );
+    bool vis = checkCalendar(eventItem.title,users.calendar );
     List<String> textsplit = eventItem.contact.split('-');
     return Sizer(
       builder: (context, orientation, deviceType) {
@@ -114,6 +114,7 @@ class _Event_DetailState extends State<Event_Detail>  {
                                ),
                                SliverList(delegate: SliverChildListDelegate([
                                  Column(
+                                   crossAxisAlignment: CrossAxisAlignment.start,
                                    children: [
                                      Padding(
                                        padding: EdgeInsets.only(top: 3.h),
@@ -294,16 +295,12 @@ class _Event_DetailState extends State<Event_Detail>  {
                                        ),
                                      ),
                                      Padding(
-                                       padding:  EdgeInsets.fromLTRB(5.w, 3.h, 0, 0),
-                                       child: Row(
-                                         children: [
-                                           Text(eventItem.title,
-                                               style: TextStyle(
-                                                   fontSize: 21.5.sp, fontFamily: 'Poppins',letterSpacing: 1.1,
-                                                   color: Colors.white,
-                                                   fontWeight: FontWeight.w600))
-                                         ],
-                                       ),
+                                       padding:  EdgeInsets.fromLTRB(5.w, 3.h, 2.w, 0),
+                                       child: Text(eventItem.title,
+                                           style: TextStyle(
+                                               fontSize: 21.5.sp, fontFamily: 'Poppins',letterSpacing: 1.1,
+                                               color: Colors.white,
+                                               fontWeight: FontWeight.w600)),
                                      ),
                                      Padding(
                                        padding:  EdgeInsets.fromLTRB(5.w, 3.h, 7.w, 2.h),

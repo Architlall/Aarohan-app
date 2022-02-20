@@ -1,168 +1,203 @@
-import 'package:aarohan_app/models/contributor.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-
+import 'package:aarohan_app/widgets/custom_gesture_detector.dart';
+import 'package:aarohan_app/widgets/menu_widget.dart';
+import 'dart:ui';
 import 'package:from_css_color/from_css_color.dart';
-
 import 'package:provider/provider.dart';
+import 'package:aarohan_app/models/contributor.dart';
 
-class Contributor_Detail extends StatefulWidget {
+class Contributors extends StatefulWidget {
+
   @override
-  _Contributor_DetailState createState() => _Contributor_DetailState();
+  _ContributorsState createState() => _ContributorsState();
 }
 
-class _Contributor_DetailState extends State<Contributor_Detail> {
-  Map data = {};
+class _ContributorsState extends State<Contributors> {
   bool showBottomMenu = false;
-
   @override
   Widget build(BuildContext context) {
-    List<ContributorItem> contributorItems =
-        Provider.of<List<ContributorItem>>(context);
+    List<ContributorItem> contributorItems = Provider.of<List<ContributorItem>>(context);
     int l = contributorItems.length;
-
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
+    double height= MediaQuery.of(context).size.height;  double width= MediaQuery.of(context).size.width;double threshold = 100;
+    return Sizer(
+      builder: (context,orientation,deviceType){
+        return SafeArea(
           child: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("assets/Aarohan_bg.png"), fit: BoxFit.fill),
             ),
-            child: Column(
-              children: [
-                Stack(
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              body: CustomGestureDetector(
+                axis: CustomGestureDetector.AXIS_Y,
+                velocity: threshold,
+                onSwipeUp: (){
+                  this.setState((){
+                    showBottomMenu = true;
+                  });
+                },
+                onSwipeDown: (){
+                  this.setState((){
+                    showBottomMenu = false;
+                  });
+                },
+                child: Stack(
                   children: [
-                    Container(
-                      alignment: Alignment.bottomCenter,
-                      height: 13.h,
-                      decoration: BoxDecoration(
-                          color: fromCssColor('#E2F5FF').withOpacity(0.4),
-                          border: Border(
-                              bottom: BorderSide(
+                    Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.bottomCenter,
+                          height: 13.5.h,
+                          decoration: BoxDecoration(
+                              color: fromCssColor('#E2F5FF')
+                                  .withOpacity(0.4),
+                              border: Border(bottom: BorderSide(
                                   color: Colors.white70,
                                   width: 1,
-                                  style: BorderStyle.solid))),
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 2.h),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.1,
-                              height: 1,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                              child: Text(
-                                "Contributors",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Mons',
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 28.w,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white, width: 1),
-                              color: fromCssColor('#E2F5FF').withOpacity(0.4),
-                              borderRadius: BorderRadius.circular(20.sp)),
-                          child: GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Icon(Icons.arrow_back,
-                                  color: Colors.white, size: 30))),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height,
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2),
-                      itemBuilder: (BuildContext context, index) => Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white, width: 1),
-                            borderRadius: BorderRadius.circular(7.sp),
+                                  style: BorderStyle.solid
+                              ))
                           ),
                           child: Column(
                             children: [
-                              Expanded(
-                                child: Container(
-                                    child: Image(
-                                        image: AssetImage(
-                                            'assets/baby_enderman.png'),
-                                        fit: BoxFit.fitWidth)),
-                              ),
-                              Container(
-                                height: 45,
-                                decoration: BoxDecoration(
-                                  color:
-                                      fromCssColor('#E2F5FF').withOpacity(0.4),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(10, 3, 0, 0),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            'NAME',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: 'Staat',
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w400),
-                                          )
-                                        ],
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(5.w, 1.h, 0, 0),
+                                    child: InkWell(
+                                      onTap: (){
+                                        Navigator.pop(context);
+                                      },
+                                      child: Container(
+                                        child: CircleAvatar(
+                                          radius: 18,
+                                          backgroundImage:
+                                          AssetImage('assets/back.png'),
+                                        ),
                                       ),
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image(
-                                            image: AssetImage(
-                                                'assets/phone 1.png')),
-                                        Image(
-                                            image: AssetImage(
-                                                'assets/linkedin.png')),
-                                        Image(
-                                            image: AssetImage(
-                                                'assets/github.png')),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              )
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(19.w, 0, 0, 0),
+                                    child: Text(
+                                      "Contributors",
+                                      style: TextStyle(
+                                          color: Colors.white, letterSpacing: 1.1,
+                                          fontFamily: 'Mons',
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
+                Container(
+                  height: 70.h,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(3.w, 4.h, 3.w, 0),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height,
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,mainAxisExtent: 30.h,),
+                        itemBuilder: (BuildContext context, index) => Padding(
+                          padding: EdgeInsets.all(4.sp),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white, width: 1),
+                              borderRadius: BorderRadius.circular(7.sp),
+                            ),
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 20.h,
+                                    width: 45.w,
+
+                                    // child: Image(
+                                    //     image: AssetImage(
+                                    //         'assets/baby_enderman.png'),
+                                    //     fit: BoxFit.fitWidth,height: 20.h,)
+                                  child: FittedBox(
+                                    fit: BoxFit.fill,
+                                    child: Image.asset(
+                                        'assets/baby_enderman.png'),
+                                  ),
+                                ),
+                                Container(
+                                  height: 8.2.h,
+                                  decoration: BoxDecoration(
+                                    color:
+                                    fromCssColor('#E2F5FF').withOpacity(0.4),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                         EdgeInsets.fromLTRB(3.w, 0.5.h, 0, 0),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              'NAME',
+                                              style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  fontFamily: 'Staat',
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w400),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                        children: [
+                                          SizedBox(width: 2.w,),
+                                           Icon(Icons.phone,color: Colors.white,),
+                                          SizedBox(width: 1.5.w,),
+                                          Image(
+                                              image: AssetImage(
+                                                  'assets/linkedin.png'),height: 5.h,),
+                                          SizedBox(width: 1.5.w,),
+                                          Image(
+                                              image: AssetImage(
+                                                  'assets/github.png'),height: 5.h,),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        itemCount: l,
                       ),
-                      itemCount: l,
                     ),
                   ),
                 )
-              ],
+                      ],
+                    ),
+                    AnimatedPositioned(
+                        curve: Curves.easeInOut,
+                        width: width,
+                        duration: Duration(milliseconds: 500),
+                        bottom: (showBottomMenu)?height*0.125:-(height*0.65),
+                        child: MenuWidget(showBottomMenu))
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
+
   }
 }

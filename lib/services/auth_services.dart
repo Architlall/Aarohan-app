@@ -13,11 +13,13 @@ class AuthService{
     scopes: ['email']
   );
 
-   Stream<Users> userStream() {
-    CollectionReference<Map<String, dynamic>> ref =
-    _firestore.collection('Users');
-    return ref.doc(_auth.currentUser.uid).snapshots().map((doc) => Users.fromFirestore(doc));
-  }
+
+  // Future<Users> userStream()async {
+  //   CollectionReference<Map<String, dynamic>> ref =
+  //   _firestore.collection('Users');
+  //   DocumentSnapshot doc = await ref.doc(_auth.currentUser.uid).get();
+  //   return Users.fromFirestore(doc);
+  // }
 
   // stores the user details to Firestore
   Future storeUser(User user) async{
