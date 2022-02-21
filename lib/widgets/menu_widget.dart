@@ -6,7 +6,7 @@ import 'package:from_css_color/from_css_color.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path/path.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuWidget extends StatefulWidget {
   bool showBottomMenu;
@@ -17,16 +17,32 @@ class MenuWidget extends StatefulWidget {
 }
 
 class _MenuWidgetState extends State<MenuWidget> {
+  bool isEurekoinRegistered = false;
   @override
+  void initState(){
+
+    super.initState();
+  }
    getuser()async{
     final FirebaseAuth _auth = FirebaseAuth.instance;
     AuthService authService = AuthService();
     await authService.storeUser(_auth.currentUser);
   }
 
+  Future<bool> getEurekoinRegistered()async{
+    final prefs = await SharedPreferences.getInstance();
+    final bool registered = prefs.getBool('eurekoinregistered');
+    return registered!=null?registered:false;
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    getEurekoinRegistered().then((value) {
+      setState(() {
+        isEurekoinRegistered = value;
+      });
+    });
     getuser();
     Users users = null;
     if(Users.us!=null){
@@ -35,6 +51,7 @@ class _MenuWidgetState extends State<MenuWidget> {
         // print(Users.us.email);
       });
     }
+
     // print(Users.us.photoURL);
     // Users users = Provider.of<Users>(context);
     // print(users.name);
@@ -171,10 +188,18 @@ class _MenuWidgetState extends State<MenuWidget> {
                         ),
                         InkWell(
                           onTap: (){
-                            if(ModalRoute.of(context).settings.name!='/')
-                              Navigator.popAndPushNamed(context, '/eurekoin');
-                            else
-                              Navigator.pushNamed(context, '/eurekoin');
+                            if(!isEurekoinRegistered){
+                              if(ModalRoute.of(context).settings.name!='/')
+                                Navigator.popAndPushNamed(context, '/eurekoin');
+                              else
+                                Navigator.pushNamed(context, '/eurekoin');
+                            }
+                            else{
+                              if(ModalRoute.of(context).settings.name!='/')
+                                Navigator.popAndPushNamed(context, '/leaderboard');
+                              else
+                                Navigator.pushNamed(context, '/leaderboard');
+                            }
                           },
                           child: Container(child:
                           Image.asset('assets/eurekoin.png'),

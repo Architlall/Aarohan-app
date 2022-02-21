@@ -18,8 +18,19 @@ class Eurekoin{
   //
   //   isEurekoinUserRegistered();
   // }
+
+  static Future fetchLeaderboard() async {
+
+    String url = "https://eurekoin.nitdgplug.org/api/leaderboard/";
+    http.Response response = await http.get(Uri.parse(url));
+    List<dynamic> dataList = json.decode(response.body);
+
+    print(dataList);
+    return dataList;
+
+  }
  static Future  getReferralCode() async {
-    var email = currentUser.providerData[1].email;
+    var email = currentUser.providerData[0].email;
     var bytes = utf8.encode("$email" + "$loginKey");
     var encoded = sha1.convert(bytes);
     String apiUrl =
@@ -28,21 +39,28 @@ class Eurekoin{
     print(response.body);
     var referralCode = json.decode(response.body)['invite_code'];
 
-      userReferralCode = referralCode;
+   return referralCode;
 
   }
+ static Future getAllUsers(String email) async {
+
+      String apiUrl =
+          "https://eurekoin.nitdgplug.org/api/users/?pattern=$email";
+      http.Response response = await http.get(Uri.parse(apiUrl));
+      print(response.body);
+      return json.decode(response.body)['users'];
+
+  }
+
  static Future getUserEurekoin() async {
-    var email = currentUser.providerData[1].email;
+    var email = currentUser.providerData[0].email;
     var bytes = utf8.encode("$email" + "$loginKey");
     var encoded = sha1.convert(bytes);
     String apiUrl = "https://eurekoin.nitdgplug.org/api/coins/?token=$encoded";
     http.Response response = await http.get(Uri.parse(apiUrl));
-    print(response);
+    print(response.body);
     var status = json.decode(response.body)['coins'];
-
-      userEurekoin = status;
-
-    getReferralCode();
+    return status;
   }
   static Future isEurekoinUserRegistered() async {
     var email = currentUser.providerData[1].email;
@@ -86,7 +104,7 @@ class Eurekoin{
         "https://eurekoin.nitdgplug.org/api/coupon?token=$encoded&code=$coupon";
     print(apiUrl);
     http.Response response = await http.get(Uri.parse(apiUrl));
-    print(response.body);
+    print(response.statusCode);
     var status = json.decode(response.body)['status'];
 
     return int.parse(status);

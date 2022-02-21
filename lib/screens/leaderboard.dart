@@ -6,6 +6,7 @@ import 'package:aarohan_app/widgets/custom_gesture_detector.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:aarohan_app/models/user.dart';
 import 'package:aarohan_app/resources/eurekoin.dart';
+import 'package:aarohan_app/widgets/redeem.dart';
 import 'dart:ui';
 
 class Leaderboard extends StatefulWidget {
@@ -17,7 +18,27 @@ class Leaderboard extends StatefulWidget {
 
 class _LeaderboardState extends State<Leaderboard> {
   TextEditingController editingController = TextEditingController();
-  bool showBottomMenu = false;
+  bool showBottomMenu = false; bool showdialog = false; int _coins; String _referralCode;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    Eurekoin.getAllUsers("s");
+     Eurekoin.getUserEurekoin().then((value){
+       setState(() {
+         _coins = value;
+       });
+     });
+     Eurekoin.getReferralCode().then((value){
+       setState(() {
+         _referralCode = value;
+       });
+     });
+    super.initState();
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -32,19 +53,22 @@ class _LeaderboardState extends State<Leaderboard> {
                     image: AssetImage("assets/Aarohan_bg.png"), fit: BoxFit.fill),
               ),
               child: Scaffold(
+                resizeToAvoidBottomInset: false,
                 backgroundColor: Colors.transparent,
                 body: CustomGestureDetector(
                   axis: CustomGestureDetector.AXIS_Y,
                   velocity: threshold,
                   onSwipeUp: (){
-                    this.setState((){
-                      showBottomMenu = true;
-                    });
+                    // if(!showdialog)
+                      this.setState((){
+                        showBottomMenu = true;
+                      });
                   },
                   onSwipeDown: (){
-                    this.setState((){
-                      showBottomMenu = false;
-                    });
+                    // if(!showdialog)
+                      this.setState((){
+                        showBottomMenu = false;
+                      });
                   },
                   child: Stack(
                     children: [
@@ -52,7 +76,7 @@ class _LeaderboardState extends State<Leaderboard> {
                         children: [
                           Container(
                             alignment: Alignment.bottomCenter,
-                            height: 14.5.h,
+                            height: 15.h,
                             decoration: BoxDecoration(
                                 color: fromCssColor('#E2F5FF')
                                     .withOpacity(0.4),
@@ -105,31 +129,104 @@ class _LeaderboardState extends State<Leaderboard> {
                                       padding: EdgeInsets.fromLTRB(0, 0, 3.w, 0),
                                       child:InkWell(
                                         onTap: (){
-                                          showDialog(context: context, builder: (context)=> AlertDialog(
-                                            title: Text("Hello"),
-                                            content: Column(
-                                              children: [
-                                                TextField(
-                                                  controller: editingController,
-                                                  decoration: InputDecoration(
-                                                      hintText: "REFERRAL CODE"
-                                                  ),
+                                          showDialog(context: context, builder: (context)=> BackdropFilter(
+                                            filter: ImageFilter.blur(sigmaX: 5,sigmaY: 5),
+                                            child: Dialog(
+
+                                              insetPadding: EdgeInsets.all(5.w),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                                 side: BorderSide(
+                                                   style: BorderStyle.solid,
+                                                   width: 1.sp,color: Colors.white
+                                                 )
+                                              ),
+                                              backgroundColor:fromCssColor('#E2F5FF')
+                                                  .withOpacity(0.2),
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 2.h),
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    Text("Redeem Eurekoins",
+                                                      style: TextStyle(
+                                                          color: Colors.white, letterSpacing: 0.5,
+                                                          fontFamily: 'Staat',
+                                                          fontSize: 20.sp,
+                                                          fontWeight: FontWeight.w500),
+                                                    ),
+                                                    SizedBox(height: 4.h,),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: Container(
+
+                                                            decoration: BoxDecoration(
+                                                              // color: Colors.red,
+                                                                border: Border.all(color: Colors.white,width: 0.5.sp),
+                                                                borderRadius: BorderRadius.circular(10.sp)
+                                                            ),
+                                                            child: Padding(
+                                                              padding: EdgeInsets.all(1.sp),
+                                                              child: TextField(
+                                                                style:TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontFamily: 'Poppins',
+                                                                    fontSize: 14.sp,letterSpacing: 1
+
+                                                                ) ,
+                                                                controller: editingController,
+                                                                decoration: InputDecoration(
+                                                                    contentPadding: EdgeInsets.fromLTRB(4.w, 1.h, 3.w, 1.h),
+                                                                    border: InputBorder.none,
+                                                                    labelText: 'Redeem Code',
+                                                                    labelStyle: TextStyle(
+                                                                        color: Colors.white.withOpacity(0.5),
+                                                                        fontFamily: 'Poppins',
+                                                                        fontSize: 13.sp,
+                                                                        fontWeight: FontWeight.w500
+                                                                    )
+                                                                ),
+                                                                //
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 4.h,),
+                                                    InkWell(
+                                                      onTap: ()async{
+                                                      await  Eurekoin.couponEurekoin(editingController.text);
+                                                      Navigator.pop(context);
+                                                      },
+                                                      child: Container(
+                                                        padding: EdgeInsets.symmetric(horizontal: 8.w,vertical: 1.5.h),
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.white.withOpacity(0.4),
+                                                            border: Border.all(color: Colors.white,width: 0.5.sp),
+                                                            borderRadius: BorderRadius.circular(10.sp)
+                                                        ),
+                                                        child: Text("REDEEM",style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontFamily: 'Poppins',
+                                                            fontSize: 15.sp,
+                                                            fontWeight: FontWeight.w500
+                                                        ),),
+
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                TextButton(
-                                                  child: Text("REGISTER"),
-                                                  onPressed:  ()async{
-                                                    await Eurekoin.couponEurekoin(editingController.text);
-                                                    // Navigator.popAndPushNamed(context, '/leaderboard');
-                                                  },
-                                                )
-                                              ],
+                                              ),
                                             ),
-                                          ));
+                                          )
+                                          );
                                         },
                                         child: Container(
                                           child: Center(
                                             child: CircleAvatar(
-                                            radius: 8.sp,
+                                            radius: 10.sp,
                                             // backgroundColor: Colors.transparent,
                                             backgroundImage:
                                             AssetImage('assets/Vector.png'),
@@ -147,7 +244,7 @@ class _LeaderboardState extends State<Leaderboard> {
                             child: BackdropFilter(
                               filter: ImageFilter.blur(sigmaX: 1.5,sigmaY: 1.5),
                               child: Container(
-                                height: 16.h,
+                                height: 17.h,
                                 width: 85.w,
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Colors.white,width: 0.2.w),
@@ -170,34 +267,59 @@ class _LeaderboardState extends State<Leaderboard> {
                                       ),
                                     ),
                                     Padding(
-                                      padding:  EdgeInsets.fromLTRB(5.w, 0.7.h, 0, 0),
-                                      child: Text(
-                                        "Balance",
-                                        style: TextStyle(
-                                            color: Colors.white, letterSpacing: 1.1,
-                                            fontFamily: 'Poppins',
-                                            fontSize: 13.sp,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:  EdgeInsets.fromLTRB(5.w, 0.7.h, 0, 0),
+                                      padding:  EdgeInsets.fromLTRB(5.w, 0.7.h, 5.w, 0),
                                       child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Container(child:
-                                          Image.asset('assets/eurekoin.png'),
-                                            height: height*0.04,width: width*0.09,),
-                                          SizedBox(width: 2.w,),
                                           Text(
-                                            "22.1",
+                                            "Balance",
                                             style: TextStyle(
                                                 color: Colors.white, letterSpacing: 1.1,
                                                 fontFamily: 'Poppins',
                                                 fontSize: 13.sp,
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                          SizedBox(width: 45.w,),
-                                          Container(child:
+                                          // SizedBox(width: 3.w,),
+                                          Row(
+                                            children: [
+                                              Icon(Icons.share,color: Colors.white, size: 15,),
+                                              SizedBox(width: 1.w,),
+                                              Text(
+                                                (_referralCode!=null)?"$_referralCode":"",style: TextStyle(
+                                                  color: Colors.white, letterSpacing: 1.1,
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w500),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:  EdgeInsets.fromLTRB(5.w, 1.h, 0, 0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Container(child:
+                                              Image.asset('assets/eurekoin.png'),
+                                                height: height*0.04,width: width*0.09,),
+                                              SizedBox(width: 2.w,),
+                                              Text(
+                                                (_coins!=null)?"$_coins":"",
+                                                style: TextStyle(
+                                                    color: Colors.white, letterSpacing: 1.1,
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 13.sp,
+                                                    fontWeight: FontWeight.w500),
+                                              ),
+                                            ],
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(right: 5.w),
+                                            child:
                                           Image.asset('assets/Pay icon.png'),
                                             height: height*0.04,width: width*0.09,),
                                         ],
@@ -227,71 +349,136 @@ class _LeaderboardState extends State<Leaderboard> {
                           Container(
                             height: 46.h,
                             // color: Colors.blue,
-                            child: ListView.builder(
-                              itemCount: 15,
-                              itemBuilder: (context,index){
-                                return Padding(
-                                  padding: EdgeInsets.fromLTRB(3.w, 1.h, 3.w, 1.h),
-                                  child: ClipRect(
-                                    child: BackdropFilter(
-                                      filter: ImageFilter.blur(sigmaX: 1.5,sigmaY: 1.5),
-                                      child: Container(
-                                        padding: EdgeInsets.fromLTRB(5.w, 1.h, 5.w, 1.h) ,
+                            child: FutureBuilder(
+                              future:  Eurekoin.fetchLeaderboard(),
+                              builder: (context,snapshot){
+                                if(snapshot.hasData)return ListView.builder(
+                                  itemCount: snapshot.data.length,
+                                itemBuilder: (context,index){
+                                  return Padding(
+                                    padding: EdgeInsets.fromLTRB(3.w, 1.h, 3.w, 1.h),
+                                    child: ClipRect(
+                                      child: BackdropFilter(
+                                        filter: ImageFilter.blur(sigmaX: 1.5,sigmaY: 1.5),
+                                        child: Container(
+                                          padding: EdgeInsets.fromLTRB(5.w, 1.h, 2.w, 1.h) ,
 
-                                        height: 9.h,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(color: Colors.white,width: 0.2.w),
-                                            borderRadius: BorderRadius.circular(15.sp),
-                                            color: fromCssColor('#E2F5FF')
-                                                .withOpacity(0.25)
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            SizedBox(width: 5.w,),
-                                            Text(
-                                              "${index +1}.  ${users.name}",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontFamily: 'Poppins',
-                                                  fontSize: 13.sp,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            SizedBox(width: 8.w,),
-                                            Container(child:
-                                            Image.asset('assets/eurekoin.png'),
-                                              height: height*0.04,width: width*0.09,),
-                                            SizedBox(width: 1.w,),
-                                            Padding(
-                                              padding: EdgeInsets.only(right: 3.w),
-                                              child: Text(
-                                                "500",
-                                                style: TextStyle(
-                                                    color: Colors.white, letterSpacing: 0.5,
-                                                    fontFamily: 'Poppins',
-                                                    fontSize: 13.sp,
-                                                    fontWeight: FontWeight.w500),
+                                          height: 9.h,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(color: Colors.white,width: 0.2.w),
+                                              borderRadius: BorderRadius.circular(15.sp),
+                                              color: fromCssColor('#E2F5FF')
+                                                  .withOpacity(0.25)
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    "${index +1}.",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontFamily: 'Poppins',
+                                                        fontSize: 13.sp,
+                                                        fontWeight: FontWeight.w500),
+                                                  ),
+                                                  SizedBox(width: 2.w,),
+                                                  CircleAvatar(
+                                                    backgroundImage: NetworkImage(
+                                                      '${snapshot.data[index]['imageURL']}',
+                                                    ),
+                                                    radius: 12.sp,
+                                                  ),
+                                                  SizedBox(width: 2.w,),
+                                                  Text(
+                                                    "${snapshot.data[index]['username']}",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontFamily: 'Poppins',
+                                                        fontSize: 13.sp,
+                                                        fontWeight: FontWeight.w500),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
 
-                                          ],
+
+                                              // SizedBox(width: 8.w,),
+                                              Container(
+
+                                                child: Row(
+                                                  children: [
+                                                    Image.asset('assets/eurekoin.png',height: height*0.04,width: width*0.09),
+                                                    SizedBox(width: 1.w),
+                                                    Text(
+                                                      "${snapshot.data[index]['coins']}",
+                                                      style: TextStyle(
+                                                          color: Colors.white, letterSpacing: 0.5,
+                                                          fontFamily: 'Poppins',
+                                                          fontSize: 13.sp,
+                                                          fontWeight: FontWeight.w500),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              );
+                                else
+                                  return Center(child: CircularProgressIndicator(),);
+                                  },
                             ),
                           )
 
                         ],
                       ),
-                      AnimatedPositioned(
-                          curve: Curves.easeInOut,
-                          width: width,
-                          duration: Duration(milliseconds: 500),
-                          bottom: (showBottomMenu)?height*0.125:-(height*0.65),
-                          child: MenuWidget(showBottomMenu))
+                      Visibility(
+                        visible: !showdialog,
+                        child: AnimatedPositioned(
+                            curve: Curves.easeInOut,
+                            width: width,
+                            duration: Duration(milliseconds: 500),
+                            bottom: (showBottomMenu)?height*0.125:-(height*0.65),
+                            child: MenuWidget(showBottomMenu)),
+                      ),
+
+                      // Visibility(
+                      //   visible: showdialog,
+                      //   child:      AnimatedPositioned(
+                      //     duration: Duration(milliseconds: 500),
+                      //     top: height*0.03,
+                      //     left: width*0.05,
+                      //     child: InkWell(
+                      //       onTap: (){
+                      //        setState(() {
+                      //          showdialog=false;
+                      //        });
+                      //       },
+                      //       child: Container(
+                      //         child: CircleAvatar(
+                      //           radius: 18,
+                      //           backgroundImage:
+                      //           AssetImage('assets/back.png'),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      //
+                      // Visibility(
+                      //   visible: showdialog,
+                      //   child: AnimatedPositioned(
+                      //       curve: Curves.easeInOut,
+                      //       width: width,
+                      //       duration: Duration(milliseconds: 500),
+                      //       bottom: height*0.125,
+                      //       child: Redeem(showdialog)),
+                      // )
                     ],
                   ),
                 ),

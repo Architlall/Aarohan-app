@@ -38,6 +38,7 @@ dependencies:
   bottom_drawer:
   from_css_color:
   background_app_bar:
+  shared_preferences:
   http:
   flutter:
 
