@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:aarohan_app/screens/coming_soon.dart';
 
 class MenuWidget extends StatefulWidget {
   bool showBottomMenu;
@@ -127,17 +128,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        InkWell(
-                          onTap: (){
-                            if(ModalRoute.of(context).settings.name!='/')
-                            Navigator.popAndPushNamed(context, '/contributor');
-                            else
-                              Navigator.pushNamed(context, '/contributor');
-                          },
-                          child: Container(child:
-                          Image.asset('assets/msg.png'),
-                            height: height*0.06,width: width*0.11,),
-                        ),
+
                         InkWell(
                           onTap: (){
                             if(ModalRoute.of(context).settings.name!='/')
@@ -223,11 +214,39 @@ class _MenuWidgetState extends State<MenuWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         InkWell(
-
+                          onTap: (){
+                            if(ModalRoute.of(context).settings.name!='/')
+                              Navigator.popAndPushNamed(context, '/contact');
+                            else
+                              Navigator.pushNamed(context, '/contact');
+                          },
+                          child: Container(child:
+                          Image.asset('assets/msg.png'),
+                            height: height*0.06,width: width*0.11,),
+                        ),
+                        InkWell(
+                          onTap: (){
+                            if(ModalRoute.of(context).settings.name!='/')
+                              Navigator.popAndPushNamed(context, '/coming');
+                            else
+                              Navigator.pushNamed(context, '/coming');
+                          },
                           child: Container(child:
                           Image.asset('assets/leaderboard.png'),
                             height: height*0.06,width: width*0.11,),
                         ),
+                        InkWell(
+                          onTap: (){
+                            if(ModalRoute.of(context).settings.name!='/')
+                              Navigator.popAndPushNamed(context, '/contributor');
+                            else
+                              Navigator.pushNamed(context, '/contributor');
+                          },
+                          child: Container(child:
+                          Image.asset('assets/list.png'),
+                            height: height*0.06,width: width*0.11,),
+                        ),
+
                       ],
                     ),
                     SizedBox(height: height*0.02,),
@@ -242,15 +261,29 @@ class _MenuWidgetState extends State<MenuWidget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(child:
-                        Image.asset('assets/game.png'),
-                          height: height*0.06,width: width*0.11,),
-                        Container(child:
-                        Image.asset('assets/list.png'),
-                          height: height*0.06,width: width*0.11,),
-                        Container(child:
-                        Image.asset('assets/journo.png'),
-                          height: height*0.06,width: width*0.11,),
+                        InkWell(
+                          onTap: (){
+                            if(ModalRoute.of(context).settings.name!='/')
+                              Navigator.popAndPushNamed(context, '/coming');
+                            else
+                              Navigator.pushNamed(context, '/coming');
+                          },
+                          child: Container(child:
+                          Image.asset('assets/game.png'),
+                            height: height*0.06,width: width*0.11,),
+                        ),
+
+                        InkWell(
+                          onTap: (){
+                            if(ModalRoute.of(context).settings.name!='/')
+                              Navigator.popAndPushNamed(context, '/coming');
+                            else
+                              Navigator.pushNamed(context, '/coming');
+                          },
+                          child: Container(child:
+                          Image.asset('assets/journo.png'),
+                            height: height*0.06,width: width*0.11,),
+                        ),
                       ],
                     )
 

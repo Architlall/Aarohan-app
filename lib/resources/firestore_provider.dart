@@ -3,6 +3,7 @@ import 'package:aarohan_app/models/event.dart';
 import 'package:aarohan_app/models/sponsor.dart';
 import 'package:aarohan_app/models/schedule.dart';
 import 'package:aarohan_app/models/contributor.dart';
+import 'package:aarohan_app/models/contact_us.dart';
 
 class FirebaseService{
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -15,6 +16,12 @@ class FirebaseService{
         events.docs.map((doc) => EventItem.fromFirestore(doc)).toList());
   }
 
+  Stream<List<ContactItem>> contactStream() {
+    CollectionReference<Map<String, dynamic>> ref =
+    _firestore.collection('Contact');
+    return ref.snapshots().map((events) =>
+        events.docs.map((doc) => ContactItem.fromFirestore(doc)).toList());
+  }
 
 
   Stream<List<DayItem>> scheduleListStream() {

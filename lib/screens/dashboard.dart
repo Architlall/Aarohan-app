@@ -18,11 +18,11 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
-  String selectedcategory = "All";
-  int x =0;
+  String selectedcategory = "All"; List<String> tags = ["Logic","Strategy","Mystery","Innovation","Treasure-Hunt","Coding","Sports","Robotics","Workshops","Business"];
+  int x =0; int selectedIndex;
   CarouselController buttonCarouselController = CarouselController();
   BottomDrawerController controller = BottomDrawerController();
-  List<EventItem> arr = [];  List<EventItem> _foundUsers = [];
+  List<EventItem> arr = [];  List<EventItem> _foundUsers = []; String day ="";
   // GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
   bool showBottomMenu = false; bool search = false;List<EventItem> eventItems;
 
@@ -93,9 +93,6 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                       Visibility(
                         visible: search,
                         child: Container(
-
-                          alignment: Alignment.bottomCenter,
-                          height: 13.h,
                           decoration: BoxDecoration(
                               color: fromCssColor('#E2F5FF')
                                   .withOpacity(0.4),
@@ -106,57 +103,116 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                               ))
                           ),
                           child: Padding(
-                            padding: EdgeInsets.fromLTRB(3.w, 0, 3.w, 0),
-                            child: Row(
+                            padding: EdgeInsets.fromLTRB(3.w, 1.5.h, 3.w, 1.5.h),
+                            child: Column(
                               children: [
-                                SizedBox(width: 3.w,),
-                                Container(
-                                  width: 75.w,
-                                  decoration: BoxDecoration(
-                                    // color: Colors.red,
-                                    border: Border.all(color: Colors.white,width: 0.5.sp),
-                                    borderRadius: BorderRadius.circular(10.sp)
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(1.sp),
-                                    child: TextField(
-                                      style:TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Mons',
-                                          fontSize: 13.sp,letterSpacing: 1
-
-                                      ) ,
-                                      onChanged: (value) => _runFilter(value,eventItems),
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.all(10.sp),
-                                        border: InputBorder.none,
-                                          labelText: 'Search',
-                                        labelStyle: TextStyle(
-                                            color: Colors.white.withOpacity(0.5),
-                                            fontFamily: 'Mons',
-                                            fontSize: 15.sp,
-                                            fontWeight: FontWeight.w500
-                                        )
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(width: 3.w,),
+                                    Container(
+                                      width: 75.w,
+                                      decoration: BoxDecoration(
+                                        // color: Colors.red,
+                                        border: Border.all(color: Colors.white,width: 0.5.sp),
+                                        borderRadius: BorderRadius.circular(10.sp)
                                       ),
-                                       //
+                                      child: Padding(
+                                        padding: EdgeInsets.all(1.sp),
+                                        child: TextField(
+
+                                          onTap: (){
+                                            setState(() {
+                                              selectedIndex = -1;
+                                              print(selectedIndex);
+                                            });
+                                          },
+                                          style:TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Mons',
+                                              fontSize: 13.sp,letterSpacing: 1
+
+                                          ) ,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              selectedIndex=-1;
+                                            });
+                                            _runFilter(value,eventItems);
+                                          },
+                                          decoration: InputDecoration(
+                                            contentPadding: EdgeInsets.all(10.sp),
+                                            border: InputBorder.none,
+                                              labelText: 'Search',
+                                            labelStyle: TextStyle(
+                                                color: Colors.white.withOpacity(0.5),
+                                                fontFamily: 'Mons',
+                                                fontSize: 15.sp,
+                                                fontWeight: FontWeight.w500
+                                            )
+                                          ),
+                                           //
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    Padding(
+                                      padding:  EdgeInsets.fromLTRB(5.w, 0, 0, 0),
+                                      child: InkWell(
+                                        onTap: (){
+                                          setState(() {
+                                            search=!search;
+                                          });
+                                        },
+                                        child: Column(
+                                          children: [
+                                            Icon(Icons.cancel,size: 25.sp,color: Colors.white,),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                Padding(
-                                  padding:  EdgeInsets.fromLTRB(5.w, 5.h, 0, 0),
-                                  child: InkWell(
-                                    onTap: (){
-                                      setState(() {
-                                        search=!search;
-                                      });
+                                SizedBox(height: 1.5.h,),
+                                Container(
+
+                                  height: 4.h,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: tags.length,
+                                    itemBuilder: (context,index){
+                                      return InkWell(
+                                        onTap: (){
+                                          setState(() {
+                                            selectedIndex=index;
+                                            _foundUsers = eventItems.where((element) => (element.tag.contains(tags[index]))).toList();
+                                          });
+
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: (selectedIndex==index)?Colors.black:Color(0xFF035180),
+
+                                            borderRadius: BorderRadius.circular(7.sp)
+                                          ),
+                                          alignment: Alignment.center,
+
+                                          margin: EdgeInsets.symmetric(horizontal: 1.5.w),
+                                          padding: EdgeInsets.symmetric(horizontal: 2.w),
+                                          child: Text(
+                                            '${tags[index]}',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w500
+                                            ),
+                                          ),
+                                        ),
+                                      );
                                     },
-                                    child: Column(
-                                      children: [
-                                        Icon(Icons.cancel,size: 25.sp,color: Colors.white,),
-                                      ],
-                                    ),
                                   ),
+
                                 )
+
                               ],
                             ),
                           ),
@@ -467,7 +523,7 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                         child: Padding(
                           padding:  EdgeInsets.only(top: 1.h),
                           child: Container(
-                            height: 70.h,
+                            height: 68.h,
                             child: (_foundUsers!=null &&_foundUsers.isNotEmpty)
                                 ? ListView.builder(
                               itemCount: _foundUsers.length,
@@ -483,24 +539,44 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                                         Navigator.pushNamed(context, '/eventpage',arguments: {'eventItem':_foundUsers[index]});
                                       },
                                       child: Container(
-                                        height: 8.h,
+
                                         decoration: BoxDecoration(
                                             border: Border.all(color: Colors.white,width: 0.2.w),
                                             borderRadius: BorderRadius.circular(15.sp),
                                             color: fromCssColor('#E2F5FF')
-                                                .withOpacity(0.25)
+                                                .withOpacity(0.3)
                                         ),
-                                        child: Center(
-                                          child: Text(
-                                            _foundUsers[index].title.toString(),
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: 'Mons',letterSpacing: 1.1,
-                                                fontSize:13.sp,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-
-                                          ),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              height:23.w,
+                                              width: 23.w,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.sp),topLeft: Radius.circular(15.sp)),
+                                                image: DecorationImage(
+                                                  fit: BoxFit.fill,
+                                                  image: NetworkImage(
+                                                      _foundUsers[index].imageUrl.toString()
+                                                  )
+                                                )
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                child: Center(
+                                                  child: Text(
+                                                    _foundUsers[index].title.toString(),
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontFamily: 'Mons',letterSpacing: 1.1,
+                                                        fontSize:13.sp,
+                                                        fontWeight: FontWeight.w400),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                         ),
                                     ),
                                     ),
@@ -550,139 +626,105 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                       ),
                       Visibility(
                         visible: !search,
-                        child: Row(
+                        child:  Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Container(
-                              width: 12.w,
-                              height: 8.h,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.white70,
-                                  width: 0.5.sp
+                            InkWell(
+                              onTap: (){
+                                 setState(() {
+                                   day = "3rd";
+                                   arr = eventItems.where((element) =>(DateTime.parse(element.date).day==3)).toList();
+                                 });
+                              },
+                              child: Container(
+                                width: 12.w, height: 8.h,
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.white70, width: 0.5.sp
+                                    ),
+                                    color: (day=="3rd")?fromCssColor('#E2F5FF').withOpacity(0.4):fromCssColor('#E2F5FF').withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(5.sp)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("3", style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
+                                    SizedBox(height: 1.h,),
+                                    Text("Thu",
+                                        style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
+                                  ],
                                 ),
-
-                                  color: fromCssColor('#E2F5FF')
-                                      .withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(5.sp)),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text("3",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Mons',
-                                          fontSize: 11.sp,
-                                          fontWeight: FontWeight.w500)),
-                                  SizedBox(
-                                    height: 1.h,
-                                  ),
-                                  Text("Thu",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Mons',
-                                          fontSize: 11.sp,
-                                          fontWeight: FontWeight.w500)),
-                                ],
                               ),
                             ),
-                            Container(
-                              width: 12.w,
-                              height: 8.h,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.white70,
-                                      width: 0.5.sp
-                                  ),
-
-                                  color: fromCssColor('#E2F5FF')
-                                      .withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(5.sp)),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text("4",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Mons',
-                                          fontSize: 11.sp,
-                                          fontWeight: FontWeight.w500)),
-                                  SizedBox(
-                                    height: 1.h,
-                                  ),
-                                  Text("Fri",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Mons',
-                                          fontSize: 11.sp,
-                                          fontWeight: FontWeight.w500)),
-                                ],
+                            InkWell(
+                              onTap: (){
+                                setState(() {
+                                  day = "4th";
+                                  arr = eventItems.where((element) =>(DateTime.parse(element.date).day==4)).toList();
+                                });
+                              },
+                              child: Container(
+                                width: 12.w, height: 8.h,
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.white70, width: 0.5.sp
+                                    ),
+                                    color: (day=="4th")?fromCssColor('#E2F5FF').withOpacity(0.4):fromCssColor('#E2F5FF').withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(5.sp)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("4", style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
+                                    SizedBox(height: 1.h,),
+                                    Text("Fri",
+                                        style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Container(
-                              width: 12.w,
-                              height: 8.h,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.white70,
-                                      width: 0.5.sp
-                                  ),
-
-                                  color: fromCssColor('#E2F5FF')
-                                      .withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(5.sp)),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text("5",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Mons',
-                                          fontSize: 11.sp,
-                                          fontWeight: FontWeight.w500)),
-                                  SizedBox(
-                                    height: 1.h,
-                                  ),
-                                  Text("Sat",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Mons',
-                                          fontSize: 11.sp,
-                                          fontWeight: FontWeight.w500)),
-                                ],
+                            ),            InkWell(
+                              onTap: (){
+                                setState(() {
+                                  day = "5th";
+                                  arr = eventItems.where((element) =>(DateTime.parse(element.date).day==5)).toList();
+                                });
+                              },
+                              child: Container(
+                                width: 12.w, height: 8.h,
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.white70, width: 0.5.sp
+                                    ),
+                                    color: (day=="5th")?fromCssColor('#E2F5FF').withOpacity(0.4):fromCssColor('#E2F5FF').withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(5.sp)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("5", style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
+                                    SizedBox(height: 1.h,),
+                                    Text("Sat",
+                                        style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Container(
-                              width: 12.w,
-                              height: 8.h,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.white70,
-                                      width: 0.5.sp
-                                  ),
-
-                                  color: fromCssColor('#E2F5FF')
-                                      .withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(5.sp)),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text("6",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Mons',
-                                          fontSize: 11.sp,
-                                          fontWeight: FontWeight.w500)),
-                                  SizedBox(
-                                    height: 1.h,
-                                  ),
-                                  Text("Sun",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Mons',
-                                          fontSize: 11.sp,
-                                          fontWeight: FontWeight.w500)),
-                                ],
+                            ),            InkWell(
+                              onTap: (){
+                                setState(() {
+                                  day = "6th";
+                                  arr = eventItems.where((element) =>(DateTime.parse(element.date).day==6)).toList();
+                                });
+                              },
+                              child: Container(
+                                width: 12.w, height: 8.h,
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.white70, width: 0.5.sp
+                                    ),
+                                    color: (day=="6th")?fromCssColor('#E2F5FF').withOpacity(0.4):fromCssColor('#E2F5FF').withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(5.sp)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("6", style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
+                                    SizedBox(height: 1.h,),
+                                    Text("Sun",
+                                        style: TextStyle(color: Colors.white, fontFamily: 'Mons', fontSize: 11.sp, fontWeight: FontWeight.w500)),
+                                  ],
+                                ),
                               ),
                             ),
                           ],

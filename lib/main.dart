@@ -16,6 +16,9 @@ import 'package:aarohan_app/models/sponsor.dart';
 import 'package:aarohan_app/screens/sponsors.dart';
 import 'package:aarohan_app/screens/home.dart';
 import 'package:aarohan_app/screens/eurekoin_home.dart';
+import 'package:aarohan_app/models/contact_us.dart';
+import 'package:aarohan_app/screens/contact.dart';
+import 'package:aarohan_app/screens/coming_soon.dart';
 
 
 
@@ -34,6 +37,8 @@ Future main() async {
 
       StreamProvider<List<SponsorItem>>(
           create: (_) => FirebaseService().sponsorStream(), initialData: []),
+      StreamProvider<List<ContactItem>>(
+          create: (_) => FirebaseService().contactStream(), initialData: []),
     ],
     child: MaterialApp(
       home: HomePage(),
@@ -45,7 +50,9 @@ Future main() async {
         '/contributor':(context)=>Contributors(),
         '/sponsor':(context)=>Sponsors(),
         '/homepage':(context)=>Home(),
-        '/eurekoin':(context)=>Eurekoin_Home()
+        '/eurekoin':(context)=>Eurekoin_Home(),
+        '/contact': (context) => Contact(),
+        '/coming': (context) => Coming()
       },
     ),
   ));

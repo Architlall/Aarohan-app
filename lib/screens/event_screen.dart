@@ -7,6 +7,7 @@ import 'package:aarohan_app/widgets/custom_gesture_detector.dart';
 import 'package:aarohan_app/widgets/menu_widget.dart';
 import 'package:aarohan_app/sliver_components/SABT.dart';
 import 'dart:ui';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class Event_Detail extends StatefulWidget {
   @override
@@ -205,89 +206,101 @@ class _Event_DetailState extends State<Event_Detail>  {
                                        child: Row(
                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                          children: [
-                                           ClipRect(
-                                             child: BackdropFilter(
-                                               filter: ImageFilter.blur(sigmaX: 1.5,sigmaY: 1.5),
-                                               child: Padding(
-                                                 padding: EdgeInsets.fromLTRB(4.w, 0, 0, 0),
-                                                 child: Container(
-                                                     height: 9.h,
-                                                     width: 43.w,
-                                                     decoration: BoxDecoration(
-                                                         border: Border.all(
-                                                             color: Colors.white, width: 1),
-                                                         color: fromCssColor('#E2F5FF')
-                                                             .withOpacity(0.2),
-                                                         borderRadius: BorderRadius.circular(10.sp)),
-                                                     child: Row(
-                                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                       children: [
-                                                         Padding(
-                                                           padding:  EdgeInsets.fromLTRB(
-                                                               1.w, 2.5.h, 0, 3.h),
-                                                           child: Icon(Icons.call,
-                                                               size: 27, color: Colors.white),
-                                                         ),
-                                                         FittedBox(
-                                                           fit: BoxFit.scaleDown,
-                                                           child: Padding(
+                                           InkWell(
+                                             onTap: () {
+                                               UrlLauncher.launch(
+                                                   "tel://${textsplit[0]}");
+                                             },
+                                             child: ClipRect(
+                                               child: BackdropFilter(
+                                                 filter: ImageFilter.blur(sigmaX: 1.5,sigmaY: 1.5),
+                                                 child: Padding(
+                                                   padding: EdgeInsets.fromLTRB(4.w, 0, 0, 0),
+                                                   child: Container(
+                                                       height: 9.h,
+                                                       width: 43.w,
+                                                       decoration: BoxDecoration(
+                                                           border: Border.all(
+                                                               color: Colors.white, width: 1),
+                                                           color: fromCssColor('#E2F5FF')
+                                                               .withOpacity(0.2),
+                                                           borderRadius: BorderRadius.circular(10.sp)),
+                                                       child: Row(
+                                                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                         children: [
+                                                           Padding(
                                                              padding:  EdgeInsets.fromLTRB(
-                                                                 0, 2.h, 2.w, 1.8.h),
-                                                             child: Column(
-                                                               crossAxisAlignment: CrossAxisAlignment.start,
-                                                               children: [
-                                                                 Text(textsplit[0],
-                                                                     style: TextStyle(
-                                                                         fontSize: 11.5.sp, fontFamily: 'Staat',letterSpacing: 1.1,
-                                                                         color: Colors.white,
-                                                                         fontWeight: FontWeight.w400)),
-                                                                 Text(textsplit[1],
-                                                                     style: TextStyle(
-                                                                         fontSize: 11.5.sp, fontFamily: 'Staat',letterSpacing: 1.1,
-                                                                         color: Colors.white,
-                                                                         fontWeight: FontWeight.w400)),
-                                                               ],
-                                                             ),
+                                                                 1.w, 2.5.h, 0, 3.h),
+                                                             child: Icon(Icons.call,
+                                                                 size: 27, color: Colors.white),
                                                            ),
-                                                         )
-                                                       ],
-                                                     )),
+                                                           FittedBox(
+                                                             fit: BoxFit.scaleDown,
+                                                             child: Padding(
+                                                               padding:  EdgeInsets.fromLTRB(
+                                                                   0, 2.h, 2.w, 1.8.h),
+                                                               child: Column(
+                                                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                                                 children: [
+                                                                   Text(textsplit[0],
+                                                                       style: TextStyle(
+                                                                           fontSize: 11.5.sp, fontFamily: 'Staat',letterSpacing: 1.1,
+                                                                           color: Colors.white,
+                                                                           fontWeight: FontWeight.w400)),
+                                                                   Text(textsplit[1],
+                                                                       style: TextStyle(
+                                                                           fontSize: 11.5.sp, fontFamily: 'Staat',letterSpacing: 1.1,
+                                                                           color: Colors.white,
+                                                                           fontWeight: FontWeight.w400)),
+                                                                 ],
+                                                               ),
+                                                             ),
+                                                           )
+                                                         ],
+                                                       )),
+                                                 ),
                                                ),
                                              ),
                                            ),
-                                        ClipRect(
-                                          child: BackdropFilter(
-                                            filter: ImageFilter.blur(sigmaX: 1.5,sigmaY: 1.5),
-                                            child: Padding(
-                                              padding: EdgeInsets.fromLTRB(0, 0, 4.w, 0),
-                                              child: Container(
-                                                  height: 9.h,
-                                                  width: 43.w,
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.white, width: 1),
-                                                      color: fromCssColor('#E2F5FF')
-                                                          .withOpacity(0.2),
-                                                      borderRadius: BorderRadius.circular(10.sp)),
-                                                  child: Row(
-                                                    children: [
-                                                      Padding(
-                                                        padding:  EdgeInsets.fromLTRB(
-                                                            4.w, 2.h, 0, 3.h),
-                                                        child: Icon(Icons.open_in_new,
-                                                            size: 30, color: Colors.white),
-                                                      ),
-                                                      Padding(
-                                                        padding:  EdgeInsets.fromLTRB(
-                                                            3.w, 1.5.h, 2.w, 1.8.h),
-                                                        child: Text('Go to Event',
-                                                            style: TextStyle(
-                                                                fontSize: 11.5.sp, fontFamily: 'Staat',letterSpacing: 1.1,
-                                                                color: Colors.white,
-                                                                fontWeight: FontWeight.w400)),
-                                                      )
-                                                    ],
-                                                  )),
+                                        InkWell(
+                                          onTap: () {
+                                            UrlLauncher.launch(
+                                                "${eventItem.link}");
+                                          },
+                                          child: ClipRect(
+                                            child: BackdropFilter(
+                                              filter: ImageFilter.blur(sigmaX: 1.5,sigmaY: 1.5),
+                                              child: Padding(
+                                                padding: EdgeInsets.fromLTRB(0, 0, 4.w, 0),
+                                                child: Container(
+                                                    height: 9.h,
+                                                    width: 43.w,
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color: Colors.white, width: 1),
+                                                        color: fromCssColor('#E2F5FF')
+                                                            .withOpacity(0.2),
+                                                        borderRadius: BorderRadius.circular(10.sp)),
+                                                    child: Row(
+                                                      children: [
+                                                        Padding(
+                                                          padding:  EdgeInsets.fromLTRB(
+                                                              4.w, 2.h, 0, 3.h),
+                                                          child: Icon(Icons.open_in_new,
+                                                              size: 30, color: Colors.white),
+                                                        ),
+                                                        Padding(
+                                                          padding:  EdgeInsets.fromLTRB(
+                                                              3.w, 1.5.h, 2.w, 1.8.h),
+                                                          child: Text('Go to Event',
+                                                              style: TextStyle(
+                                                                  fontSize: 11.5.sp, fontFamily: 'Staat',letterSpacing: 1.1,
+                                                                  color: Colors.white,
+                                                                  fontWeight: FontWeight.w400)),
+                                                        )
+                                                      ],
+                                                    )),
+                                              ),
                                             ),
                                           ),
                                         )
