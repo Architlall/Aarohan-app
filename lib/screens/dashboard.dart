@@ -120,6 +120,12 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                                   child: Padding(
                                     padding: EdgeInsets.all(1.sp),
                                     child: TextField(
+                                      style:TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Mons',
+                                          fontSize: 13.sp,letterSpacing: 1
+
+                                      ) ,
                                       onChanged: (value) => _runFilter(value,eventItems),
                                       decoration: InputDecoration(
                                         contentPadding: EdgeInsets.all(10.sp),
@@ -429,9 +435,9 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                                       child: Container(
                                         height: 40.h,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(18.sp),
+                                          borderRadius: BorderRadius.circular(10.sp),
                                           image:  DecorationImage(
-                                              fit: BoxFit.fill,
+                                              fit: BoxFit.cover,
                                            image: NetworkImage(
                                              '${arr[index].imageUrl}',
                                            )
@@ -462,7 +468,7 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                           padding:  EdgeInsets.only(top: 1.h),
                           child: Container(
                             height: 70.h,
-                            child: _foundUsers.isNotEmpty
+                            child: (_foundUsers!=null &&_foundUsers.isNotEmpty)
                                 ? ListView.builder(
                               itemCount: _foundUsers.length,
                               itemBuilder: (context, index) =>
@@ -471,26 +477,32 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                                   filter: ImageFilter.blur(sigmaX: 1.5,sigmaY: 1.5),
                                   child: Padding(
                                     padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 1.h),
-                                    child: Container(
-                                      height: 8.h,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.white,width: 0.2.w),
-                                          borderRadius: BorderRadius.circular(15.sp),
-                                          color: fromCssColor('#E2F5FF')
-                                              .withOpacity(0.25)
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          _foundUsers[index].title.toString(),
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: 'Mons',letterSpacing: 1.1,
-                                              fontSize:13.sp,
-                                              fontWeight: FontWeight.w400),
+                                    child: InkWell(
+                                      onTap: (){
+                                        FocusManager.instance.primaryFocus.unfocus();
+                                        Navigator.pushNamed(context, '/eventpage',arguments: {'eventItem':_foundUsers[index]});
+                                      },
+                                      child: Container(
+                                        height: 8.h,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(color: Colors.white,width: 0.2.w),
+                                            borderRadius: BorderRadius.circular(15.sp),
+                                            color: fromCssColor('#E2F5FF')
+                                                .withOpacity(0.25)
                                         ),
+                                        child: Center(
+                                          child: Text(
+                                            _foundUsers[index].title.toString(),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'Mons',letterSpacing: 1.1,
+                                                fontSize:13.sp,
+                                                fontWeight: FontWeight.w400),
+                                          ),
 
+                                          ),
                                         ),
-                                      ),
+                                    ),
                                     ),
                                 ),
                               ),

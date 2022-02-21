@@ -106,6 +106,7 @@ class _ContributorsState extends State<Contributors> {
                       height: MediaQuery.of(context).size.height,
                       child: GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          // childAspectRatio: 0.75,
                             crossAxisCount: 2,mainAxisExtent: 30.h,),
                         itemBuilder: (BuildContext context, index) => Padding(
                           padding: EdgeInsets.all(4.sp),
@@ -119,17 +120,29 @@ class _ContributorsState extends State<Contributors> {
                                 Container(
                                   height: 20.h,
                                     width: 45.w,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(topRight: Radius.circular(7.sp),topLeft:Radius.circular(7.sp) ),
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                            'assets/baby_enderman.png',
+
+                                        ),
+                                        fit: BoxFit.cover
+
+                                      )
+                                    ),
 
                                     // child: Image(
                                     //     image: AssetImage(
                                     //         'assets/baby_enderman.png'),
                                     //     fit: BoxFit.fitWidth,height: 20.h,)
-                                  child: FittedBox(
-                                    fit: BoxFit.fill,
-                                    child: Image.asset(
-                                        'assets/baby_enderman.png'),
-                                  ),
+                                  // child: FittedBox(
+                                  //   fit: BoxFit.fill,
+                                  //   child: Image.asset(
+                                  //       'assets/baby_enderman.png'),
+                                  // ),
                                 ),
+
                                 Container(
                                   height: 8.2.h,
                                   decoration: BoxDecoration(
@@ -138,33 +151,32 @@ class _ContributorsState extends State<Contributors> {
                                   ),
                                   child: Column(
                                     children: [
-                                      Padding(
-                                        padding:
-                                         EdgeInsets.fromLTRB(3.w, 0.5.h, 0, 0),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'NAME',
-                                              style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  fontFamily: 'Staat',
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w400),
-                                            )
-                                          ],
-                                        ),
+                                      SizedBox(height: 0.5.h,),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          SizedBox(width: 5.w,),
+                                          Text(
+                                            'NAME',
+                                            style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontFamily: 'Staat',
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w400),
+                                          )
+                                        ],
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.start,
+                                        MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          SizedBox(width: 2.w,),
+                                          // SizedBox(width: 2.w,),
                                            Icon(Icons.phone,color: Colors.white,),
-                                          SizedBox(width: 1.5.w,),
+                                          // SizedBox(width: 1.5.w,),
                                           Image(
                                               image: AssetImage(
                                                   'assets/linkedin.png'),height: 5.h,),
-                                          SizedBox(width: 1.5.w,),
+                                          // SizedBox(width: 1.5.w,),
                                           Image(
                                               image: AssetImage(
                                                   'assets/github.png'),height: 5.h,),

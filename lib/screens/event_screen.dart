@@ -102,7 +102,7 @@ class _Event_DetailState extends State<Event_Detail>  {
                                            fontWeight: FontWeight.w500),),
                                      ),
                                      background:  Container(
-                                         child:Image.network(eventItem.imageUrl,width: 100.w,fit: BoxFit.fill,height: 60.h,)),
+                                         child:Image.network(eventItem.imageUrl,width: 100.w,fit: BoxFit.cover,height: 60.h,)),
                                    ),
                                  ),
                                  pinned: true,

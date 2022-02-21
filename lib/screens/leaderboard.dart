@@ -5,6 +5,7 @@ import 'package:aarohan_app/widgets/menu_widget.dart';
 import 'package:aarohan_app/widgets/custom_gesture_detector.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:aarohan_app/models/user.dart';
+import 'package:aarohan_app/resources/eurekoin.dart';
 import 'dart:ui';
 
 class Leaderboard extends StatefulWidget {
@@ -15,9 +16,11 @@ class Leaderboard extends StatefulWidget {
 }
 
 class _LeaderboardState extends State<Leaderboard> {
+  TextEditingController editingController = TextEditingController();
   bool showBottomMenu = false;
   @override
   Widget build(BuildContext context) {
+
     double height= MediaQuery.of(context).size.height;  double width= MediaQuery.of(context).size.width;double threshold = 100;
     Users users = Users.us;
     return Sizer(
@@ -100,15 +103,39 @@ class _LeaderboardState extends State<Leaderboard> {
                                   children: [
                                     Padding(
                                       padding: EdgeInsets.fromLTRB(0, 0, 3.w, 0),
-                                      child:Container(
-                                        child: Center(
-                                          child: CircleAvatar(
-                                          radius: 8.sp,
-                                          // backgroundColor: Colors.transparent,
-                                          backgroundImage:
-                                          AssetImage('assets/Vector.png'),
+                                      child:InkWell(
+                                        onTap: (){
+                                          showDialog(context: context, builder: (context)=> AlertDialog(
+                                            title: Text("Hello"),
+                                            content: Column(
+                                              children: [
+                                                TextField(
+                                                  controller: editingController,
+                                                  decoration: InputDecoration(
+                                                      hintText: "REFERRAL CODE"
+                                                  ),
+                                                ),
+                                                TextButton(
+                                                  child: Text("REGISTER"),
+                                                  onPressed:  ()async{
+                                                    await Eurekoin.couponEurekoin(editingController.text);
+                                                    // Navigator.popAndPushNamed(context, '/leaderboard');
+                                                  },
+                                                )
+                                              ],
+                                            ),
+                                          ));
+                                        },
+                                        child: Container(
+                                          child: Center(
+                                            child: CircleAvatar(
+                                            radius: 8.sp,
+                                            // backgroundColor: Colors.transparent,
+                                            backgroundImage:
+                                            AssetImage('assets/Vector.png'),
+                                        ),
+                                          ),),
                                       ),
-                                        ),),
                                     ),
                                   ],
                                 ),

@@ -169,9 +169,17 @@ class _MenuWidgetState extends State<MenuWidget> {
                           Image.asset('assets/tile.png'),
                             height: height*0.06,width: width*0.11,),
                         ),
-                        Container(child:
-                        Image.asset('assets/eurekoin.png'),
-                          height: height*0.06,width: width*0.11,),
+                        InkWell(
+                          onTap: (){
+                            if(ModalRoute.of(context).settings.name!='/')
+                              Navigator.popAndPushNamed(context, '/eurekoin');
+                            else
+                              Navigator.pushNamed(context, '/eurekoin');
+                          },
+                          child: Container(child:
+                          Image.asset('assets/eurekoin.png'),
+                            height: height*0.06,width: width*0.11,),
+                        ),
                         InkWell(
                           onTap: (){
                             if(ModalRoute.of(context).settings.name!='/')
@@ -190,12 +198,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         InkWell(
-                          onTap: (){
-                            if(ModalRoute.of(context).settings.name!='/')
-                              Navigator.popAndPushNamed(context, '/leaderboard');
-                            else
-                              Navigator.pushNamed(context, '/leaderboard');
-                          },
+
                           child: Container(child:
                           Image.asset('assets/leaderboard.png'),
                             height: height*0.06,width: width*0.11,),

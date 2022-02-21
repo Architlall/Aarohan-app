@@ -18,13 +18,13 @@ class HomePage extends StatelessWidget {
               case Status.Uninitialized:
                 return Center(child: CircularProgressIndicator());
               case Status.Unauthenticated:
-                print("f");
+
                 return Login();
 
               case Status.Authenticating:
                 return Center(child: CircularProgressIndicator());
               case Status.Authenticated:
-                print("done");
+
                 return Dashboard();
             }
             return null;

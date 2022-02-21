@@ -1,0 +1,117 @@
+import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
+
+
+
+class Eurekoin{
+  
+  static User currentUser=FirebaseAuth.instance.currentUser;  static int isEurekoinAlreadyRegistered; static final String baseUrl = "https://eurekoin.nitdgplug.org";static int userEurekoin;
+  static final loginKey = '123*aavishkar';static String userReferralCode; static var transHistory;
+
+  // Future _getUser() async {
+  //
+  //   print(user);
+  //
+  //     currentUser = user;
+  //
+  //   isEurekoinUserRegistered();
+  // }
+ static Future  getReferralCode() async {
+    var email = currentUser.providerData[1].email;
+    var bytes = utf8.encode("$email" + "$loginKey");
+    var encoded = sha1.convert(bytes);
+    String apiUrl =
+        "https://eurekoin.nitdgplug.org/api/invite_code/?token=$encoded";
+    http.Response response = await http.get(Uri.parse(apiUrl));
+    print(response.body);
+    var referralCode = json.decode(response.body)['invite_code'];
+
+      userReferralCode = referralCode;
+
+  }
+ static Future getUserEurekoin() async {
+    var email = currentUser.providerData[1].email;
+    var bytes = utf8.encode("$email" + "$loginKey");
+    var encoded = sha1.convert(bytes);
+    String apiUrl = "https://eurekoin.nitdgplug.org/api/coins/?token=$encoded";
+    http.Response response = await http.get(Uri.parse(apiUrl));
+    print(response);
+    var status = json.decode(response.body)['coins'];
+
+      userEurekoin = status;
+
+    getReferralCode();
+  }
+  static Future isEurekoinUserRegistered() async {
+    var email = currentUser.providerData[1].email;
+    var bytes = utf8.encode("$email" + "$loginKey");
+    var encoded = sha1.convert(bytes);
+    String apiUrl = "$baseUrl/api/exists/?token=$encoded";
+    http.Response response = await http.get(Uri.parse(apiUrl));
+    var status = json.decode(response.body)['status'];
+    if (status == '1') {
+
+        isEurekoinAlreadyRegistered = 1;
+
+      getUserEurekoin();
+      transactionsHistory();
+    } else
+
+        isEurekoinAlreadyRegistered = 0;
+
+  }
+  static Future transactionsHistory() async {
+    var email = currentUser.providerData[1].email;
+    var bytes = utf8.encode(email + "$loginKey");
+    var encoded = sha1.convert(bytes);
+
+    String apiUrl =
+        "https://eurekoin.nitdgplug.org/api/history/?token=$encoded";
+    print(apiUrl);
+    http.Response response = await http.get(Uri.parse(apiUrl));
+
+      transHistory = json.decode(response.body)['history'];
+
+  }
+  static Future<int> couponEurekoin(String coupon) async {
+
+    var email = currentUser.providerData[0].email;
+    var bytes = utf8.encode(""+email + loginKey);
+
+    var encoded = sha1.convert(bytes);
+    print(encoded.toString());
+    String apiUrl =
+        "https://eurekoin.nitdgplug.org/api/coupon?token=$encoded&code=$coupon";
+    print(apiUrl);
+    http.Response response = await http.get(Uri.parse(apiUrl));
+    print(response.body);
+    var status = json.decode(response.body)['status'];
+
+    return int.parse(status);
+  }
+
+
+  static Future registerEurekoinUser(var referalCode) async {
+   print("NKJBJB");
+    var email = currentUser.providerData[0].email;
+    var name = currentUser.providerData[0].displayName;
+
+    String apiUrl =
+        "$baseUrl/api/register?name=$name&email=$email&referred_invite_code=$referalCode&image=${currentUser.providerData[0].photoURL}";
+    http.Response response = await http.get(Uri.parse(apiUrl));
+    print(response.statusCode);
+    var status = jsonDecode(response.body)['status'];
+    print("status = $status");
+    if (status == '0') {
+       
+        isEurekoinAlreadyRegistered = 1;
+     
+      getUserEurekoin();
+    } else
+      
+        isEurekoinAlreadyRegistered = 0;
+      
+  }
+}

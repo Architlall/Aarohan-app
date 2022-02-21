@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:aarohan_app/models/user.dart';
+import 'package:aarohan_app/resources/eurekoin.dart';
 import 'dart:convert';
 
 class AuthService{
@@ -69,7 +70,11 @@ class AuthService{
       DocumentSnapshot doc =
       await _firestore.collection("Users").doc(user.uid).get();
       if (!doc.exists) {
-        _firestore.collection("Users").doc(user.uid).set(user_data, SetOptions(merge: true));
+        await _firestore.collection("Users").doc(user.uid).set(user_data, SetOptions(merge: true));
+
+      // EUREKOIN BULLSHIT
+        /////////////////////////////
+        await Eurekoin.registerEurekoinUser(" ");
 
       }
 

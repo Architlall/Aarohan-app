@@ -15,6 +15,7 @@ import 'package:aarohan_app/models/contributor.dart';
 import 'package:aarohan_app/models/sponsor.dart';
 import 'package:aarohan_app/screens/sponsors.dart';
 import 'package:aarohan_app/screens/home.dart';
+import 'package:aarohan_app/screens/eurekoin_home.dart';
 
 
 
@@ -43,7 +44,8 @@ Future main() async {
                '/about':(context)=>About(),
         '/contributor':(context)=>Contributors(),
         '/sponsor':(context)=>Sponsors(),
-        '/homepage':(context)=>Home()
+        '/homepage':(context)=>Home(),
+        '/eurekoin':(context)=>Eurekoin_Home()
       },
     ),
   ));
