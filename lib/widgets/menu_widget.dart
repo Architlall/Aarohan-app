@@ -232,9 +232,9 @@ class _MenuWidgetState extends State<MenuWidget> {
                         InkWell(
                           onTap: (){
                             if(ModalRoute.of(context).settings.name!='/')
-                              Navigator.popAndPushNamed(context, '/coming');
+                              Navigator.popAndPushNamed(context, '/scoreboard');
                             else
-                              Navigator.pushNamed(context, '/coming');
+                              Navigator.pushNamed(context, '/scoreboard');
                           },
                           child: Container(child:
                           Image.asset('assets/leaderboard.png'),

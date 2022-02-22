@@ -2,6 +2,7 @@ import 'package:aarohan_app/game/game_start.dart';
 import 'package:aarohan_app/models/event.dart';
 import 'package:aarohan_app/resources/firestore_provider.dart';
 import 'package:aarohan_app/screens/dashboard.dart';
+import 'package:aarohan_app/screens/scoreboard.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -54,6 +55,7 @@ Future main() async {
         '/contact': (context) => Contact(),
         '/coming': (context) => Coming(),
         '/game': (context) => MyHomePage("Dino Game"),
+        '/scoreboard':(context) => Scoreboard()
       },
     ),
   ));

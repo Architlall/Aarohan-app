@@ -26,6 +26,7 @@ dependencies:
   firebase_database:
   firebase_core:
   google_sign_in:
+  flutter_neumorphic: 
   provider: ^6.0.2
   flutter_signin_button:
   sizer:
