@@ -9,6 +9,8 @@ import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aarohan_app/screens/coming_soon.dart';
 
+import 'package:aarohan_app/game/game_start.dart';
+//
 class MenuWidget extends StatefulWidget {
   bool showBottomMenu;
   MenuWidget(this.showBottomMenu);
@@ -143,7 +145,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                         InkWell(
                           onTap: (){
                             if(ModalRoute.of(context).settings.name!='/')
-                            Navigator.pop(context, '/home');
+                            Navigator.pop(context);
 
                             AuthService authService = AuthService();
                             authService.gSignOut();
@@ -198,10 +200,13 @@ class _MenuWidgetState extends State<MenuWidget> {
                         ),
                         InkWell(
                           onTap: (){
+                            print(ModalRoute.of(context).settings.name);
                             if(ModalRoute.of(context).settings.name!='/')
                               Navigator.popAndPushNamed(context, '/timeline');
-                            else
+                            else {
+                              print("hello");
                               Navigator.pushNamed(context, '/timeline');
+                            }
                           },
                           child: Container(child:
                           Image.asset('assets/timer.png'),
@@ -264,9 +269,9 @@ class _MenuWidgetState extends State<MenuWidget> {
                         InkWell(
                           onTap: (){
                             if(ModalRoute.of(context).settings.name!='/')
-                              Navigator.popAndPushNamed(context, '/coming');
+                              Navigator.popAndPushNamed(context, '/game');
                             else
-                              Navigator.pushNamed(context, '/coming');
+                              Navigator.pushNamed(context, '/game');
                           },
                           child: Container(child:
                           Image.asset('assets/game.png'),

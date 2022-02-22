@@ -76,7 +76,7 @@ class _LeaderboardState extends State<Leaderboard> {
                         children: [
                           Container(
                             alignment: Alignment.bottomCenter,
-                            height: 15.h,
+                            height: 16.h,
                             decoration: BoxDecoration(
                                 color: fromCssColor('#E2F5FF')
                                     .withOpacity(0.4),
@@ -225,12 +225,13 @@ class _LeaderboardState extends State<Leaderboard> {
                                         },
                                         child: Container(
                                           child: Center(
-                                            child: CircleAvatar(
-                                            radius: 10.sp,
-                                            // backgroundColor: Colors.transparent,
-                                            backgroundImage:
-                                            AssetImage('assets/Vector.png'),
-                                        ),
+                                        //     child: CircleAvatar(
+                                        //     radius: 10.sp,
+                                        //     // backgroundColor: Colors.transparent,
+                                        //     backgroundImage:
+                                        //     AssetImage('assets/coupon.png'),
+                                        // ),
+                                            child:Icon(Icons.card_giftcard,color: Colors.white,size: 25.sp,)
                                           ),),
                                       ),
                                     ),
@@ -347,7 +348,7 @@ class _LeaderboardState extends State<Leaderboard> {
                           ),
                           SizedBox(height: 1.h,),
                           Container(
-                            height: 46.h,
+                            height: 44.5.h,
                             // color: Colors.blue,
                             child: FutureBuilder(
                               future:  Eurekoin.fetchLeaderboard(),

@@ -1,3 +1,4 @@
+import 'package:aarohan_app/game/game_start.dart';
 import 'package:aarohan_app/models/event.dart';
 import 'package:aarohan_app/resources/firestore_provider.dart';
 import 'package:aarohan_app/screens/dashboard.dart';
@@ -14,7 +15,7 @@ import 'package:aarohan_app/screens/contributors.dart';
 import 'package:aarohan_app/models/contributor.dart';
 import 'package:aarohan_app/models/sponsor.dart';
 import 'package:aarohan_app/screens/sponsors.dart';
-import 'package:aarohan_app/screens/home.dart';
+
 import 'package:aarohan_app/screens/eurekoin_home.dart';
 import 'package:aarohan_app/models/contact_us.dart';
 import 'package:aarohan_app/screens/contact.dart';
@@ -49,10 +50,10 @@ Future main() async {
                '/about':(context)=>About(),
         '/contributor':(context)=>Contributors(),
         '/sponsor':(context)=>Sponsors(),
-        '/homepage':(context)=>Home(),
         '/eurekoin':(context)=>Eurekoin_Home(),
         '/contact': (context) => Contact(),
-        '/coming': (context) => Coming()
+        '/coming': (context) => Coming(),
+        '/game': (context) => MyHomePage("Dino Game"),
       },
     ),
   ));

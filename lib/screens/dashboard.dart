@@ -1,3 +1,4 @@
+import 'package:aarohan_app/screens/loader_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,13 +12,17 @@ import 'package:aarohan_app/widgets/custom_gesture_detector.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:aarohan_app/models/user.dart';
 import 'dart:ui';
+import 'package:aarohan_app/widgets/loader.dart';
+import 'package:aarohan_app/screens/loader_screen.dart';
 
 class Dashboard extends StatefulWidget {
+  bool isIntroDone = false;
   @override
   _DashboardState createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
+  bool isLoading=false;
   String selectedcategory = "All"; List<String> tags = ["Logic","Strategy","Mystery","Innovation","Treasure-Hunt","Coding","Sports","Robotics","Workshops","Business"];
   int x =0; int selectedIndex;
   CarouselController buttonCarouselController = CarouselController();
@@ -45,11 +50,13 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
     });
   }
   @override
-  initState() {
+  void initState() {
     // at the beginning, all users are shown
+
     _foundUsers = eventItems;
     super.initState();
   }
+
 
   Widget build(BuildContext context) {
     TextEditingController editingController = TextEditingController();
@@ -73,7 +80,7 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
           child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.transparent,
-            body: CustomGestureDetector(
+            body:CustomGestureDetector(
               axis: CustomGestureDetector.AXIS_Y,
               velocity: threshold,
               onSwipeUp: (){
@@ -310,6 +317,7 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                                   setState(() {
                                     arr = eventItems;
                                     selectedcategory = "All";
+                                    day = "0";
                                   });
                                 },
                                 child: Container(
@@ -347,6 +355,7 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                                   setState(() {
                                     arr = eventItems.where((element) => element.category=="Workshop").toList();
                                     selectedcategory = "Workshop";
+                                    day = "0";
                                   });
                                 },
                                 child: Container(
@@ -384,6 +393,7 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                                   setState(() {
                                     arr = eventItems.where((element) => element.category=="Event").toList();
                                     selectedcategory = "Event";
+                                    day = "0";
                                   });
                                 },
                                 child: Container(
@@ -421,6 +431,7 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                                   setState(() {
                                     arr = eventItems.where((element) => element.category=="Talk").toList();
                                     selectedcategory = "Talk";
+                                    day = "0";
                                   });
                                 },
                                 child: Container(
@@ -633,6 +644,7 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                               onTap: (){
                                  setState(() {
                                    day = "3rd";
+                                   selectedcategory="";
                                    arr = eventItems.where((element) =>(DateTime.parse(element.date).day==3)).toList();
                                  });
                               },
@@ -658,6 +670,7 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                               onTap: (){
                                 setState(() {
                                   day = "4th";
+                                  selectedcategory="";
                                   arr = eventItems.where((element) =>(DateTime.parse(element.date).day==4)).toList();
                                 });
                               },
@@ -682,6 +695,7 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                               onTap: (){
                                 setState(() {
                                   day = "5th";
+                                  selectedcategory="";
                                   arr = eventItems.where((element) =>(DateTime.parse(element.date).day==5)).toList();
                                 });
                               },
@@ -706,6 +720,7 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                               onTap: (){
                                 setState(() {
                                   day = "6th";
+                                  selectedcategory="";
                                   arr = eventItems.where((element) =>(DateTime.parse(element.date).day==6)).toList();
                                 });
                               },

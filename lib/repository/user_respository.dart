@@ -18,16 +18,17 @@ class UserRepository with ChangeNotifier {
   Status get status => _status;
   User get user => _user;
 
-  Future<bool> signIn() async {
+  Future signIn() async {
+
     try {
       _status = Status.Authenticating;
       notifyListeners();
         await _authService.gSignIn();
-      return true ;
+
     } catch (e) {
       _status = Status.Unauthenticated;
       notifyListeners();
-      return false;
+
     }
   }
 
