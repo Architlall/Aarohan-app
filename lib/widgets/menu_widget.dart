@@ -288,6 +288,17 @@ class _MenuWidgetState extends State<MenuWidget> {
                           Image.asset('assets/game.png'),
                             height: height*0.06,width: width*0.11,),
                         ),
+                        InkWell(
+                          onTap: (){
+                            if(ModalRoute.of(context).settings.name!='/')
+                              Navigator.popAndPushNamed(context, '/coming');
+                            else
+                              Navigator.pushNamed(context, '/coming');
+                          },
+                          child: Container(child:
+                          Image.asset('assets/ar.png',),
+                            height: height*0.06,width: width*0.11,),
+                        ),
 
                         InkWell(
                           onTap: (){
