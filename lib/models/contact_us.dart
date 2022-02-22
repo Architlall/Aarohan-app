@@ -28,16 +28,18 @@ class ContactResponse {
 }
 
 class ContactItem {
-  ContactItem({this.phone, this.imageUrl, this.linkedin});
+  ContactItem({this.phone, this.imageUrl, this.facebook,this.name});
 
   String phone;
-  String linkedin;
+  String facebook;
   String imageUrl;
+  String name;
 
   factory ContactItem.fromJson(Map<String, dynamic> json) => ContactItem(
     phone: json['phone'],
-    linkedin: json['linkedin'],
+    facebook: json['facebook'],
     imageUrl: json['imageUrl'],
+    name: json['name'],
   );
 
   factory ContactItem.fromFirestore(DocumentSnapshot documentSnapshot) {
@@ -45,5 +47,5 @@ class ContactItem {
   }
 
   Map<String, dynamic> toJson() =>
-      {"phone": phone, "imageUrl": imageUrl, "linkedin": linkedin};
+      {"phone": phone, "imageUrl": imageUrl, "facebook": facebook,name:'name'};
 }

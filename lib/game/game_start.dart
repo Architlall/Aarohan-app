@@ -9,6 +9,8 @@ import 'constants.dart';
 import 'dino.dart';
 import 'game-object.dart';
 import 'ground.dart';
+import 'package:sizer/sizer.dart';
+import 'package:from_css_color/from_css_color.dart';
 
 
 class MyHomePage extends StatefulWidget {
@@ -22,7 +24,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
-  Dino dino = Dino();
+  Dino dino = Dino();   int x = 0;
   double runDistance = 0;
   double runVelocity = 30;
 
@@ -67,6 +69,9 @@ class _MyHomePageState extends State<MyHomePage>
             1000;
 
     runDistance += runVelocity * elapsedTimeSeconds;
+    setState(() {
+      x=(runDistance*2).round() ;
+    });
 
     Size screenSize = MediaQuery.of(context).size;
 
@@ -134,16 +139,128 @@ class _MyHomePageState extends State<MyHomePage>
           }));
     }
 
-    return Scaffold(
+    return SafeArea(
+      child: Container(
+        child: Scaffold(
+          body: ListView(
+            children: [
+              Container(
+                height: 70.h,
+                color: Color(0xFF95FAFA),
+                child: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    dino.jump();
+                  },
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: children,
+                  ),
+                ),
+              ),
+              SizedBox(height: 5.h,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  InkWell(
+                    onTap: (){
+                      setState(() {
+                        x=0;
+                         dino = Dino();
+                         runDistance = 0;
+                         runVelocity = 30;
 
-      body: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () {
-          dino.jump();
-        },
-        child: Stack(
-          alignment: Alignment.center,
-          children: children,
+
+                         lastUpdateCall = Duration();
+                         cacti = [Cactus(worldLocation: Offset(200, 0))];
+
+                         ground = [
+                          Ground(worldLocation: Offset(0, 0)),
+                          Ground(worldLocation: Offset(groundSprite.imageWidth / 10, 0))
+                        ];
+
+                         clouds = [
+                          Cloud(worldLocation: Offset(100, 20)),
+                          Cloud(worldLocation: Offset(200, 10)),
+                          Cloud(worldLocation: Offset(350, -10)),
+                        ];
+
+
+                      });
+                      // worldController.dispose();
+                      // worldController = AnimationController(vsync: this, duration: Duration(days: 99));
+                      // worldController.addListener(_update);
+                      worldController.forward();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 3.w,vertical: 1.h),
+
+                      decoration: BoxDecoration(
+                          color: fromCssColor('#E2F5FF')
+                              .withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(15.sp),
+                        border: Border.all(width: 0.5.sp,color: Colors.black)
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(Icons.replay),
+                          Text("Replay",
+                            style: TextStyle(
+                              fontSize: 15.sp,
+                                color: Colors.black,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w600
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 3.w,vertical: 1.h),
+
+                      decoration: BoxDecoration(
+                          color: fromCssColor('#E2F5FF')
+                              .withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(15.sp),
+                          border: Border.all(width: 0.5.sp,color: Colors.black)
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(Icons.arrow_back_rounded),
+                          Text("Back",
+                            style: TextStyle(
+                                fontSize: 15.sp,
+                                color: Colors.black,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w600
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 4.h,),
+              Center(
+                child: Text("Score: $x",
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      color: Colors.black,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w600
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

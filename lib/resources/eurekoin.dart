@@ -70,14 +70,13 @@ class Eurekoin{
     http.Response response = await http.get(Uri.parse(apiUrl));
     var status = json.decode(response.body)['status'];
     if (status == '1') {
-
         isEurekoinAlreadyRegistered = 1;
-
       getUserEurekoin();
       transactionsHistory();
     } else
-
         isEurekoinAlreadyRegistered = 0;
+
+    return isEurekoinAlreadyRegistered;
 
   }
   static Future transactionsHistory() async {

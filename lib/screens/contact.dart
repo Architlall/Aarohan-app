@@ -6,6 +6,7 @@ import 'dart:ui';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:provider/provider.dart';
 import 'package:aarohan_app/models/contact_us.dart';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class Contact extends StatefulWidget {
 
@@ -124,8 +125,11 @@ class _ContactState extends State<Contact> {
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.only(topRight: Radius.circular(7.sp),topLeft:Radius.circular(7.sp) ),
                                               image: DecorationImage(
-                                                  image: AssetImage(
+                                                  image: (contactItems==null || contactItems.length==0)?AssetImage(
                                                     'assets/baby_enderman.png',
+
+                                                  ):NetworkImage(
+                                                    '${contactItems[index].imageUrl}',
 
                                                   ),
                                                   fit: BoxFit.cover
@@ -158,27 +162,41 @@ class _ContactState extends State<Contact> {
                                                 children: [
                                                   SizedBox(width: 5.w,),
                                                   Text(
-                                                    'NAME',
+                                                    (contactItems==null || contactItems.length==0)?'':'${contactItems[index].name}',
                                                     style: TextStyle(
-                                                        fontSize: 12.sp,
-                                                        fontFamily: 'Staat',
+                                                        fontSize: 11.sp,
+                                                        fontFamily: 'Poppins',
                                                         color: Colors.white,
-                                                        fontWeight: FontWeight.w400),
+                                                        fontWeight: FontWeight.w400,),
                                                   )
                                                 ],
                                               ),
+                                              SizedBox(height: 0.5.h,),
                                               Row(
                                                 mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                                 children: [
                                                   // SizedBox(width: 2.w,),
-                                                  Icon(Icons.phone,color: Colors.white,),
+                                                  InkWell(
+                                                    onTap: (){
+                                                      UrlLauncher.launch(
+                                                          "tel://${contactItems[index].phone}");
+                                                    },
+                                                      child: Container(child: Icon(Icons.phone,color: Colors.white,))),
                                                   // SizedBox(width: 1.5.w,),
 
                                                   // SizedBox(width: 1.5.w,),
-                                                  Image(
-                                                    image: AssetImage(
-                                                        'assets/github.png'),height: 5.h,),
+                                                  InkWell(
+                                                    onTap: (){
+                                                      UrlLauncher.launch(
+                                                          "${contactItems[index].facebook}");
+                                                    },
+                                                    child: Container(
+                                                      child: Image(
+                                                        image: AssetImage(
+                                                            'assets/fb.png'),height: 3.h,),
+                                                    ),
+                                                  ),
                                                 ],
                                               )
                                             ],

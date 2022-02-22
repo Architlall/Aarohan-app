@@ -32,19 +32,22 @@ class ContributorItem {
     this.phone,
     this.github,
     this.imageUrl,
-    this.linkedin
+    this.linkedin,
+    this.name
   });
 
   String phone;
   String linkedin;
   String imageUrl;
   String github;
+  String name;
 
   factory ContributorItem.fromJson(Map<String, dynamic> json) =>
       ContributorItem(phone: json['phone'],
         linkedin: json['linkedin'],
         github: json['github'],
         imageUrl: json['imageUrl'],
+        name: json['name'],
 
       );
 
@@ -55,6 +58,7 @@ class ContributorItem {
   Map<String, dynamic> toJson() => {"phone" : phone,
     "github" : github,
     "imageUrl" : imageUrl,
-    "linkedin" : linkedin
+    "linkedin" : linkedin,
+    "name":name
   };
 }

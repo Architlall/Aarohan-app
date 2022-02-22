@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:googleapis/appengine/v1.dart';
 import 'package:sizer/sizer.dart';
 import 'package:aarohan_app/widgets/custom_gesture_detector.dart';
 import 'package:aarohan_app/widgets/menu_widget.dart';
@@ -6,6 +7,7 @@ import 'dart:ui';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:provider/provider.dart';
 import 'package:aarohan_app/models/contributor.dart';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class Contributors extends StatefulWidget {
 
@@ -123,8 +125,11 @@ class _ContributorsState extends State<Contributors> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.only(topRight: Radius.circular(7.sp),topLeft:Radius.circular(7.sp) ),
                                       image: DecorationImage(
-                                        image: AssetImage(
+                                        image: (contributorItems==null || contributorItems.length==0)?AssetImage(
                                             'assets/baby_enderman.png',
+
+                                        ):NetworkImage(
+                                          '${contributorItems[index].imageUrl}',
 
                                         ),
                                         fit: BoxFit.cover
@@ -157,10 +162,10 @@ class _ContributorsState extends State<Contributors> {
                                         children: [
                                           SizedBox(width: 5.w,),
                                           Text(
-                                            'NAME',
+                                            (contributorItems==null || contributorItems.length==0)?'':'${contributorItems[index].name}',
                                             style: TextStyle(
-                                                fontSize: 12.sp,
-                                                fontFamily: 'Staat',
+                                                fontSize: 10.sp,
+                                                fontFamily: 'Poppins',
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w400),
                                           )
@@ -171,15 +176,36 @@ class _ContributorsState extends State<Contributors> {
                                         MainAxisAlignment.spaceEvenly,
                                         children: [
                                           // SizedBox(width: 2.w,),
-                                           Icon(Icons.phone,color: Colors.white,),
+                                           InkWell(
+                                             onTap: (){
+                                               UrlLauncher.launch(
+                                                   "tel://${contributorItems[index].phone}");
+                                             },
+                                               child: Container(child: Icon(Icons.phone,color: Colors.white,))),
                                           // SizedBox(width: 1.5.w,),
-                                          Image(
-                                              image: AssetImage(
-                                                  'assets/linkedin.png'),height: 5.h,),
+                                          InkWell(
+                                            onTap: (){
+                                              UrlLauncher.launch(
+                                                  "${contributorItems[index].linkedin}");
+                                            },
+                                            child: Container(
+                                              child: Image(
+                                                  image: AssetImage(
+                                                      'assets/linkedin.png'),height: 5.h,),
+                                            ),
+                                          ),
                                           // SizedBox(width: 1.5.w,),
-                                          Image(
-                                              image: AssetImage(
-                                                  'assets/github.png'),height: 5.h,),
+                                          InkWell(
+                                            onTap: (){
+                                              UrlLauncher.launch(
+                                                  "${contributorItems[index].github}");
+                                            },
+                                            child: Container(
+                                              child: Image(
+                                                  image: AssetImage(
+                                                      'assets/github.png'),height: 5.h,),
+                                            ),
+                                          ),
                                         ],
                                       )
                                     ],

@@ -83,6 +83,11 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
             body:CustomGestureDetector(
               axis: CustomGestureDetector.AXIS_Y,
               velocity: threshold,
+              // onTap: (){
+              //   this.setState(() {
+              //     showBottomMenu = !showBottomMenu;
+              //   });
+              // },
               onSwipeUp: (){
                 this.setState((){
                   showBottomMenu = true;
@@ -93,6 +98,7 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                   showBottomMenu = false;
                 });
               },
+
               child: Stack(
                   children: [
                     Column(

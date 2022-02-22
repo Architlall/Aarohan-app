@@ -1,4 +1,5 @@
 import 'package:aarohan_app/game/game_start.dart';
+import 'package:aarohan_app/interficio/interficio.dart';
 import 'package:aarohan_app/models/event.dart';
 import 'package:aarohan_app/resources/firestore_provider.dart';
 import 'package:aarohan_app/screens/dashboard.dart';
@@ -54,6 +55,8 @@ Future main() async {
         '/contact': (context) => Contact(),
         '/coming': (context) => Coming(),
         '/game': (context) => MyHomePage("Dino Game"),
+        '/journo': (context) => Interfecio(),
+
       },
     ),
   ));

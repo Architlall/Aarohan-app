@@ -29,7 +29,6 @@ dependencies:
   provider: ^6.0.2
   flutter_signin_button:
   sizer:
-  readmore:
   googleapis:
   googleapis_auth:
   url_launcher:
@@ -38,7 +37,10 @@ dependencies:
   bottom_drawer:
   from_css_color:
   background_app_bar:
+  photo_view:
+  google_maps_flutter: 
   shared_preferences:
+  flutter_launcher_icons:
   http:
   flutter:
 
@@ -50,8 +52,14 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
-  flutter_test:
+  flutter_launcher_icons:
+
+flutter_icons:
+    android: "launcher_icon"
+    image_path: "assets/aarohan-logo 1.png"
+flutter_test:
     sdk: flutter
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -98,6 +106,25 @@ flutter:
     - family: Bebas
       fonts:
          - asset: fonts/BebasNeue-Regular.ttf
+    - family: Gotham
+      fonts:
+        - asset: fonts/Gotham-Black.otf
+    - family: Glitch
+      fonts:
+        - asset: fonts/GLITCH.otf
+    - family: Bebas
+      fonts:
+        - asset: fonts/BebasNeue-Regular.ttf
+
+    - family: Montserrat
+      fonts:
+         - asset: fonts/Montserrat-Regular.ttf
+         - asset: fonts/Montserrat-Bold.ttf
+           weight: 900
+    - family: LemonMilk
+      fonts:
+       - asset: fonts/LEMONMILK-Bold.otf
+
 
   #   - family: Trajan Pro
   #     fonts:

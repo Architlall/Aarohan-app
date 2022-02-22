@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aarohan_app/screens/coming_soon.dart';
+import 'package:aarohan_app/resources/eurekoin.dart';
 
 import 'package:aarohan_app/game/game_start.dart';
 //
@@ -20,6 +21,7 @@ class MenuWidget extends StatefulWidget {
 }
 
 class _MenuWidgetState extends State<MenuWidget> {
+  int x=0;
   bool isEurekoinRegistered = false;
   @override
   void initState(){
@@ -41,11 +43,18 @@ class _MenuWidgetState extends State<MenuWidget> {
 
   @override
   Widget build(BuildContext context) {
-    getEurekoinRegistered().then((value) {
+    if(x==0){
+      int flag = Eurekoin.isEurekoinAlreadyRegistered;
+
       setState(() {
-        isEurekoinRegistered = value;
+        x = flag;
       });
-    });
+    }
+    // getEurekoinRegistered().then((value) {
+    //   setState(() {
+    //     isEurekoinRegistered = value;
+    //   });
+    // });
     getuser();
     Users users = null;
     if(Users.us!=null){
@@ -86,9 +95,11 @@ class _MenuWidgetState extends State<MenuWidget> {
                     fontWeight: FontWeight.w500),),),
               ),
              SizedBox(height: 1,),
-             Container(child:
-              (widget.showBottomMenu)?Image.asset('assets/down.png'):Image.asset('assets/up.png'),
-               height: 40,width: 40,),
+             InkWell(
+               child: Container(child:
+                (widget.showBottomMenu)?Image.asset('assets/down.png'):Image.asset('assets/up.png'),
+                 height: 40,width: 40,),
+             ),
               SizedBox(height: height*0.01,),
               Visibility(
                 visible: widget.showBottomMenu  ,
@@ -176,12 +187,12 @@ class _MenuWidgetState extends State<MenuWidget> {
                               Navigator.pushNamed(context, '/sponsor');
                           },
                           child: Container(child:
-                          Image.asset('assets/tile.png'),
-                            height: height*0.06,width: width*0.11,),
+                          Image.asset('assets/hand.png'),
+                            height: height*0.06,width: width*0.12,),
                         ),
                         InkWell(
                           onTap: (){
-                            if(!isEurekoinRegistered){
+                            if(x==0){
                               if(ModalRoute.of(context).settings.name!='/')
                                 Navigator.popAndPushNamed(context, '/eurekoin');
                               else
@@ -281,9 +292,9 @@ class _MenuWidgetState extends State<MenuWidget> {
                         InkWell(
                           onTap: (){
                             if(ModalRoute.of(context).settings.name!='/')
-                              Navigator.popAndPushNamed(context, '/coming');
+                              Navigator.popAndPushNamed(context, '/journo');
                             else
-                              Navigator.pushNamed(context, '/coming');
+                              Navigator.pushNamed(context, '/journo');
                           },
                           child: Container(child:
                           Image.asset('assets/journo.png'),

@@ -13,13 +13,15 @@ class CustomGestureDetector extends StatelessWidget{
   final Function onSwipeDown;
   final Function onSwipeLeft;
   final Function onSwipeRight;
+  final Function onTap;
 
-  CustomGestureDetector({@required this.child,@required this.velocity,this.onSwipeLeft,this.onSwipeRight,this.onSwipeUp,this.onSwipeDown,@required this.axis});
+  CustomGestureDetector({@required this.onTap,@required this.child,@required this.velocity,this.onSwipeLeft,this.onSwipeRight,this.onSwipeUp,this.onSwipeDown,@required this.axis});
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return GestureDetector(
+        onTap: onTap,
         onPanEnd: (details){
 
           Offset v = details.velocity.pixelsPerSecond;
