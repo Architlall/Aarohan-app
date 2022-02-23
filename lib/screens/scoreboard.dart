@@ -181,11 +181,20 @@ class _ScoreboardState extends State<Scoreboard> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
-                              height: 65.h,
+                              height: 60.h,
                               
                               child: Theme(
                                  data: Theme.of(context)
-            .copyWith(cardColor: fromCssColor('#E2F5FF').withOpacity(0.4), dividerColor: Colors.blue[900]),
+            .copyWith(dialogTheme:DialogTheme(
+                                   backgroundColor: Colors.black
+                                 ),
+                                     iconTheme:IconThemeData(
+                                   color: Colors.white
+                                 ) ,
+                                     textTheme: TextTheme(
+                                   body1: TextStyle(color: Colors.white)
+                                 ),
+                                     cardColor: fromCssColor('#E2F5FF').withOpacity(0.4), dividerColor: Colors.blue[900]),
                                 child: ListView(
                                   children: [
                                     PaginatedDataTable(
@@ -197,6 +206,7 @@ class _ScoreboardState extends State<Scoreboard> {
                                         DataColumn(label: Text('col4',style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400)))
                                       ],
                                       source: dts,
+
                                       onRowsPerPageChanged: (r) {
                                         setState(() {
                                           _rowPerPage = r;

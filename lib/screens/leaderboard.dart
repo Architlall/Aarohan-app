@@ -7,7 +7,12 @@ import 'package:from_css_color/from_css_color.dart';
 import 'package:aarohan_app/models/user.dart';
 import 'package:aarohan_app/resources/eurekoin.dart';
 import 'package:aarohan_app/widgets/redeem.dart';
+import 'package:barcode_scan2/barcode_scan2.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:flutter/services.dart';
 import 'dart:ui';
+// import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'dart:io' show Platform;
 
 class Leaderboard extends StatefulWidget {
 
@@ -17,13 +22,15 @@ class Leaderboard extends StatefulWidget {
 }
 
 class _LeaderboardState extends State<Leaderboard> {
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   TextEditingController editingController = TextEditingController();
   bool showBottomMenu = false; bool showdialog = false; int _coins; String _referralCode;
 
+  // QRViewController controller;
   @override
   void initState() {
     // TODO: implement initState
-    Eurekoin.getAllUsers("s");
+    // Eurekoin.getAllUsers("s");
      Eurekoin.getUserEurekoin().then((value){
        setState(() {
          _coins = value;
@@ -35,12 +42,71 @@ class _LeaderboardState extends State<Leaderboard> {
        });
      });
     super.initState();
+  }
 
+  Future scanQR(BuildContext context) async {
+    try {
+      ScanResult scanResult = await BarcodeScanner.scan();
+      //     Barcode result;
+      //  controller.scannedDataStream.listen((event) {
+      //    setState(() {
+      //      result =event;
+      //    });
+      //  });
+
+        // options: ScanOptions(
+        //   strings: {
+        //     'cancel': _cancelController.text,
+        //     'flash_on': _flashOnController.text,
+        //     'flash_off': _flashOffController.text,
+        //   },
+        //   restrictFormat: selectedFormats,
+        //   useCamera: _selectedCamera,
+        //   autoEnableFlash: _autoEnableFlash,
+        //   android: AndroidOptions(
+        //     aspectTolerance: _aspectTolerance,
+        //     useAutoFocus: _useAutoFocus,
+        //   ),
+        // ),
+
+
+       String barcodeString = scanResult.rawContent;
+       print(barcodeString);
+
+        // editingController.text= barcodeString;
+        Future<int> result =  Eurekoin.couponEurekoin(barcodeString);
+        result.then((value) {
+          print(value);
+          if (value == 0) {
+            // barcodeString = "Successful!";
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Transaction Successful!")));
+          } else if (value == 2) {
+            // barcodeString = "Invalid Coupon";
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Invalid Coupon!")));
+
+          } else if (value == 3) {
+            // barcodeString = "Already Used";
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Coupon already used!")));
+
+
+          } else if (value == 4) {
+            // barcodeString = "Coupon Expired";
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Coupon Expired!")));
+          }
+        });
+            }
+        on PlatformException catch (e) {
+        print( e.stacktrace);
+    }
   }
 
 
   @override
   Widget build(BuildContext context) {
+    var scanArea = (MediaQuery.of(context).size.width < 400 ||
+        MediaQuery.of(context).size.height < 400)
+        ? 150.0
+        : 300.0;
 
     double height= MediaQuery.of(context).size.height;  double width= MediaQuery.of(context).size.width;double threshold = 100;
     Users users = Users.us;
@@ -128,8 +194,8 @@ class _LeaderboardState extends State<Leaderboard> {
                                     Padding(
                                       padding: EdgeInsets.fromLTRB(0, 0, 3.w, 0),
                                       child:InkWell(
-                                        onTap: (){
-                                          showDialog(context: context, builder: (context)=> BackdropFilter(
+                                        onTap: ()async{
+                                          await showDialog(context: context, builder: (context)=> BackdropFilter(
                                             filter: ImageFilter.blur(sigmaX: 5,sigmaY: 5),
                                             child: Dialog(
 
@@ -198,8 +264,27 @@ class _LeaderboardState extends State<Leaderboard> {
                                                       SizedBox(height: 4.h,),
                                                       InkWell(
                                                         onTap: ()async{
-                                                        await  Eurekoin.couponEurekoin(editingController.text);
-                                                        Navigator.pop(context);
+                                                       int status= await  Eurekoin.couponEurekoin(editingController.text);
+
+                                                        Eurekoin.getUserEurekoin().then((value){
+                                                          setState(() {
+                                                            _coins = value;
+                                                          });
+                                                        });
+                                                       if(status==0){
+                                                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Redemption Successful!")));
+                                                       }
+                                                       else if(status ==2){
+                                                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Invalid Coupon!")));
+                                                       }
+                                                       else if(status ==3){
+                                                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Coupon Already Redeemed!")));
+                                                       }
+                                                       else if(status ==4){
+                                                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Coupon Expired!")));
+                                                       }
+
+                                                        Navigator.of(context).pop();
                                                         },
                                                         child: Container(
                                                           padding: EdgeInsets.symmetric(horizontal: 8.w,vertical: 1.5.h),
@@ -239,7 +324,17 @@ class _LeaderboardState extends State<Leaderboard> {
                                                           fontWeight: FontWeight.w500
                                                       ),),
                                                       SizedBox(height: 2.h,),
-                                                      Image.asset('assets/Scanner.png'),
+                                                      InkWell(
+                                                        onTap: ()async{
+                                                          await scanQR(context);
+                                                          Eurekoin.getUserEurekoin().then((value){
+                                                            setState(() {
+                                                              _coins = value;
+                                                            });
+                                                          });
+                                                          Navigator.pop(context);
+                                                        },
+                                                          child: Image.asset('assets/Scanner.png')),
                                                       SizedBox(height: 1.h,),
                                                     ],
                                                   ),
@@ -248,15 +343,10 @@ class _LeaderboardState extends State<Leaderboard> {
                                             ),
                                           )
                                           );
+
                                         },
                                         child: Container(
                                           child: Center(
-                                        //     child: CircleAvatar(
-                                        //     radius: 10.sp,
-                                        //     // backgroundColor: Colors.transparent,
-                                        //     backgroundImage:
-                                        //     AssetImage('assets/coupon.png'),
-                                        // ),
                                             child:Icon(Icons.card_giftcard,color: Colors.white,size: 25.sp,)
                                           ),),
                                       ),
@@ -309,7 +399,12 @@ class _LeaderboardState extends State<Leaderboard> {
                                           // SizedBox(width: 3.w,),
                                           Row(
                                             children: [
-                                              Icon(Icons.share,color: Colors.white, size: 15,),
+                                              InkWell(
+                                                child:Icon(Icons.share,size: 15,color: Colors.white,),
+                                                onTap: ()async{
+                                                  await Share.share('Use my referal code $_referralCode to get 25 Eurekoins when you register. \nLink: https://play.google.com/store/apps/details?id=com.app.aarohan.aarohanapp');
+                                                },
+                                              ),
                                               SizedBox(width: 1.w,),
                                               Text(
                                                 (_referralCode!=null)?"$_referralCode":"",style: TextStyle(
@@ -344,11 +439,16 @@ class _LeaderboardState extends State<Leaderboard> {
                                               ),
                                             ],
                                           ),
-                                          Container(
-                                            margin: EdgeInsets.only(right: 5.w),
-                                            child:
-                                          Image.asset('assets/Pay icon.png'),
-                                            height: height*0.04,width: width*0.09,),
+                                          InkWell(
+                                            onTap: (){
+                                              Navigator.popAndPushNamed(context, '/transaction');
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.only(right: 5.w),
+                                              child:
+                                            Image.asset('assets/Pay icon.png'),
+                                              height: height*0.04,width: width*0.09,),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -389,8 +489,6 @@ class _LeaderboardState extends State<Leaderboard> {
                                         filter: ImageFilter.blur(sigmaX: 1.5,sigmaY: 1.5),
                                         child: Container(
                                           padding: EdgeInsets.fromLTRB(5.w, 1.h, 2.w, 1.h) ,
-
-                                          height: 9.h,
                                           decoration: BoxDecoration(
                                               border: Border.all(color: Colors.white,width: 0.2.w),
                                               borderRadius: BorderRadius.circular(15.sp),
@@ -400,42 +498,43 @@ class _LeaderboardState extends State<Leaderboard> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Container(
-                                                width: 63.w,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      "${index +1}.",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontFamily: 'Poppins',
-                                                          fontSize: 13.sp,
-                                                          fontWeight: FontWeight.w500),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    "${index +1}.",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontFamily: 'Poppins',
+                                                        fontSize: 13.sp,
+                                                        fontWeight: FontWeight.w500),
+                                                  ),
+                                                  SizedBox(width: 2.w,),
+                                                  CircleAvatar(
+                                                    backgroundImage: NetworkImage(
+                                                      '${snapshot.data[index]['imageURL']}',
                                                     ),
-                                                    SizedBox(width: 2.w,),
-                                                    CircleAvatar(
-                                                      backgroundImage: NetworkImage(
-                                                        '${snapshot.data[index]['imageURL']}',
-                                                      ),
-                                                      radius: 12.sp,
+                                                    radius: 12.sp,
+                                                  ),
+                                                  SizedBox(width: 2.w,),
+                                                  Container(
+                                                    width: 45.w,
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          "${snapshot.data[index]['username']}",
+
+                                                          style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontFamily: 'Poppins',
+                                                              fontSize: 11.sp,
+                                                              fontWeight: FontWeight.w500),
+                                                        ),
+                                                      ],
                                                     ),
-                                                    SizedBox(width: 2.w,),
-                                                    Text(
-                                                      "${snapshot.data[index]['username']}",
-                                                      maxLines: 1,
-                                                      overflow: TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontFamily: 'Poppins',
-                                                          fontSize: 11.sp,
-                                                          fontWeight: FontWeight.w500),
-                                                    ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ],
                                               ),
-
-
-                                              // SizedBox(width: 8.w,),
                                               Container(
 
                                                 child: Row(
@@ -478,39 +577,6 @@ class _LeaderboardState extends State<Leaderboard> {
                             bottom: (showBottomMenu)?height*0.125:-(height*0.65),
                             child: MenuWidget(showBottomMenu)),
                       ),
-
-                      // Visibility(
-                      //   visible: showdialog,
-                      //   child:      AnimatedPositioned(
-                      //     duration: Duration(milliseconds: 500),
-                      //     top: height*0.03,
-                      //     left: width*0.05,
-                      //     child: InkWell(
-                      //       onTap: (){
-                      //        setState(() {
-                      //          showdialog=false;
-                      //        });
-                      //       },
-                      //       child: Container(
-                      //         child: CircleAvatar(
-                      //           radius: 18,
-                      //           backgroundImage:
-                      //           AssetImage('assets/back.png'),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      //
-                      // Visibility(
-                      //   visible: showdialog,
-                      //   child: AnimatedPositioned(
-                      //       curve: Curves.easeInOut,
-                      //       width: width,
-                      //       duration: Duration(milliseconds: 500),
-                      //       bottom: height*0.125,
-                      //       child: Redeem(showdialog)),
-                      // )
                     ],
                   ),
                 ),

@@ -246,31 +246,34 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                             ))
                           ),
                           child: Padding(
-                            padding: EdgeInsets.only(bottom: 2.h),
+                            padding: EdgeInsets.symmetric(horizontal: 5.w,vertical: 2.h),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                                  child: CircleAvatar(
-                                    radius: 20,
-                                    backgroundImage:
-                                        AssetImage('assets/aarohan-logo 1.png'),
-                                  ),
+                                Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 20,
+                                      backgroundImage:
+                                          AssetImage('assets/aarohan-logo 1.png'),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                                      child: Text(
+                                        "Aarohan",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Mons',
+                                            fontSize: 20.sp,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                                  child: Text(
-                                    "Aarohan",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Mons',
-                                        fontSize: 20.sp,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 28.w,
-                                ),
+
+                                // SizedBox(
+                                //   width: 28.w,
+                                // ),
                                 InkWell(
                                   onTap: (){
                                     // Navigator.pushNamed(context, '/homepage');

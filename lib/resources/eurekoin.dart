@@ -7,7 +7,7 @@ import 'package:crypto/crypto.dart';
 
 class Eurekoin{
   
-  static User currentUser=FirebaseAuth.instance.currentUser;  static int isEurekoinAlreadyRegistered; static final String baseUrl = "https://eurekoin.nitdgplug.org";static int userEurekoin;
+  static User currentUser=FirebaseAuth.instance.currentUser;    static final String baseUrl = "https://eurekoin.nitdgplug.org";static int userEurekoin;
   static final loginKey = '123*aavishkar';static String userReferralCode; static var transHistory;
 
   // Future _getUser() async {
@@ -28,6 +28,17 @@ class Eurekoin{
     print(dataList);
     return dataList;
 
+  }
+  static Future<int> transferEurekoin(String amount, String transferTo) async {
+    var bytes = utf8.encode("${currentUser.providerData[0].email}" + "$loginKey");
+    var encoded = sha1.convert(bytes);
+    String apiUrl =
+        "https://eurekoin.nitdgplug.org/api/transfer/?token=$encoded&amount=$amount&email=$transferTo";
+    print(apiUrl);
+    http.Response response = await http.get(Uri.parse(apiUrl));
+    print(response.body);
+    var status = json.decode(response.body)['status'];
+    return int.parse(status);
   }
  static Future  getReferralCode() async {
     var email = currentUser.providerData[0].email;
@@ -63,24 +74,29 @@ class Eurekoin{
     return status;
   }
   static Future isEurekoinUserRegistered() async {
-    var email = currentUser.providerData[1].email;
+    var email = currentUser.providerData[0].email;
     var bytes = utf8.encode("$email" + "$loginKey");
     var encoded = sha1.convert(bytes);
     String apiUrl = "$baseUrl/api/exists/?token=$encoded";
     http.Response response = await http.get(Uri.parse(apiUrl));
     var status = json.decode(response.body)['status'];
-    if (status == '1') {
-        isEurekoinAlreadyRegistered = 1;
-      getUserEurekoin();
-      transactionsHistory();
-    } else
-        isEurekoinAlreadyRegistered = 0;
+     print(status);
 
-    return isEurekoinAlreadyRegistered;
+    return status;
 
   }
+  static Future<List> suggestionListBuilder(String email) async {
+    if (email != '') {
+      String apiUrl =
+          "https://eurekoin.nitdgplug.org/api/users/?pattern=$email";
+      http.Response response = await http.get(Uri.parse(apiUrl));
+      print(response.body);
+      return json.decode(response.body)['users'];
+    }
+  }
+
   static Future transactionsHistory() async {
-    var email = currentUser.providerData[1].email;
+    var email = currentUser.providerData[0].email;
     var bytes = utf8.encode(email + "$loginKey");
     var encoded = sha1.convert(bytes);
 
@@ -90,6 +106,8 @@ class Eurekoin{
     http.Response response = await http.get(Uri.parse(apiUrl));
 
       transHistory = json.decode(response.body)['history'];
+      print(transHistory);
+      return transHistory;
 
   }
   static Future<int> couponEurekoin(String coupon) async {
@@ -122,13 +140,8 @@ class Eurekoin{
     var status = jsonDecode(response.body)['status'];
     print("status = $status");
     if (status == '0') {
-       
-        isEurekoinAlreadyRegistered = 1;
-     
       getUserEurekoin();
-    } else
-      
-        isEurekoinAlreadyRegistered = 0;
-      
+    }
+      return status;
   }
 }

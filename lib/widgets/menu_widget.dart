@@ -21,7 +21,7 @@ class MenuWidget extends StatefulWidget {
 }
 
 class _MenuWidgetState extends State<MenuWidget> {
-  int x=0;
+  int x=0; int status = 1;
   bool isEurekoinRegistered = false;
   @override
   void initState(){
@@ -43,13 +43,14 @@ class _MenuWidgetState extends State<MenuWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if(x==0){
-      int flag = Eurekoin.isEurekoinAlreadyRegistered;
-
-      setState(() {
-        x = flag;
-      });
-    }
+    // if(x==0){
+    //   int flag = Eurekoin.isEurekoinAlreadyRegistered;
+    //
+    //   setState(() {
+    //     x = flag;
+    //   });
+    // }
+    // x++;
     // getEurekoinRegistered().then((value) {
     //   setState(() {
     //     isEurekoinRegistered = value;
@@ -191,8 +192,9 @@ class _MenuWidgetState extends State<MenuWidget> {
                             height: height*0.06,width: width*0.12,),
                         ),
                         InkWell(
-                          onTap: (){
-                            if(x==0){
+                          onTap: ()async{
+                            String status = await Eurekoin.isEurekoinUserRegistered();
+                            if(status=="0"){
                               if(ModalRoute.of(context).settings.name!='/')
                                 Navigator.popAndPushNamed(context, '/eurekoin');
                               else
@@ -240,17 +242,17 @@ class _MenuWidgetState extends State<MenuWidget> {
                           Image.asset('assets/msg.png'),
                             height: height*0.06,width: width*0.11,),
                         ),
-                        InkWell(
-                          onTap: (){
-                            if(ModalRoute.of(context).settings.name!='/')
-                              Navigator.popAndPushNamed(context, '/scoreboard');
-                            else
-                              Navigator.pushNamed(context, '/scoreboard');
-                          },
-                          child: Container(child:
-                          Image.asset('assets/leaderboard.png'),
-                            height: height*0.06,width: width*0.11,),
-                        ),
+                        // InkWell(
+                        //   onTap: (){
+                        //     if(ModalRoute.of(context).settings.name!='/')
+                        //       Navigator.popAndPushNamed(context, '/scoreboard');
+                        //     else
+                        //       Navigator.pushNamed(context, '/scoreboard');
+                        //   },
+                        //   child: Container(child:
+                        //   Image.asset('assets/leaderboard.png'),
+                        //     height: height*0.06,width: width*0.11,),
+                        // ),
                         InkWell(
                           onTap: (){
                             if(ModalRoute.of(context).settings.name!='/')
@@ -296,7 +298,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                               Navigator.pushNamed(context, '/coming');
                           },
                           child: Container(child:
-                          Image.asset('assets/ar.png',),
+                          Image.asset('assets/ar.png',fit: BoxFit.fill,),
                             height: height*0.06,width: width*0.11,),
                         ),
 

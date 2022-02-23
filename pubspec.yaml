@@ -30,8 +30,12 @@ dependencies:
   flutter_signin_button:
   sizer:
   googleapis:
+  share_plus:
+#  qr_code_scanner:
   googleapis_auth:
   url_launcher:
+  timeago:
+  barcode_scan2:
   flutter_dotenv:
   carousel_slider:
   bottom_drawer:

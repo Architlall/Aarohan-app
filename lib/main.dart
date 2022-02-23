@@ -16,7 +16,7 @@ import 'package:aarohan_app/screens/contributors.dart';
 import 'package:aarohan_app/models/contributor.dart';
 import 'package:aarohan_app/models/sponsor.dart';
 import 'package:aarohan_app/screens/sponsors.dart';
-
+import 'package:aarohan_app/screens/transaction.dart';
 import 'package:aarohan_app/screens/eurekoin_home.dart';
 import 'package:aarohan_app/models/contact_us.dart';
 import 'package:aarohan_app/screens/contact.dart';
@@ -44,6 +44,7 @@ Future main() async {
           create: (_) => FirebaseService().contactStream(), initialData: []),
     ],
     child: MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: HomePage(),
       routes: {'/eventpage': (context) => Event_Detail(),
                '/timeline': (context)=> Timeline(),
@@ -57,7 +58,8 @@ Future main() async {
         '/coming': (context) => Coming(),
         '/game': (context) => MyHomePage("Dino Game"),
         '/journo': (context) => Interfecio(),
-        '/scoreboard':(context) => Scoreboard()
+        '/scoreboard':(context) => Scoreboard(),
+        '/transaction':(context) => Transaction()
 
       },
     ),
