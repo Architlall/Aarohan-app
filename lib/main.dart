@@ -22,6 +22,7 @@ import 'package:aarohan_app/models/contact_us.dart';
 import 'package:aarohan_app/screens/contact.dart';
 import 'package:aarohan_app/screens/coming_soon.dart';
 import 'package:aarohan_app/screens/scoreboard.dart';
+import 'package:aarohan_app/models/coming_soon.dart';
 
 
 
@@ -42,6 +43,8 @@ Future main() async {
           create: (_) => FirebaseService().sponsorStream(), initialData: []),
       StreamProvider<List<ContactItem>>(
           create: (_) => FirebaseService().contactStream(), initialData: []),
+      StreamProvider<List<ComingItem>>(
+          create: (_) => FirebaseService().comingListStream(), initialData: []),
     ],
     child: MaterialApp(
       debugShowCheckedModeBanner: false,

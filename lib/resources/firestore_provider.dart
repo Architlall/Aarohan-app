@@ -1,9 +1,11 @@
+import 'package:aarohan_app/screens/coming_soon.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:aarohan_app/models/event.dart';
 import 'package:aarohan_app/models/sponsor.dart';
 import 'package:aarohan_app/models/schedule.dart';
 import 'package:aarohan_app/models/contributor.dart';
 import 'package:aarohan_app/models/contact_us.dart';
+import 'package:aarohan_app/models/coming_soon.dart';
 
 class FirebaseService{
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -43,6 +45,13 @@ class FirebaseService{
     _firestore.collection('Contributor');
     return ref.snapshots().map((events) =>
         events.docs.map((doc) => ContributorItem.fromFirestore(doc)).toList());
+  }
+
+  Stream<List<ComingItem>> comingListStream() {
+    CollectionReference<Map<String, dynamic>> ref =
+    _firestore.collection('Coming Soon');
+    return ref.snapshots().map((events) =>
+        events.docs.map((doc) => ComingItem.fromFirestore(doc)).toList());
   }
 
    addToCalendar(String name, uid)async{

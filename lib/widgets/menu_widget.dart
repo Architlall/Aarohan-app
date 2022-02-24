@@ -9,6 +9,7 @@ import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aarohan_app/screens/coming_soon.dart';
 import 'package:aarohan_app/resources/eurekoin.dart';
+import 'package:aarohan_app/models/coming_soon.dart';
 
 import 'package:aarohan_app/game/game_start.dart';
 //
@@ -34,29 +35,17 @@ class _MenuWidgetState extends State<MenuWidget> {
     await authService.storeUser(_auth.currentUser);
   }
 
-  Future<bool> getEurekoinRegistered()async{
-    final prefs = await SharedPreferences.getInstance();
-    final bool registered = prefs.getBool('eurekoinregistered');
-    return registered!=null?registered:false;
-  }
+  // Future<bool> getEurekoinRegistered()async{
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final bool registered = prefs.getBool('eurekoinregistered');
+  //   return registered!=null?registered:false;
+  // }
 
 
   @override
   Widget build(BuildContext context) {
-    // if(x==0){
-    //   int flag = Eurekoin.isEurekoinAlreadyRegistered;
-    //
-    //   setState(() {
-    //     x = flag;
-    //   });
-    // }
-    // x++;
-    // getEurekoinRegistered().then((value) {
-    //   setState(() {
-    //     isEurekoinRegistered = value;
-    //   });
-    // });
     getuser();
+    List<ComingItem> comingItems = Provider.of<List<ComingItem>>(context);
     Users users = null;
     if(Users.us!=null){
       setState(() {
@@ -64,10 +53,6 @@ class _MenuWidgetState extends State<MenuWidget> {
         // print(Users.us.email);
       });
     }
-
-    // print(Users.us.photoURL);
-    // Users users = Provider.of<Users>(context);
-    // print(users.name);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
@@ -292,10 +277,18 @@ class _MenuWidgetState extends State<MenuWidget> {
                         ),
                         InkWell(
                           onTap: (){
-                            if(ModalRoute.of(context).settings.name!='/')
-                              Navigator.popAndPushNamed(context, '/coming');
-                            else
-                              Navigator.pushNamed(context, '/coming');
+                            if(comingItems.length!=0 && comingItems[0].flag==false){
+                              if(ModalRoute.of(context).settings.name!='/')
+                                Navigator.popAndPushNamed(context, '/coming');
+                              else
+                                Navigator.pushNamed(context, '/coming');
+                            }
+                            else{
+                              if(ModalRoute.of(context).settings.name!='/')
+                                Navigator.popAndPushNamed(context, '/coming');
+                              else
+                                Navigator.pushNamed(context, '/coming');
+                            }
                           },
                           child: Container(child:
                           Image.asset('assets/ar.png',fit: BoxFit.fill,),
@@ -304,10 +297,18 @@ class _MenuWidgetState extends State<MenuWidget> {
 
                         InkWell(
                           onTap: (){
-                            if(ModalRoute.of(context).settings.name!='/')
-                              Navigator.popAndPushNamed(context, '/journo');
-                            else
-                              Navigator.pushNamed(context, '/journo');
+                           if(comingItems.length!=0 && comingItems[1].flag==false){
+                             if(ModalRoute.of(context).settings.name!='/')
+                               Navigator.popAndPushNamed(context, '/journo');
+                             else
+                               Navigator.pushNamed(context, '/journo');
+                           }
+                           else{
+                             if(ModalRoute.of(context).settings.name!='/')
+                               Navigator.popAndPushNamed(context, '/coming');
+                             else
+                               Navigator.pushNamed(context, '/coming');
+                           }
                           },
                           child: Container(child:
                           Image.asset('assets/journo.png'),
