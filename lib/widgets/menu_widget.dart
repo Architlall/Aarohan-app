@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aarohan_app/screens/coming_soon.dart';
 import 'package:aarohan_app/resources/eurekoin.dart';
 import 'package:aarohan_app/models/coming_soon.dart';
-
+import 'package:sizer/sizer.dart';
 import 'package:aarohan_app/game/game_start.dart';
 //
 class MenuWidget extends StatefulWidget {
@@ -128,29 +128,51 @@ class _MenuWidgetState extends State<MenuWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
 
-                        InkWell(
-                          onTap: (){
-                            if(ModalRoute.of(context).settings.name!='/')
-                              Navigator.popAndPushNamed(context, '/about');
-                            else
-                              Navigator.pushNamed(context, '/about');
-                          },
-                          child: Container(child:
-                          Image.asset('assets/profile.png'),
-                            height: height*0.06,width: width*0.11,),
+                        Tooltip(
+                          padding: EdgeInsets.zero,
+                          height: 1.h,
+                          message: "About Aarohan",
+                          decoration: BoxDecoration(
+                              color: Colors.transparent
+                          ),
+                          textStyle: TextStyle(
+                              color: Colors.white
+                          ),
+                          child: InkWell(
+                            onTap: (){
+                              if(ModalRoute.of(context).settings.name!='/')
+                                Navigator.popAndPushNamed(context, '/about');
+                              else
+                                Navigator.pushNamed(context, '/about');
+                            },
+                            child: Container(child:
+                            Image.asset('assets/profile.png'),
+                              height: height*0.06,width: width*0.11,),
+                          ),
                         ),
-                        InkWell(
-                          onTap: (){
-                            if(ModalRoute.of(context).settings.name!='/')
-                            Navigator.pop(context);
+                        Tooltip(
+                          padding: EdgeInsets.zero,
+                          height: 1.h,
+                          message: "Logout",
+                          decoration: BoxDecoration(
+                              color: Colors.transparent
+                          ),
+                          textStyle: TextStyle(
+                              color: Colors.white
+                          ),
+                          child: InkWell(
+                            onTap: (){
+                              if(ModalRoute.of(context).settings.name!='/')
+                              Navigator.pop(context);
 
-                            AuthService authService = AuthService();
-                            authService.gSignOut();
+                              AuthService authService = AuthService();
+                              authService.gSignOut();
 
-                          },
-                          child: Container(child:
-                          Image.asset('assets/logout.png'),
-                            height: height*0.06,width: width*0.11,),
+                            },
+                            child: Container(child:
+                            Image.asset('assets/logout.png'),
+                              height: height*0.06,width: width*0.11,),
+                          ),
                         ),
                       ],
                     ),
@@ -165,50 +187,83 @@ class _MenuWidgetState extends State<MenuWidget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        InkWell(
-                          onTap: (){
-                            if(ModalRoute.of(context).settings.name!='/')
-                              Navigator.popAndPushNamed(context, '/sponsor');
-                            else
-                              Navigator.pushNamed(context, '/sponsor');
-                          },
-                          child: Container(child:
-                          Image.asset('assets/hand.png'),
-                            height: height*0.06,width: width*0.12,),
-                        ),
-                        InkWell(
-                          onTap: ()async{
-                            String status = await Eurekoin.isEurekoinUserRegistered();
-                            if(status=="0"){
+                        Tooltip(
+                          padding: EdgeInsets.zero,
+                          height: 1.h,
+                          message: "Sponsors",
+                          decoration: BoxDecoration(
+                              color: Colors.transparent
+                          ),
+                          textStyle: TextStyle(
+                              color: Colors.white
+                          ),
+                          child: InkWell(
+                            onTap: (){
                               if(ModalRoute.of(context).settings.name!='/')
-                                Navigator.popAndPushNamed(context, '/eurekoin');
+                                Navigator.popAndPushNamed(context, '/sponsor');
                               else
-                                Navigator.pushNamed(context, '/eurekoin');
-                            }
-                            else{
-                              if(ModalRoute.of(context).settings.name!='/')
-                                Navigator.popAndPushNamed(context, '/leaderboard');
-                              else
-                                Navigator.pushNamed(context, '/leaderboard');
-                            }
-                          },
-                          child: Container(child:
-                          Image.asset('assets/eurekoin.png'),
-                            height: height*0.06,width: width*0.11,),
+                                Navigator.pushNamed(context, '/sponsor');
+                            },
+                            child: Container(child:
+                            Image.asset('assets/hand.png'),
+                              height: height*0.06,width: width*0.12,),
+                          ),
                         ),
-                        InkWell(
-                          onTap: (){
-                            print(ModalRoute.of(context).settings.name);
-                            if(ModalRoute.of(context).settings.name!='/')
-                              Navigator.popAndPushNamed(context, '/timeline');
-                            else {
-                              print("hello");
-                              Navigator.pushNamed(context, '/timeline');
-                            }
-                          },
-                          child: Container(child:
-                          Image.asset('assets/timer.png'),
-                            height: height*0.06,width: width*0.11,),
+                        Tooltip(
+                          padding: EdgeInsets.zero,
+                          height: 1.h,
+                          message: "Eurekoin",
+                          decoration: BoxDecoration(
+                              color: Colors.transparent
+                          ),
+                          textStyle: TextStyle(
+                              color: Colors.white
+                          ),
+                          child: InkWell(
+                            onTap: ()async{
+                              String status = await Eurekoin.isEurekoinUserRegistered();
+                              if(status=="0"){
+                                if(ModalRoute.of(context).settings.name!='/')
+                                  Navigator.popAndPushNamed(context, '/eurekoin');
+                                else
+                                  Navigator.pushNamed(context, '/eurekoin');
+                              }
+                              else{
+                                if(ModalRoute.of(context).settings.name!='/')
+                                  Navigator.popAndPushNamed(context, '/leaderboard');
+                                else
+                                  Navigator.pushNamed(context, '/leaderboard');
+                              }
+                            },
+                            child: Container(child:
+                            Image.asset('assets/eurekoin.png'),
+                              height: height*0.06,width: width*0.11,),
+                          ),
+                        ),
+                        Tooltip(
+                          padding: EdgeInsets.zero,
+                          height: 1.h,
+                          message: "Timeline",
+                          decoration: BoxDecoration(
+                            color: Colors.transparent
+                          ),
+                          textStyle: TextStyle(
+                            color: Colors.white
+                          ),
+                          child: InkWell(
+                            onTap: (){
+                              print(ModalRoute.of(context).settings.name);
+                              if(ModalRoute.of(context).settings.name!='/')
+                                Navigator.popAndPushNamed(context, '/timeline');
+                              else {
+                                print("hello");
+                                Navigator.pushNamed(context, '/timeline');
+                              }
+                            },
+                            child: Container(child:
+                            Image.asset('assets/timer.png'),
+                              height: height*0.06,width: width*0.11,),
+                          ),
                         ),
                       ],
                     ),
@@ -216,16 +271,27 @@ class _MenuWidgetState extends State<MenuWidget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        InkWell(
-                          onTap: (){
-                            if(ModalRoute.of(context).settings.name!='/')
-                              Navigator.popAndPushNamed(context, '/contact');
-                            else
-                              Navigator.pushNamed(context, '/contact');
-                          },
-                          child: Container(child:
-                          Image.asset('assets/msg.png'),
-                            height: height*0.06,width: width*0.11,),
+                        Tooltip(
+                          padding: EdgeInsets.zero,
+                          height: 1.h,
+                          message: "Contact Us",
+                          decoration: BoxDecoration(
+                              color: Colors.transparent
+                          ),
+                          textStyle: TextStyle(
+                              color: Colors.white
+                          ),
+                          child: InkWell(
+                            onTap: (){
+                              if(ModalRoute.of(context).settings.name!='/')
+                                Navigator.popAndPushNamed(context, '/contact');
+                              else
+                                Navigator.pushNamed(context, '/contact');
+                            },
+                            child: Container(child:
+                            Image.asset('assets/msg.png'),
+                              height: height*0.06,width: width*0.11,),
+                          ),
                         ),
                         // InkWell(
                         //   onTap: (){
@@ -238,16 +304,27 @@ class _MenuWidgetState extends State<MenuWidget> {
                         //   Image.asset('assets/leaderboard.png'),
                         //     height: height*0.06,width: width*0.11,),
                         // ),
-                        InkWell(
-                          onTap: (){
-                            if(ModalRoute.of(context).settings.name!='/')
-                              Navigator.popAndPushNamed(context, '/contributor');
-                            else
-                              Navigator.pushNamed(context, '/contributor');
-                          },
-                          child: Container(child:
-                          Image.asset('assets/list.png'),
-                            height: height*0.06,width: width*0.11,),
+                        Tooltip(
+                          padding: EdgeInsets.zero,
+                          height: 1.h,
+                          message: "Contributors",
+                          decoration: BoxDecoration(
+                              color: Colors.transparent
+                          ),
+                          textStyle: TextStyle(
+                              color: Colors.white
+                          ),
+                          child: InkWell(
+                            onTap: (){
+                              if(ModalRoute.of(context).settings.name!='/')
+                                Navigator.popAndPushNamed(context, '/contributor');
+                              else
+                                Navigator.pushNamed(context, '/contributor');
+                            },
+                            child: Container(child:
+                            Image.asset('assets/list.png'),
+                              height: height*0.06,width: width*0.11,),
+                          ),
                         ),
 
                       ],
@@ -260,59 +337,92 @@ class _MenuWidgetState extends State<MenuWidget> {
                         fontFamily: 'Bebas',
                         fontSize: 18,
                         fontWeight: FontWeight.w500),),),
-                    SizedBox(height: height*0.03,),
+                    SizedBox(height: height*0.025,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        InkWell(
-                          onTap: (){
-                            if(ModalRoute.of(context).settings.name!='/')
-                              Navigator.popAndPushNamed(context, '/game');
-                            else
-                              Navigator.pushNamed(context, '/game');
-                          },
-                          child: Container(child:
-                          Image.asset('assets/game.png'),
-                            height: height*0.06,width: width*0.11,),
+                        Tooltip(
+                          padding: EdgeInsets.zero,
+                          height: 1.h,
+                          message: "Game",
+                          decoration: BoxDecoration(
+                              color: Colors.transparent
+                          ),
+                          textStyle: TextStyle(
+                              color: Colors.white
+                          ),
+                          child: InkWell(
+                            onTap: (){
+                              if(ModalRoute.of(context).settings.name!='/')
+                                Navigator.popAndPushNamed(context, '/game');
+                              else
+                                Navigator.pushNamed(context, '/game');
+                            },
+                            child: Container(child:
+                            Image.asset('assets/game.png'),
+                              height: height*0.06,width: width*0.11,),
+                          ),
                         ),
-                        InkWell(
-                          onTap: (){
-                            if(comingItems.length!=0 && comingItems[0].flag==false){
-                              if(ModalRoute.of(context).settings.name!='/')
-                                Navigator.popAndPushNamed(context, '/coming');
-                              else
-                                Navigator.pushNamed(context, '/coming');
-                            }
-                            else{
-                              if(ModalRoute.of(context).settings.name!='/')
-                                Navigator.popAndPushNamed(context, '/coming');
-                              else
-                                Navigator.pushNamed(context, '/coming');
-                            }
-                          },
-                          child: Container(child:
-                          Image.asset('assets/ar.png',fit: BoxFit.fill,),
-                            height: height*0.06,width: width*0.11,),
+                        Tooltip(
+                          padding: EdgeInsets.zero,
+                          height: 1.h,
+                          message: "Surprise",
+                          decoration: BoxDecoration(
+                              color: Colors.transparent
+                          ),
+                          textStyle: TextStyle(
+                              color: Colors.white
+                          ),
+                          child: InkWell(
+                            onTap: (){
+                              if(comingItems.length!=0 && comingItems[0].flag==false){
+                                if(ModalRoute.of(context).settings.name!='/')
+                                  Navigator.popAndPushNamed(context, '/coming');
+                                else
+                                  Navigator.pushNamed(context, '/coming');
+                              }
+                              else{
+                                if(ModalRoute.of(context).settings.name!='/')
+                                  Navigator.popAndPushNamed(context, '/coming');
+                                else
+                                  Navigator.pushNamed(context, '/coming');
+                              }
+                            },
+                            child: Container(child:
+                            Image.asset('assets/ar.png',fit: BoxFit.fill,),
+                              height: height*0.06,width: width*0.11,),
+                          ),
                         ),
 
-                        InkWell(
-                          onTap: (){
-                           if(comingItems.length!=0 && comingItems[1].flag==false){
-                             if(ModalRoute.of(context).settings.name!='/')
-                               Navigator.popAndPushNamed(context, '/journo');
-                             else
-                               Navigator.pushNamed(context, '/journo');
-                           }
-                           else{
-                             if(ModalRoute.of(context).settings.name!='/')
-                               Navigator.popAndPushNamed(context, '/coming');
-                             else
-                               Navigator.pushNamed(context, '/coming');
-                           }
-                          },
-                          child: Container(child:
-                          Image.asset('assets/journo.png'),
-                            height: height*0.06,width: width*0.11,),
+                        Tooltip(
+                          padding: EdgeInsets.zero,
+                          height: 1.h,
+                          message: "Journo Detective",
+                          decoration: BoxDecoration(
+                              color: Colors.transparent
+                          ),
+                          textStyle: TextStyle(
+                              color: Colors.white
+                          ),
+                          child: InkWell(
+                            onTap: (){
+                             if(comingItems.length!=0 && comingItems[1].flag==false){
+                               if(ModalRoute.of(context).settings.name!='/')
+                                 Navigator.popAndPushNamed(context, '/journo');
+                               else
+                                 Navigator.pushNamed(context, '/journo');
+                             }
+                             else{
+                               if(ModalRoute.of(context).settings.name!='/')
+                                 Navigator.popAndPushNamed(context, '/coming');
+                               else
+                                 Navigator.pushNamed(context, '/coming');
+                             }
+                            },
+                            child: Container(child:
+                            Image.asset('assets/journo.png'),
+                              height: height*0.06,width: width*0.11,),
+                          ),
                         ),
                       ],
                     )

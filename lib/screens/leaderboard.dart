@@ -397,23 +397,23 @@ class _LeaderboardState extends State<Leaderboard> {
                                                 fontWeight: FontWeight.w500),
                                           ),
                                           // SizedBox(width: 3.w,),
-                                          Row(
-                                            children: [
-                                              InkWell(
-                                                child:Icon(Icons.share,size: 15,color: Colors.white,),
-                                                onTap: ()async{
-                                                  await Share.share('Use my referal code $_referralCode to get 25 Eurekoins when you register. \nLink: https://play.google.com/store/apps/details?id=com.app.aarohan.aarohanapp');
-                                                },
-                                              ),
-                                              SizedBox(width: 1.w,),
-                                              Text(
-                                                (_referralCode!=null)?"$_referralCode":"",style: TextStyle(
-                                                  color: Colors.white, letterSpacing: 1.1,
-                                                  fontFamily: 'Poppins',
-                                                  fontSize: 13.sp,
-                                                  fontWeight: FontWeight.w500),
-                                              )
-                                            ],
+                                          InkWell(
+                                            onTap: ()async{
+                                              await Share.share('Use my referal code $_referralCode to get 25 Eurekoins when you register. \nLink: https://play.google.com/store/apps/details?id=com.app.aarohan.aarohanapp');
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Icon(Icons.share,size: 15,color: Colors.white,),
+                                                SizedBox(width: 1.w,),
+                                                Text(
+                                                  (_referralCode!=null)?"$_referralCode":"",style: TextStyle(
+                                                    color: Colors.white, letterSpacing: 1.1,
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 13.sp,
+                                                    fontWeight: FontWeight.w500),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),
