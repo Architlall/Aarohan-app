@@ -13,10 +13,11 @@ import 'package:aarohan_app/models/coming_soon.dart';
 import 'package:sizer/sizer.dart';
 import 'package:aarohan_app/game/game_start.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:aarohan_app/widgets/custom_gesture_detector.dart';
 //
 class MenuWidget extends StatefulWidget {
-  bool showBottomMenu;
-  MenuWidget(this.showBottomMenu);
+  bool showBottomMenu;  VoidCallback callback;
+  MenuWidget(this.showBottomMenu,this.callback);
 
   @override
   _MenuWidgetState createState() => _MenuWidgetState();
@@ -35,6 +36,8 @@ class _MenuWidgetState extends State<MenuWidget> {
     AuthService authService = AuthService();
     await authService.storeUser(_auth.currentUser);
   }
+
+
 
   // Future<bool> getEurekoinRegistered()async{
   //   final prefs = await SharedPreferences.getInstance();
@@ -83,6 +86,7 @@ class _MenuWidgetState extends State<MenuWidget> {
               ),
              SizedBox(height: 1,),
              InkWell(
+              onTap: widget.callback,
                child: Container(child:
                 (widget.showBottomMenu)?Image.asset('assets/down.png'):Image.asset('assets/up.png'),
                  height: 40,width: 40,),

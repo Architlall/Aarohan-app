@@ -139,99 +139,99 @@ class _Event_DetailState extends State<Event_Detail>  {
                                          children: [
                                            InkWell(
                                              onTap: ()async{
-                                               await showDialog(context: context, builder: (context)=> BackdropFilter(
-                                                 filter: ImageFilter.blur(sigmaX: 5,sigmaY: 5),
-                                                 child: Dialog(
-
-                                                   insetPadding: EdgeInsets.all(5.w),
-                                                   shape: RoundedRectangleBorder(
-                                                       borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                                                       side: BorderSide(
-                                                           style: BorderStyle.solid,
-                                                           width: 1.sp,color: Colors.white
-                                                       )
-                                                   ),
-                                                   backgroundColor:fromCssColor('#E2F5FF')
-                                                       .withOpacity(0.2),
-                                                   child: Container(
-                                                     padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 2.h),
-                                                     child: SingleChildScrollView(
-                                                       child: Column(
-                                                         mainAxisSize: MainAxisSize.min,
-                                                         children: [
-                                                           Text("ADD EVENT TO CALENDAR ?",
-                                                             style: TextStyle(
-                                                                 color: Colors.white, letterSpacing: 0.5,
-                                                                 fontFamily: 'Staat',
-                                                                 fontSize: 15.sp,
-                                                                 fontWeight: FontWeight.w500),
-                                                           ),
-                                                           SizedBox(height: 4.h,),
-                                                           Row(
-                                                             mainAxisAlignment: MainAxisAlignment.center,
-                                                             children: [
-                                                               InkWell(
-                                                                 child: Container(
-                                                                   padding: EdgeInsets.symmetric(horizontal: 6.w,vertical: 1.h),
-                                                                   decoration: BoxDecoration(
-                                                                       color: Colors.white.withOpacity(0.4),
-                                                                       border: Border.all(color: Colors.white,width: 0.5.sp),
-                                                                       borderRadius: BorderRadius.circular(10.sp)
-                                                                   ),
-                                                                   child: Text("YES",style: TextStyle(
-                                                                       color: Colors.white,
-                                                                       fontFamily: 'Poppins',
-                                                                       fontSize: 13.sp,
-                                                                       fontWeight: FontWeight.w500
-                                                                   ),),
-
-                                                                 ),
-                                                                 onTap: ()async{
-
-                                                                    GoogleApi_Services services = GoogleApi_Services();
-                                                                   bool status =  await  services.initEvent(eventItem.date+" "+eventItem.time,eventItem.title);
-                                                                    if(status==true){
-                                                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Event Added to Calendar!")));
-                                                                    }
-                                                                    else
-                                                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Failed to Add to Calendar!")));
-
-                                                                    Navigator.pop(context);
-                                                                 },
-                                                               ),
-                                                               SizedBox(width: 5.w,),
-                                                               InkWell(
-                                                                 child: Container(
-                                                                   padding: EdgeInsets.symmetric(horizontal: 6.w,vertical: 1.h),
-                                                                   decoration: BoxDecoration(
-                                                                       color: Colors.white.withOpacity(0.4),
-                                                                       border: Border.all(color: Colors.white,width: 0.5.sp),
-                                                                       borderRadius: BorderRadius.circular(10.sp)
-                                                                   ),
-                                                                   child: Text("NO",style: TextStyle(
-                                                                       color: Colors.white,
-                                                                       fontFamily: 'Poppins',
-                                                                       fontSize: 13.sp,
-                                                                       fontWeight: FontWeight.w500
-                                                                   ),),
-
-                                                                 ),
-                                                                 onTap: (){
-                                                                   Navigator.pop(context);
-                                                                 },
-                                                               ),
-                                                             ],
-                                                           ),
-
-
-
-                                                         ],
-                                                       ),
-                                                     ),
-                                                   ),
-                                                 ),
-                                               )
-                                               );
+                                               // await showDialog(context: context, builder: (context)=> BackdropFilter(
+                                               //   filter: ImageFilter.blur(sigmaX: 5,sigmaY: 5),
+                                               //   child: Dialog(
+                                               //
+                                               //     insetPadding: EdgeInsets.all(5.w),
+                                               //     shape: RoundedRectangleBorder(
+                                               //         borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                               //         side: BorderSide(
+                                               //             style: BorderStyle.solid,
+                                               //             width: 1.sp,color: Colors.white
+                                               //         )
+                                               //     ),
+                                               //     backgroundColor:fromCssColor('#E2F5FF')
+                                               //         .withOpacity(0.2),
+                                               //     child: Container(
+                                               //       padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 2.h),
+                                               //       child: SingleChildScrollView(
+                                               //         child: Column(
+                                               //           mainAxisSize: MainAxisSize.min,
+                                               //           children: [
+                                               //             Text("ADD EVENT TO CALENDAR ?",
+                                               //               style: TextStyle(
+                                               //                   color: Colors.white, letterSpacing: 0.5,
+                                               //                   fontFamily: 'Staat',
+                                               //                   fontSize: 15.sp,
+                                               //                   fontWeight: FontWeight.w500),
+                                               //             ),
+                                               //             SizedBox(height: 4.h,),
+                                               //             Row(
+                                               //               mainAxisAlignment: MainAxisAlignment.center,
+                                               //               children: [
+                                               //                 InkWell(
+                                               //                   child: Container(
+                                               //                     padding: EdgeInsets.symmetric(horizontal: 6.w,vertical: 1.h),
+                                               //                     decoration: BoxDecoration(
+                                               //                         color: Colors.white.withOpacity(0.4),
+                                               //                         border: Border.all(color: Colors.white,width: 0.5.sp),
+                                               //                         borderRadius: BorderRadius.circular(10.sp)
+                                               //                     ),
+                                               //                     child: Text("YES",style: TextStyle(
+                                               //                         color: Colors.white,
+                                               //                         fontFamily: 'Poppins',
+                                               //                         fontSize: 13.sp,
+                                               //                         fontWeight: FontWeight.w500
+                                               //                     ),),
+                                               //
+                                               //                   ),
+                                               //                   onTap: ()async{
+                                               //
+                                               //                      GoogleApi_Services services = GoogleApi_Services();
+                                               //                     bool status =  await  services.initEvent(eventItem.date+" "+eventItem.time,eventItem.title);
+                                               //                      if(status==true){
+                                               //                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Event Added to Calendar!")));
+                                               //                      }
+                                               //                      else
+                                               //                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Failed to Add to Calendar!")));
+                                               //
+                                               //                      Navigator.pop(context);
+                                               //                   },
+                                               //                 ),
+                                               //                 SizedBox(width: 5.w,),
+                                               //                 InkWell(
+                                               //                   child: Container(
+                                               //                     padding: EdgeInsets.symmetric(horizontal: 6.w,vertical: 1.h),
+                                               //                     decoration: BoxDecoration(
+                                               //                         color: Colors.white.withOpacity(0.4),
+                                               //                         border: Border.all(color: Colors.white,width: 0.5.sp),
+                                               //                         borderRadius: BorderRadius.circular(10.sp)
+                                               //                     ),
+                                               //                     child: Text("NO",style: TextStyle(
+                                               //                         color: Colors.white,
+                                               //                         fontFamily: 'Poppins',
+                                               //                         fontSize: 13.sp,
+                                               //                         fontWeight: FontWeight.w500
+                                               //                     ),),
+                                               //
+                                               //                   ),
+                                               //                   onTap: (){
+                                               //                     Navigator.pop(context);
+                                               //                   },
+                                               //                 ),
+                                               //               ],
+                                               //             ),
+                                               //
+                                               //
+                                               //
+                                               //           ],
+                                               //         ),
+                                               //       ),
+                                               //     ),
+                                               //   ),
+                                               // )
+                                               // );
 
 
                                              },
@@ -451,7 +451,25 @@ class _Event_DetailState extends State<Event_Detail>  {
                         width: width,
                         duration: Duration(milliseconds: 500),
                         bottom: (showBottomMenu)?height*0.125:-(height*0.65),
-                        child: MenuWidget(showBottomMenu))
+                        child: CustomGestureDetector(
+                            axis: CustomGestureDetector.AXIS_Y,
+                            velocity: threshold,
+
+                            onSwipeUp: (){
+                              this.setState((){
+                                showBottomMenu = true;
+                              });
+                            },
+                            onSwipeDown: (){
+                              this.setState((){
+                                showBottomMenu = false;
+                              });
+                            },
+                            child: MenuWidget(showBottomMenu,(){
+                              setState(() {
+                                showBottomMenu=!showBottomMenu;
+                              });
+                            })))
                   ],
                 ),
               ),

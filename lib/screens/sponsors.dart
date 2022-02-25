@@ -156,7 +156,25 @@ class _SponsorsState extends State<Sponsors> {
                         width: width,
                         duration: Duration(milliseconds: 500),
                         bottom: (showBottomMenu)?height*0.125:-(height*0.65),
-                        child: MenuWidget(showBottomMenu))
+                        child: CustomGestureDetector(
+                            axis: CustomGestureDetector.AXIS_Y,
+                            velocity: threshold,
+
+                            onSwipeUp: (){
+                              this.setState((){
+                                showBottomMenu = true;
+                              });
+                            },
+                            onSwipeDown: (){
+                              this.setState((){
+                                showBottomMenu = false;
+                              });
+                            },
+                            child: MenuWidget(showBottomMenu,(){
+                              setState(() {
+                                showBottomMenu=!showBottomMenu;
+                              });
+                            })))
                   ],
                 ),
               ),

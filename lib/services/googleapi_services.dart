@@ -50,10 +50,7 @@ class GoogleApi_Services {
           print("ADDEDDD_________________${value.status}");
 
           if ( value.status == "confirmed") {
-
             return true;
-
-
           } else {
             print("Unable to add event in google calendar");
             return false;

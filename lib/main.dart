@@ -21,7 +21,6 @@ import 'package:aarohan_app/screens/eurekoin_home.dart';
 import 'package:aarohan_app/models/contact_us.dart';
 import 'package:aarohan_app/screens/contact.dart';
 import 'package:aarohan_app/screens/coming_soon.dart';
-import 'package:aarohan_app/screens/scoreboard.dart';
 import 'package:aarohan_app/models/coming_soon.dart';
 import 'package:aarohan_app/screens/prelims.dart';
 import 'package:aarohan_app/models/prelim.dart';
@@ -68,7 +67,6 @@ Future main() async {
         '/coming': (context) => Coming(),
         '/game': (context) => MyHomePage("Dino Game"),
         '/journo': (context) => Interfecio(),
-        '/scoreboard':(context) => Scoreboard(),
         '/transaction':(context) => Transaction(),
         '/prelims':(context) => Prelims(),
         '/ar':(context) => AR()
