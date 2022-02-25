@@ -1,3 +1,5 @@
+import 'package:aarohan_app/services/googleapi_services.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:aarohan_app/models/user.dart';
@@ -103,7 +105,20 @@ class _Event_DetailState extends State<Event_Detail>  {
                                            fontWeight: FontWeight.w500),),
                                      ),
                                      background:  Container(
-                                         child:Image.network(eventItem.imageUrl,width: 100.w,fit: BoxFit.cover,height: 60.h,)),
+                                         child:CachedNetworkImage(imageUrl: eventItem.imageUrl,width: 100.w,fit: BoxFit.cover,height: 60.h,
+                                           errorWidget: (context, url, error) {
+                                             print("Could not load content");
+                                             return Image.asset("assets/placeholder.jpg",
+
+                                                 height: 60.h,width: 100.w,
+                                                 fit: BoxFit.cover);
+                                           },
+                                           placeholder: (context, url) => Image.asset(
+                                               "assets/placeholder.jpg",
+
+                                               height: 60.h,width: 100.w,
+                                               fit: BoxFit.cover),
+                                         )),
                                    ),
                                  ),
                                  pinned: true,
@@ -122,42 +137,141 @@ class _Event_DetailState extends State<Event_Detail>  {
                                        child: Row(
                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                          children: [
-                                           ClipRect(
-                                             child: BackdropFilter(
-                                               filter: ImageFilter.blur(sigmaX: 1.5,sigmaY: 1.5),
-                                               child: Padding(
-                                                 padding: EdgeInsets.fromLTRB(4.w, 0, 0, 0),
-                                                 child: Container(
-                                                     height: 9.h,
-                                                     width: 43.w,
-                                                     decoration: BoxDecoration(
-                                                         border: Border.all(
-                                                             color: Colors.white, width: 1),
-                                                         color: fromCssColor('#E2F5FF')
-                                                             .withOpacity(0.2),
-                                                         borderRadius: BorderRadius.circular(10.sp)),
-                                                     child: GestureDetector(
+                                           InkWell(
+                                             onTap: ()async{
+                                               await showDialog(context: context, builder: (context)=> BackdropFilter(
+                                                 filter: ImageFilter.blur(sigmaX: 5,sigmaY: 5),
+                                                 child: Dialog(
 
-                                                       child: Row(
+                                                   insetPadding: EdgeInsets.all(5.w),
+                                                   shape: RoundedRectangleBorder(
+                                                       borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                                       side: BorderSide(
+                                                           style: BorderStyle.solid,
+                                                           width: 1.sp,color: Colors.white
+                                                       )
+                                                   ),
+                                                   backgroundColor:fromCssColor('#E2F5FF')
+                                                       .withOpacity(0.2),
+                                                   child: Container(
+                                                     padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 2.h),
+                                                     child: SingleChildScrollView(
+                                                       child: Column(
+                                                         mainAxisSize: MainAxisSize.min,
                                                          children: [
-                                                           Padding(
-                                                             padding:  EdgeInsets.fromLTRB(
-                                                                 4.w, 2.h, 2.w, 3.h),
-                                                             child: Icon(Icons.calendar_today,
-                                                                 size: 23.5.sp, color: Colors.white),
+                                                           Text("ADD EVENT TO CALENDAR ?",
+                                                             style: TextStyle(
+                                                                 color: Colors.white, letterSpacing: 0.5,
+                                                                 fontFamily: 'Staat',
+                                                                 fontSize: 15.sp,
+                                                                 fontWeight: FontWeight.w500),
                                                            ),
-                                                           Padding(
-                                                             padding:  EdgeInsets.fromLTRB(
-                                                                 2.w, 2.h, 2.w, 1.8.h),
-                                                             child: Text(eventItem.date,
-                                                                 style: TextStyle(
-                                                                   fontSize: 11.5.sp, fontFamily: 'Staat',letterSpacing: 1.1,
-                                                                     color: Colors.white,
-                                                                     fontWeight: FontWeight.w400)),
-                                                           )
+                                                           SizedBox(height: 4.h,),
+                                                           Row(
+                                                             mainAxisAlignment: MainAxisAlignment.center,
+                                                             children: [
+                                                               InkWell(
+                                                                 child: Container(
+                                                                   padding: EdgeInsets.symmetric(horizontal: 6.w,vertical: 1.h),
+                                                                   decoration: BoxDecoration(
+                                                                       color: Colors.white.withOpacity(0.4),
+                                                                       border: Border.all(color: Colors.white,width: 0.5.sp),
+                                                                       borderRadius: BorderRadius.circular(10.sp)
+                                                                   ),
+                                                                   child: Text("YES",style: TextStyle(
+                                                                       color: Colors.white,
+                                                                       fontFamily: 'Poppins',
+                                                                       fontSize: 13.sp,
+                                                                       fontWeight: FontWeight.w500
+                                                                   ),),
+
+                                                                 ),
+                                                                 onTap: ()async{
+
+                                                                    GoogleApi_Services services = GoogleApi_Services();
+                                                                   bool status =  await  services.initEvent(eventItem.date+" "+eventItem.time,eventItem.title);
+                                                                    if(status==true){
+                                                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Event Added to Calendar!")));
+                                                                    }
+                                                                    else
+                                                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Failed to Add to Calendar!")));
+
+                                                                    Navigator.pop(context);
+                                                                 },
+                                                               ),
+                                                               SizedBox(width: 5.w,),
+                                                               InkWell(
+                                                                 child: Container(
+                                                                   padding: EdgeInsets.symmetric(horizontal: 6.w,vertical: 1.h),
+                                                                   decoration: BoxDecoration(
+                                                                       color: Colors.white.withOpacity(0.4),
+                                                                       border: Border.all(color: Colors.white,width: 0.5.sp),
+                                                                       borderRadius: BorderRadius.circular(10.sp)
+                                                                   ),
+                                                                   child: Text("NO",style: TextStyle(
+                                                                       color: Colors.white,
+                                                                       fontFamily: 'Poppins',
+                                                                       fontSize: 13.sp,
+                                                                       fontWeight: FontWeight.w500
+                                                                   ),),
+
+                                                                 ),
+                                                                 onTap: (){
+                                                                   Navigator.pop(context);
+                                                                 },
+                                                               ),
+                                                             ],
+                                                           ),
+
+
+
                                                          ],
                                                        ),
-                                                     )),
+                                                     ),
+                                                   ),
+                                                 ),
+                                               )
+                                               );
+
+
+                                             },
+                                             child: ClipRect(
+                                               child: BackdropFilter(
+                                                 filter: ImageFilter.blur(sigmaX: 1.5,sigmaY: 1.5),
+                                                 child: Padding(
+                                                   padding: EdgeInsets.fromLTRB(4.w, 0, 0, 0),
+                                                   child: Container(
+                                                       height: 9.h,
+                                                       width: 43.w,
+                                                       decoration: BoxDecoration(
+                                                           border: Border.all(
+                                                               color: Colors.white, width: 1),
+                                                           color: fromCssColor('#E2F5FF')
+                                                               .withOpacity(0.2),
+                                                           borderRadius: BorderRadius.circular(10.sp)),
+                                                       child: GestureDetector(
+
+                                                         child: Row(
+                                                           children: [
+                                                             Padding(
+                                                               padding:  EdgeInsets.fromLTRB(
+                                                                   4.w, 2.h, 2.w, 3.h),
+                                                               child: Icon(Icons.calendar_today,
+                                                                   size: 23.5.sp, color: Colors.white),
+                                                             ),
+                                                             Padding(
+                                                               padding:  EdgeInsets.fromLTRB(
+                                                                   2.w, 2.h, 2.w, 1.8.h),
+                                                               child: Text(eventItem.date,
+                                                                   style: TextStyle(
+                                                                     fontSize: 11.5.sp, fontFamily: 'Staat',letterSpacing: 1.1,
+                                                                       color: Colors.white,
+                                                                       fontWeight: FontWeight.w400)),
+                                                             )
+                                                           ],
+                                                         ),
+                                                       )),
+                                                 ),
                                                ),
                                              ),
                                            ),

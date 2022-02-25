@@ -6,6 +6,7 @@ import 'package:aarohan_app/models/schedule.dart';
 import 'package:aarohan_app/models/contributor.dart';
 import 'package:aarohan_app/models/contact_us.dart';
 import 'package:aarohan_app/models/coming_soon.dart';
+import 'package:aarohan_app/models/prelim.dart';
 
 class FirebaseService{
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -23,6 +24,13 @@ class FirebaseService{
     _firestore.collection('Contact');
     return ref.snapshots().map((events) =>
         events.docs.map((doc) => ContactItem.fromFirestore(doc)).toList());
+  }
+
+  Stream<List<PrelimItem>> prelimStream() {
+    CollectionReference<Map<String, dynamic>> ref =
+    _firestore.collection('Prelims');
+    return ref.snapshots().map((events) =>
+        events.docs.map((doc) => PrelimItem.fromFirestore(doc)).toList());
   }
 
 
@@ -54,14 +62,14 @@ class FirebaseService{
         events.docs.map((doc) => ComingItem.fromFirestore(doc)).toList());
   }
 
-   addToCalendar(String name, uid)async{
-    await _firestore.collection("Users").doc(uid).update(
-      {
-        'calendar': FieldValue.arrayUnion([name])
-      }
-    );
-     
-  }
+  //  addToCalendar(String name, uid)async{
+  //   await _firestore.collection("Users").doc(uid).update(
+  //     {
+  //       'calendar': FieldValue.arrayUnion([name])
+  //     }
+  //   );
+  //
+  // }
 
 
 

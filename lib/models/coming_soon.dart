@@ -28,12 +28,13 @@ class ComingResponse {
 }
 
 class ComingItem {
-  ComingItem({this.flag});
+  ComingItem({this.flag,this.title});
 
-bool flag;
+bool flag; String title;
 
   factory ComingItem.fromJson(Map<String, dynamic> json) => ComingItem(
-    flag: json['flag']
+    flag: json['flag'],
+    title: json['title']
   );
 
   factory ComingItem.fromFirestore(DocumentSnapshot documentSnapshot) {
@@ -41,5 +42,5 @@ bool flag;
   }
 
   Map<String, dynamic> toJson() =>
-      {'flag':flag};
+      {'flag':flag,'title':title};
 }

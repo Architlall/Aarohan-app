@@ -10,7 +10,7 @@ import 'dart:io' show Platform;
 var _credentials;
 
 class GoogleApi_Services {
-   initEvent(String date)async {
+   initEvent(String date,String name)async {
 
      await dotenv.load(fileName: ".env");
 
@@ -20,9 +20,10 @@ class GoogleApi_Services {
           "");
     }
     Event event = Event(); // Create object of event
-    event.summary = "No End Time";
+    event.summary = name;
 
     final start = DateTime.parse(date);
+    print(date);
     // final end = DateTime.parse('2022-02-14 13:30:04');
     final end = start.add(const Duration(hours: 3));
     EventDateTime startTime = new EventDateTime(); //Setting start time

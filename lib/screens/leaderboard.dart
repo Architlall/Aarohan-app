@@ -74,8 +74,8 @@ class _LeaderboardState extends State<Leaderboard> {
        print(barcodeString);
 
         // editingController.text= barcodeString;
-        Future<int> result =  Eurekoin.couponEurekoin(barcodeString);
-        result.then((value) {
+        int value = await Eurekoin.couponEurekoin(barcodeString);
+        // result.then((value) {
           print(value);
           if (value == 0) {
             // barcodeString = "Successful!";
@@ -93,7 +93,7 @@ class _LeaderboardState extends State<Leaderboard> {
             // barcodeString = "Coupon Expired";
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Coupon Expired!")));
           }
-        });
+        // });
             }
         on PlatformException catch (e) {
         print( e.stacktrace);
@@ -103,10 +103,6 @@ class _LeaderboardState extends State<Leaderboard> {
 
   @override
   Widget build(BuildContext context) {
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-        MediaQuery.of(context).size.height < 400)
-        ? 150.0
-        : 300.0;
 
     double height= MediaQuery.of(context).size.height;  double width= MediaQuery.of(context).size.width;double threshold = 100;
     Users users = Users.us;

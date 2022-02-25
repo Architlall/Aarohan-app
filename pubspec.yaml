@@ -29,7 +29,9 @@ dependencies:
   provider: ^6.0.2
   flutter_signin_button:
   sizer:
+  cached_network_image:
   googleapis:
+  flutter_inappwebview:
   share_plus:
 #  qr_code_scanner:
   googleapis_auth:
@@ -44,6 +46,7 @@ dependencies:
   photo_view:
   google_maps_flutter: 
   shared_preferences:
+  permission_handler: 
   flutter_launcher_icons:
   flutter_neumorphic:
   http:

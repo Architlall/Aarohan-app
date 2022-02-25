@@ -8,6 +8,7 @@ import 'package:from_css_color/from_css_color.dart';
 import 'package:provider/provider.dart';
 import 'package:aarohan_app/models/contributor.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Contributors extends StatefulWidget {
 
@@ -124,17 +125,35 @@ class _ContributorsState extends State<Contributors> {
                                     width: 45.w,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.only(topRight: Radius.circular(7.sp),topLeft:Radius.circular(7.sp) ),
-                                      image: DecorationImage(
-                                        image: (contributorItems==null || contributorItems.length==0)?AssetImage(
-                                            'assets/baby_enderman.png',
 
-                                        ):NetworkImage(
-                                          '${contributorItems[index].imageUrl}',
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.only(topRight: Radius.circular(7.sp),topLeft:Radius.circular(7.sp) ),
+                                      child: CachedNetworkImage(imageUrl: contributorItems[index].imageUrl, fit: BoxFit.cover,
+                                        height: 20.h,
+                                        width: 45.w,
+                                        errorWidget: (context, url, error) {
+                                          print("Could not load content");
+                                          return ClipRRect(
+                                            borderRadius: BorderRadius.only(topRight: Radius.circular(7.sp),topLeft:Radius.circular(7.sp) ),
 
+                                            child: Image.asset("assets/placeholder.jpg",
+
+                                                height: 20.h,
+                                                width: 45.w,
+                                                fit: BoxFit.cover),
+                                          );
+                                        },
+                                        placeholder: (context, url) => ClipRRect(
+                                          borderRadius: BorderRadius.only(topRight: Radius.circular(7.sp),topLeft:Radius.circular(7.sp) ),
+                                          child: Image.asset(
+                                              "assets/placeholder.jpg",
+
+                                              height: 20.h,
+                                              width: 45.w,
+                                              fit: BoxFit.cover),
                                         ),
-                                        fit: BoxFit.cover
-
-                                      )
+                                      ),
                                     ),
 
                                     // child: Image(

@@ -13,7 +13,7 @@ class Loader extends StatelessWidget {
           image:AssetImage(
             'assets/arhn-loader-per-1.gif',
           ),
-          fit: BoxFit.fill
+          fit: BoxFit.cover
         )
       ),
 

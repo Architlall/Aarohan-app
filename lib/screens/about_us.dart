@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:aarohan_app/widgets/menu_widget.dart';
+import 'package:flutter/services.dart';
 
 class About extends StatefulWidget {
   @override
@@ -104,7 +105,7 @@ class _AboutState extends State<About> {
                              child: ListView(
                                children: [
                                  Text(
-                                   "Aarohan is the Annual Techno-Management fest of NIT Durgapur, the 2nd Largest of its kind in the whole of eastern India. Started in the year 2003, it has been leading the light of instilling a culture of science, technology and innovation among the youth of the nation. With more than 40 events covering all genres of technology and management, Aarohan brings some of the best solutions for mankind to the fore. Numerous workshops and lectures are organised, thus introducing the students to new vistas in the field of technologyMany great personalities, the likes of Dr. Sunil Handa, Professor at IIM-A and Founder of The Eklavya Foundation, Mr. Irfan Alam, founder of The Samman Foundation, Mr. R. Sriram, founder of CROSSWORD and Sramana Mitra, entrepreneur and strategy consultant at MIT have graced Aarohan with their enlightening presence.Under the patronage of CEE, SAYEN and Digital India, the upcoming 19th edition of Aarohan is going to be held virtually from 1-4th April 2021.",
+                                   "The National Institute of Technology, Durgapur has been a premier educational institute nurturing students who have achieved par excellence in the field ofacademics and extra-curricular activities.\nAarohan is the Annual Techno-management fest of NIT Durgapur, the 2nd Largest of its kind in the whole of eastern India. Organised by Team Aavishkar,comprising the five biggest technical clubs of NIT Durgapur, this festival hasnever failed to uphold the banner of talent, innovation and a sense of responsibility.\nWith more than 50 events on varied domains, Aarohan is the biggest platform of our college that inculcates a sense of knowledge, science and technology- the building blocks for the future pillars of our nation.",
                                    style: TextStyle(
                                        color: Colors.white, letterSpacing: 1.1,
                                        fontFamily: 'Poppins',

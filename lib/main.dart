@@ -23,12 +23,18 @@ import 'package:aarohan_app/screens/contact.dart';
 import 'package:aarohan_app/screens/coming_soon.dart';
 import 'package:aarohan_app/screens/scoreboard.dart';
 import 'package:aarohan_app/models/coming_soon.dart';
+import 'package:aarohan_app/screens/prelims.dart';
+import 'package:aarohan_app/models/prelim.dart';
+import 'package:aarohan_app/screens/ar.dart';
+import 'package:flutter/services.dart';
+
 
 
 
 Future main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp();
   runApp(MultiProvider(
     providers: [
@@ -38,13 +44,14 @@ Future main() async {
           create: (_) => FirebaseService().scheduleListStream(), initialData: []),
       StreamProvider<List<ContributorItem>>(
           create: (_) => FirebaseService().contributorStream(), initialData: []),
-
       StreamProvider<List<SponsorItem>>(
           create: (_) => FirebaseService().sponsorStream(), initialData: []),
       StreamProvider<List<ContactItem>>(
           create: (_) => FirebaseService().contactStream(), initialData: []),
       StreamProvider<List<ComingItem>>(
           create: (_) => FirebaseService().comingListStream(), initialData: []),
+      StreamProvider<List<PrelimItem>>(
+          create: (_) => FirebaseService().prelimStream(), initialData: []),
     ],
     child: MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -62,7 +69,9 @@ Future main() async {
         '/game': (context) => MyHomePage("Dino Game"),
         '/journo': (context) => Interfecio(),
         '/scoreboard':(context) => Scoreboard(),
-        '/transaction':(context) => Transaction()
+        '/transaction':(context) => Transaction(),
+        '/prelims':(context) => Prelims(),
+        '/ar':(context) => AR()
 
       },
     ),

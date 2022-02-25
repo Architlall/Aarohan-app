@@ -1,4 +1,5 @@
 import 'package:aarohan_app/screens/loader_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -512,12 +513,33 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                                         height: 40.h,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(10.sp),
-                                          image:  DecorationImage(
-                                              fit: BoxFit.cover,
-                                           image: NetworkImage(
-                                             '${arr[index].imageUrl}',
-                                           )
-                                          )
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(10.sp),
+                                          child: CachedNetworkImage(
+                                            // height: 100,
+                                            // width: 120,
+                                            fit: BoxFit.cover,
+                                            errorWidget: (context, url, error) {
+                                              print("Could not load content");
+                                              return ClipRRect(
+                                                borderRadius: BorderRadius.circular(10.sp),
+                                                child: Image.asset("assets/placeholder.jpg",
+
+                                                    height: 40.h,
+                                                    fit: BoxFit.cover),
+                                              );
+                                            },
+                                            placeholder: (context, url) => ClipRRect(
+                                              borderRadius: BorderRadius.circular(10.sp),
+                                              child: Image.asset(
+                                                  "assets/placeholder.jpg",
+
+                                                  height: 40.h,
+                                                  fit: BoxFit.cover),
+                                            ),
+                                            imageUrl: arr[index].imageUrl,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -573,12 +595,30 @@ class _DashboardState extends State<Dashboard>  with TickerProviderStateMixin {
                                               width: 23.w,
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.sp),topLeft: Radius.circular(15.sp)),
-                                                image: DecorationImage(
-                                                  fit: BoxFit.fill,
-                                                  image: NetworkImage(
-                                                      _foundUsers[index].imageUrl.toString()
-                                                  )
-                                                )
+
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.sp),topLeft: Radius.circular(15.sp)),
+                                                child: CachedNetworkImage(imageUrl: _foundUsers[index].imageUrl,width: 23.w,fit: BoxFit.cover,height: 23.w,
+                                                  errorWidget: (context, url, error) {
+                                                    print("Could not load content");
+                                                    return ClipRRect(
+                                                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.sp),topLeft: Radius.circular(15.sp)),
+                                                      child: Image.asset("assets/placeholder.jpg",
+
+                                                          height: 23.w,width: 23.w,
+                                                          fit: BoxFit.cover),
+                                                    );
+                                                  },
+                                                  placeholder: (context, url) => ClipRRect(
+                                                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.sp),topLeft: Radius.circular(15.sp)),
+                                                    child: Image.asset(
+                                                        "assets/placeholder.jpg",
+
+                                                        height: 23.w,width: 23.w,
+                                                        fit: BoxFit.cover),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                             Expanded(

@@ -12,6 +12,7 @@ import 'package:aarohan_app/resources/eurekoin.dart';
 import 'package:aarohan_app/models/coming_soon.dart';
 import 'package:sizer/sizer.dart';
 import 'package:aarohan_app/game/game_start.dart';
+import 'package:permission_handler/permission_handler.dart';
 //
 class MenuWidget extends StatefulWidget {
   bool showBottomMenu;
@@ -293,17 +294,36 @@ class _MenuWidgetState extends State<MenuWidget> {
                               height: height*0.06,width: width*0.11,),
                           ),
                         ),
-                        // InkWell(
-                        //   onTap: (){
-                        //     if(ModalRoute.of(context).settings.name!='/')
-                        //       Navigator.popAndPushNamed(context, '/scoreboard');
-                        //     else
-                        //       Navigator.pushNamed(context, '/scoreboard');
-                        //   },
-                        //   child: Container(child:
-                        //   Image.asset('assets/leaderboard.png'),
-                        //     height: height*0.06,width: width*0.11,),
-                        // ),
+                        Tooltip(
+                          padding: EdgeInsets.zero,
+                          height: 1.h,
+                          message: "Prelims",
+                          decoration: BoxDecoration(
+                              color: Colors.transparent
+                          ),
+                          textStyle: TextStyle(
+                              color: Colors.white
+                          ),
+                          child: InkWell(
+                            onTap: (){
+                              if(comingItems.length!=0 && comingItems[comingItems.indexWhere((element) => element.title=='Prelims')].flag==false){
+                                if(ModalRoute.of(context).settings.name!='/')
+                                  Navigator.popAndPushNamed(context, '/prelims');
+                                else
+                                  Navigator.pushNamed(context, '/prelims');
+                              }
+                              else{
+                                if(ModalRoute.of(context).settings.name!='/')
+                                  Navigator.popAndPushNamed(context, '/coming');
+                                else
+                                  Navigator.pushNamed(context, '/coming');
+                              }
+                            },
+                            child: Container(child:
+                            Image.asset('assets/prelims.png'),
+                              height: height*0.06,width: width*0.14,),
+                          ),
+                        ),
                         Tooltip(
                           padding: EdgeInsets.zero,
                           height: 1.h,
@@ -375,18 +395,20 @@ class _MenuWidgetState extends State<MenuWidget> {
                           ),
                           child: InkWell(
                             onTap: (){
-                              if(comingItems.length!=0 && comingItems[0].flag==false){
-                                if(ModalRoute.of(context).settings.name!='/')
-                                  Navigator.popAndPushNamed(context, '/coming');
-                                else
-                                  Navigator.pushNamed(context, '/coming');
-                              }
-                              else{
-                                if(ModalRoute.of(context).settings.name!='/')
-                                  Navigator.popAndPushNamed(context, '/coming');
-                                else
-                                  Navigator.pushNamed(context, '/coming');
-                              }
+                              Permission.camera.request().whenComplete(() {
+                                if(comingItems.length!=0 && comingItems[comingItems.indexWhere((element) => element.title=='AR')].flag==false){
+                                  if(ModalRoute.of(context).settings.name!='/')
+                                    Navigator.popAndPushNamed(context, '/ar');
+                                  else
+                                    Navigator.pushNamed(context, '/ar');
+                                }
+                                else{
+                                  if(ModalRoute.of(context).settings.name!='/')
+                                    Navigator.popAndPushNamed(context, '/coming');
+                                  else
+                                    Navigator.pushNamed(context, '/coming');
+                                }
+                              });
                             },
                             child: Container(child:
                             Image.asset('assets/ar.png',fit: BoxFit.fill,),
@@ -406,7 +428,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                           ),
                           child: InkWell(
                             onTap: (){
-                             if(comingItems.length!=0 && comingItems[1].flag==false){
+                             if(comingItems.length!=0 && comingItems[comingItems.indexWhere((element) => element.title=='Journo Detective')].flag==false){
                                if(ModalRoute.of(context).settings.name!='/')
                                  Navigator.popAndPushNamed(context, '/journo');
                                else

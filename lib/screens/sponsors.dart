@@ -6,6 +6,7 @@ import 'dart:ui';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:provider/provider.dart';
 import 'package:aarohan_app/models/sponsor.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Sponsors extends StatefulWidget {
 
@@ -116,11 +117,30 @@ class _SponsorsState extends State<Sponsors> {
                                         color: fromCssColor('#E2F5FF').withOpacity(0.4),
                                         border: Border.all(color: Colors.white, width: 1),
                                         borderRadius: BorderRadius.circular(7.sp),
-                                        image: DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: NetworkImage(sponsorItems[index].imageUrl),
-                                        ),
                                       ),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(7.sp),
+                                          child: CachedNetworkImage(imageUrl: sponsorItems[index].imageUrl, fit: BoxFit.fill,
+                                            errorWidget: (context, url, error) {
+                                              print("Could not load content");
+                                              return ClipRRect(
+                                                borderRadius: BorderRadius.circular(7.sp),
+                                                child: Image.asset("assets/placeholder.jpg",
+
+                                                    // height: 60.h,width: 100.w,
+                                                    fit: BoxFit.cover),
+                                              );
+                                            },
+                                            placeholder: (context, url) => ClipRRect(
+                                              borderRadius: BorderRadius.circular(7.sp),
+                                              child: Image.asset(
+                                                  "assets/placeholder.jpg",
+
+                                                  // height: 60.h,width: 100.w,
+                                                  fit: BoxFit.cover),
+                                            ),
+                                          ),
+                                        ),
                                     ),
                                   ),
                                 ),
