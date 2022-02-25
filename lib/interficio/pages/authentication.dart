@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,6 +30,11 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   @override
+  void initState() {
+    getBackgroundImageUrl();
+    super.initState();
+  }
+
   final Map<String, dynamic> _loginFormData = {
     "username": null,
     "password": null,
@@ -51,6 +58,23 @@ class _AuthPageState extends State<AuthPage> {
   final _formKey = GlobalKey<FormState>();
 
   final _passwordTextController = TextEditingController();
+
+  String backgroundImageUrl = 'null';
+
+  Future<void> getBackgroundImageUrl() async {
+    setState(() {
+      _isLoading = true;
+    });
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+        await FirebaseFirestore.instance
+            .collection('JournoImg')
+            .doc('backgroundImage')
+            .get();
+    backgroundImageUrl = "${documentSnapshot.data()['imageUrl']}";
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   Future userLogin(final Map<String, dynamic> user) async {
     setState(() {
@@ -306,13 +330,6 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  DecorationImage _buildBackgroundImage() {
-    return const DecorationImage(
-      fit: BoxFit.cover,
-      image: AssetImage('assets/JournoDetective.jpg'),
-    );
-  }
-
   void _submitForm(final Map<String, dynamic> user) async {
     if (!_formKey.currentState.validate()) {
       return;
@@ -329,86 +346,89 @@ class _AuthPageState extends State<AuthPage> {
 
     return Scaffold(
       key: _scaffoldKey,
-      body: Container(
-        decoration: BoxDecoration(
-          image: _buildBackgroundImage(),
-        ),
-        padding: EdgeInsets.all(10.0),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Container(
-              width: _targetWidth,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    // Text(
-                    //   "JOURNO   DETECTIVE",
-                    //   style: GoogleFonts.yanoneKaffeesatz(
-                    //       fontSize: 53,
-                    //       color: Colors.white,
-                    //       fontWeight: FontWeight.bold),
-                    // ),
-                    SizedBox(
-                        height: _authmode == AuthMode.login
-                            ? MediaQuery.of(context).size.height / 6
-                            : 0),
-                    _authmode == AuthMode.login
-                        ? Container()
-                        : _nameTextField(),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    _authmode == AuthMode.login
-                        ? Container()
-                        : _emailTextField(),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    _usernameTextField(),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    _passwordTextField(),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          FlatButton(
-                            child: Text(
-                              'switch to ${_authmode == AuthMode.login ? 'register' : 'login'}',
-                              style: TextStyle(color: Colors.white),
+      body: CachedNetworkImage(
+        imageUrl: backgroundImageUrl,
+        imageBuilder: (context, imageProvider) => Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(fit: BoxFit.cover, image: imageProvider),
+          ),
+          padding: EdgeInsets.all(10.0),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Container(
+                width: _targetWidth,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      // Text(
+                      //   "JOURNO   DETECTIVE",
+                      //   style: GoogleFonts.yanoneKaffeesatz(
+                      //       fontSize: 53,
+                      //       color: Colors.white,
+                      //       fontWeight: FontWeight.bold),
+                      // ),
+                      SizedBox(
+                          height: _authmode == AuthMode.login
+                              ? MediaQuery.of(context).size.height / 6
+                              : 0),
+                      _authmode == AuthMode.login
+                          ? Container()
+                          : _nameTextField(),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      _authmode == AuthMode.login
+                          ? Container()
+                          : _emailTextField(),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      _usernameTextField(),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      _passwordTextField(),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            FlatButton(
+                              child: Text(
+                                'switch to ${_authmode == AuthMode.login ? 'register' : 'login'}',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _authmode = _authmode == AuthMode.login
+                                      ? AuthMode.register
+                                      : AuthMode.login;
+                                });
+                              },
                             ),
-                            onPressed: () {
-                              setState(() {
-                                _authmode = _authmode == AuthMode.login
-                                    ? AuthMode.register
-                                    : AuthMode.login;
-                              });
-                            },
-                          ),
-                          _isLoading
-                              ? Container(
-                                  padding: EdgeInsets.only(right: 20),
-                                  child: CircularProgressIndicator(
-                                    backgroundColor: Colors.red,
-                                  ))
-                              : FlatButton(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                            _isLoading
+                                ? Container(
+                                    padding: EdgeInsets.only(right: 20),
+                                    child: CircularProgressIndicator(
+                                      backgroundColor: Colors.red,
+                                    ))
+                                : FlatButton(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    color: Colors.white.withOpacity(0.3),
+                                    splashColor: Theme.of(context).accentColor,
+                                    child: Text(
+                                      '${_authmode == AuthMode.login ? 'LOGIN' : 'REGISTER'}',
+                                      style: TextStyle(fontSize: 15.0),
+                                    ),
+                                    onPressed: () => _submitForm(user),
                                   ),
-                                  color: Colors.white.withOpacity(0.3),
-                                  splashColor: Theme.of(context).accentColor,
-                                  child: Text(
-                                    '${_authmode == AuthMode.login ? 'LOGIN' : 'REGISTER'}',
-                                    style: TextStyle(fontSize: 15.0),
-                                  ),
-                                  onPressed: () => _submitForm(user),
-                                ),
-                        ]),
-                  ],
+                          ]),
+                    ],
+                  ),
                 ),
               ),
             ),

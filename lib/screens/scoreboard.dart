@@ -182,31 +182,52 @@ class _ScoreboardState extends State<Scoreboard> {
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
                               height: 60.h,
-                              
                               child: Theme(
-                                 data: Theme.of(context)
-            .copyWith(dialogTheme:DialogTheme(
-                                   backgroundColor: Colors.black
-                                 ),
-                                     iconTheme:IconThemeData(
-                                   color: Colors.white
-                                 ) ,
-                                     textTheme: TextTheme(
-                                   body1: TextStyle(color: Colors.white)
-                                 ),
-                                     cardColor: fromCssColor('#E2F5FF').withOpacity(0.4), dividerColor: Colors.blue[900]),
+                                data: Theme.of(context).copyWith(
+                                    dialogTheme: DialogTheme(
+                                        backgroundColor: Colors.black),
+                                    iconTheme:
+                                        IconThemeData(color: Colors.white),
+                                    textTheme: TextTheme(
+                                        bodyText1:
+                                            TextStyle(color: Colors.white)),
+                                    cardColor: fromCssColor('#E2F5FF')
+                                        .withOpacity(0.4),
+                                    dividerColor: Colors.blue[900]),
                                 child: ListView(
                                   children: [
                                     PaginatedDataTable(
-                                      header: Text('Header', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
+                                      header: Text('Header',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500)),
                                       columns: [
-                                        DataColumn(label: Text('col1',style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400))),
-                                        DataColumn(label: Text('col2',style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400))),
-                                        DataColumn(label: Text('col3',style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400))),
-                                        DataColumn(label: Text('col4',style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400)))
+                                        DataColumn(
+                                            label: Text('col1',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.w400))),
+                                        DataColumn(
+                                            label: Text('col2',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.w400))),
+                                        DataColumn(
+                                            label: Text('col3',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.w400))),
+                                        DataColumn(
+                                            label: Text('col4',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.w400)))
                                       ],
                                       source: dts,
-
                                       onRowsPerPageChanged: (r) {
                                         setState(() {
                                           _rowPerPage = r;
@@ -237,32 +258,36 @@ class _ScoreboardState extends State<Scoreboard> {
   }
 }
 
- Future<dynamic> getctfScoreData() async {
-    String apiUrl = "https://foobar.nitdgplug.org/api/scoreboard";
-    http.Response response = await http.get(Uri.parse(apiUrl));
-    return response.body;
-  }
+Future<dynamic> getctfScoreData() async {
+  String apiUrl = "https://foobar.nitdgplug.org/api/scoreboard";
+  http.Response response = await http.get(Uri.parse(apiUrl));
+  return response.body;
+}
 
-  Future<dynamic> getdigitalfortressScoreData() async {
-    String apiUrl = "https://df.nitdgplug.org/api/scoreboard";
-    http.Response response = await http.get(Uri.parse(apiUrl));
-    return response.body;
-  }
+Future<dynamic> getdigitalfortressScoreData() async {
+  String apiUrl = "https://df.nitdgplug.org/api/scoreboard";
+  http.Response response = await http.get(Uri.parse(apiUrl));
+  return response.body;
+}
 
-  Future<dynamic> getfreemexScoreData() async {
-    String apiUrl = "https://freemex.nitdgplug.org/api/scoreboard";
-    http.Response response = await http.get(Uri.parse(apiUrl));
-    return response.body;
-  }
+Future<dynamic> getfreemexScoreData() async {
+  String apiUrl = "https://freemex.nitdgplug.org/api/scoreboard";
+  http.Response response = await http.get(Uri.parse(apiUrl));
+  return response.body;
+}
 
 class DTS extends DataTableSource {
   @override
   DataRow getRow(int index) {
     return DataRow.byIndex(index: index, cells: [
-      DataCell(Text("#cel1$index",style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300))),
-      DataCell(Text("#cel2$index",style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300))),
-      DataCell(Text("#cel3$index",style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300))),
-      DataCell(Text("#cel4$index",style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300))),
+      DataCell(Text("#cel1$index",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300))),
+      DataCell(Text("#cel2$index",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300))),
+      DataCell(Text("#cel3$index",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300))),
+      DataCell(Text("#cel4$index",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300))),
     ]);
   }
 

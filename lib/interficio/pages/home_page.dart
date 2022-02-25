@@ -1659,19 +1659,19 @@ class _HomePageState extends State<HomePage>
                                       (BuildContext context, int index) {
                                     if (index == 0) {
                                       return Center(
-                                      child: FittedBox(
-                                        child: Text(
-                                          "LEADERBOARD",
-                                          style: TextStyle(
-                                            fontFamily: "Gotham",
-                                            fontSize: 36.0,
-                                            color: _isUp
-                                                ? Colors.white
-                                                : const Color(0xFFFF9e02),
-                                            fontWeight: FontWeight.bold,
+                                        child: FittedBox(
+                                          child: Text(
+                                            "LEADERBOARD",
+                                            style: TextStyle(
+                                              fontFamily: "Gotham",
+                                              fontSize: 36.0,
+                                              color: _isUp
+                                                  ? Colors.white
+                                                  : const Color(0xFFFF9e02),
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
-                                      ),
                                       );
                                     } else if (index == 1) {
                                       return Padding(
