@@ -133,6 +133,10 @@ flutter:
       fonts:
        - asset: fonts/LEMONMILK-Bold.otf
 
+    - family: Norwester
+      fonts:
+        - asset: fonts/Norwester.otf
+
 
   #   - family: Trajan Pro
   #     fonts:

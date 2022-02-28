@@ -2,8 +2,10 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:location/location.dart';
@@ -77,6 +79,15 @@ class _HomePageState extends State<HomePage>
   //     },
   //   );
   // }
+
+  String getSpaces(int index) {
+    int noOfSpaces = 2 - (((index / 10).toInt() > 0) ? 2 : 0);
+    String spaces = "";
+    for (int i = 0; i < noOfSpaces; i++) {
+      spaces += " ";
+    }
+    return spaces;
+  }
 
 //this function retrieves the data of the current level of the user
   Future getLevelData() async {
@@ -246,7 +257,7 @@ class _HomePageState extends State<HomePage>
                   backgroundColor: Colors.white.withOpacity(0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFF9e02),
+                      color: const Color(0xFF6f2603),
                       borderRadius: BorderRadius.circular(30),
                     ),
                     padding: const EdgeInsets.all(15),
@@ -565,7 +576,7 @@ class _HomePageState extends State<HomePage>
                                                               decoration:
                                                                   BoxDecoration(
                                                                 color: const Color(
-                                                                    0xFFFF9e02),
+                                                                    0xFF6f2603),
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .circular(
@@ -585,13 +596,15 @@ class _HomePageState extends State<HomePage>
                                                                     Widget>[
                                                                   const Text(
                                                                     "Are you sure you want to unlock this clue?",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            20,
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontFamily:
-                                                                            "Gotham"),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          20,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontFamily:
+                                                                          "Montserrat",
+                                                                    ),
                                                                   ),
                                                                   ButtonBar(
                                                                     children: <
@@ -672,7 +685,7 @@ class _HomePageState extends State<HomePage>
                                                             [2] !=
                                                         null
                                                     ? Color(0xFF03A062)
-                                                    : Color(0xFFdb1896)),
+                                                    : Color(0xFFe1bc9c)),
                                           ),
                                           title: clueData["data"][index][2] !=
                                                   null
@@ -688,10 +701,9 @@ class _HomePageState extends State<HomePage>
                                                                     [2] !=
                                                                 null
                                                             ? Color(0xFF03A062)
-                                                            : Color(0xFFdb1896),
+                                                            : Color(0xFFe1bc9c),
                                                         fontSize: 20.0,
-                                                        fontFamily:
-                                                            'Montserrat',
+                                                        fontFamily: 'Norwester',
                                                       ),
                                                     ),
                                                     Text(
@@ -759,11 +771,12 @@ class _HomePageState extends State<HomePage>
                                               : Text(
                                                   clueData["data"][index][1],
                                                   style: TextStyle(
+                                                      fontFamily: 'Norwester',
                                                       color: clueData["data"]
                                                                   [index][2] !=
                                                               null
                                                           ? Color(0xFF03A062)
-                                                          : Color(0xFFdb1896),
+                                                          : Color(0xFFe1bc9c),
                                                       fontSize: 20),
                                                 ),
                                         ),
@@ -845,9 +858,9 @@ class _HomePageState extends State<HomePage>
                                                         [index][2] !=
                                                     null
                                                 ? Color(0xFF03A062)
-                                                : Color(0xFFdb1896),
+                                                : Color(0xFFe1bc9c),
                                             fontSize: 20,
-                                            fontFamily: 'Montserrat'),
+                                            fontFamily: 'Norwester'),
                                       ),
                                       Text(
                                         "${unlockedClueData["data"][index][2]}",
@@ -923,12 +936,11 @@ class _HomePageState extends State<HomePage>
     var deviceSize = MediaQuery.of(context).size;
 
 //animation using animatedpositioned. mean position toggle values
-    double bottom = _isUp ? 65.0 : (deviceSize.height / 2);
+    double bottom = _isUp ? 30.0 : (deviceSize.height / 2);
     double top = _isUp
-        ? (_isOpen ? deviceSize.height / 4 : (deviceSize.height * 3 / 4))
+        ? (_isOpen ? deviceSize.height / 4 : (deviceSize.height * 7 / 9))
         : bottom;
-    double top2 =
-        _isUp ? (deviceSize.height - 90) : ((deviceSize.height) / 2) + 10;
+    double top2 = _isUp ? (deviceSize.height) : ((deviceSize.height) / 2) + 10;
     var bottom3 = _isUp ? deviceSize.height : ((deviceSize.height) / 2) + 10;
     var bottom4 = _isUp ? 10.0 : deviceSize.height - 110;
     var right4 = 20.0;
@@ -954,9 +966,9 @@ class _HomePageState extends State<HomePage>
                             child: Text(
                               "The Mystery",
                               style: TextStyle(
-                                  fontFamily: 'Mysterious',
+                                  fontFamily: 'Gotham',
                                   color: Color(0xFFFF9e02),
-                                  fontSize: 50),
+                                  fontSize: 35),
                             ),
                           ),
                           const SizedBox(
@@ -964,19 +976,25 @@ class _HomePageState extends State<HomePage>
                           ),
                           Text(
                             mainQues["data"],
-                            style: TextStyle(color: Colors.white, fontSize: 27),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Montserrat',
+                              fontSize: 18,
+                            ),
                           ),
                           const SizedBox(
                             height: 30,
                           ),
                           FlatButton(
                             padding: const EdgeInsets.symmetric(vertical: 10.0),
-                            color: const Color(0xFF03A062),
+                            color: const Color(0xFFFF9e02),
                             child: const Text(
-                              "Proceed",
+                              "PROCEED",
                               style: TextStyle(
-                                fontFamily: 'Mysterious',
+                                fontFamily: 'Norwester',
                                 fontSize: 25.0,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             onPressed: () {
@@ -1090,7 +1108,7 @@ class _HomePageState extends State<HomePage>
                             child: Container(
                               padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
-                                color: Color(0xFF420000).withOpacity(0.9),
+                                color: Color(0xFF410000).withOpacity(0.99),
                                 // boxShadow: [
                                 //   BoxShadow(
                                 //       color: Colors.black.withOpacity(0.5),
@@ -1130,11 +1148,11 @@ class _HomePageState extends State<HomePage>
                                       height: 15,
                                     ),
                                     Text(
-                                      "The rules of Journo Detective are as follows: \n\n\n 1) Participants need to solve a murder mystery with the help of an available storyline and clues provided to them.\n\n 2) Each level comprises of a clue to the next location at which the participant can move to the next level.\n\n 3) The location can be selected by tapping on the corresponding region on the map, following which a Marker is placed there. Once the Marker is placed, click on submit. If you are at the right location, you progress to the next level.\n\n 4) At every level, there will be a set of clues. You can unlock clues as you desire at a particular location.\n\n 5) A clue that has not been unlocked cannot be unlocked once you pass that level.\n\n 6) The final level requires you to write the name of the criminal with a justification for the same.\n\n 7) The dynamic scoreboard will be based on the level a participant is at and the time he/she takes to reach there.\n\n 8) The final standing will be subjected to three parameters: The correct answer and justification, time taken and number of clues unlocked to come to a conclusion.",
+                                      "The rules of Journo Detective are as follows: \n\n\n 1) Participants need to solve a murder mystery with the help of an available storyline and clues provided to them.\n\n 2) Each level comprises of a clue to the identity of the killer, after which participant can move to the next level.\n\n 3) The location can be selected by dragging on the corresponding region on the map, following which a Marker is placed there. Once the Marker is placed, click on submit. If you are at the right location, you progress to the next level.\n\n 4) At every level, there will be a set of clues. You can unlock clues as you desire at a particular location.\n\n  5) The final level requires you to write the name of the criminal with a justification for the same.\n\n 6) The dynamic scoreboard will be based on the level a participant is at and the time he/she takes to reach there.\n\n 7) The final standing will be subjected to three parameters: The correct answer and justification, time taken and number of clues unlocked to come to a conclusion.",
                                       style: TextStyle(
                                         fontSize: 17,
                                         fontFamily: "Montserrat",
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                     const SizedBox(
@@ -1383,7 +1401,7 @@ class _HomePageState extends State<HomePage>
                                               Container(
                                                 decoration: BoxDecoration(
                                                   color:
-                                                      const Color(0xFFFF9e02),
+                                                      const Color(0x3FFF9e02),
                                                   borderRadius:
                                                       BorderRadius.circular(20),
                                                 ),
@@ -1403,7 +1421,6 @@ class _HomePageState extends State<HomePage>
                                                         : Colors.white,
                                                     fontSize: 17,
                                                     fontFamily: 'Montserrat',
-                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
                                               ),
@@ -1609,111 +1626,97 @@ class _HomePageState extends State<HomePage>
                             duration: const Duration(milliseconds: 900),
                             curve: Curves.easeOutQuart,
                             opacity: _isUp ? 0.8 : 1,
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  print("leader");
-                                  _isUp = !_isUp;
-                                  getScoreboard();
-                                });
-                              },
-                              onVerticalDragStart: (context) {
-                                setState(() {
-                                  print("leader");
-                                  _isUp = !_isUp;
-                                  getScoreboard();
-                                });
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 20),
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black.withOpacity(0.5),
-                                        offset: Offset.zero,
-                                        blurRadius: 10,
-                                        spreadRadius: 5),
-                                  ],
-                                  color:
-                                      const Color(0xFF420000).withOpacity(0.7),
-                                  // gradient: LinearGradient(
-                                  //   begin: Alignment.topCenter,
-                                  //   end: Alignment.bottomCenter,
-                                  //   stops: [0.3, 1.0],
-                                  //   // Color(0xFFa94064).withOpacity(0.8),
-                                  //   // Color(0xFF191970).withOpacity(0.7)
-                                  //   // Color(0xFF0091FF), Color(0xFF0059FF)
-                                  //   colors: [
-                                  //     Color(0xFF191970),
-                                  //     Color(0xFFa94064),
-                                  //   ],
-                                  // ),
-                                  borderRadius: BorderRadius.circular(17),
-                                ),
-                                child: ListView.builder(
-                                  itemCount: leaderboard == null
-                                      ? 0
-                                      : leaderboard.length + 2,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    if (index == 0) {
-                                      return Center(
-                                        child: FittedBox(
-                                          child: Text(
-                                            "LEADERBOARD",
-                                            style: TextStyle(
-                                              fontFamily: "Gotham",
-                                              fontSize: 36.0,
-                                              color: _isUp
-                                                  ? Colors.white
-                                                  : const Color(0xFFFF9e02),
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 20),
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.black.withOpacity(0.5),
+                                      offset: Offset.zero,
+                                      blurRadius: 10,
+                                      spreadRadius: 5),
+                                ],
+                                color: const Color(0xFF420000).withOpacity(0.7),
+                                // gradient: LinearGradient(
+                                //   begin: Alignment.topCenter,
+                                //   end: Alignment.bottomCenter,
+                                //   stops: [0.3, 1.0],
+                                //   // Color(0xFFa94064).withOpacity(0.8),
+                                //   // Color(0xFF191970).withOpacity(0.7)
+                                //   // Color(0xFF0091FF), Color(0xFF0059FF)
+                                //   colors: [
+                                //     Color(0xFF191970),
+                                //     Color(0xFFa94064),
+                                //   ],
+                                // ),
+                                borderRadius: BorderRadius.circular(17),
+                              ),
+                              child: ListView.builder(
+                                itemCount: leaderboard == null
+                                    ? 0
+                                    : leaderboard.length + 2,
+                                itemBuilder: (BuildContext context, int index) {
+                                  if (index == 0) {
+                                    return Center(
+                                      child: FittedBox(
+                                        child: Text(
+                                          "LEADERBOARD",
+                                          style: TextStyle(
+                                            fontFamily: "Gotham",
+                                            fontSize: 36.0,
+                                            color: _isUp
+                                                ? Colors.white
+                                                : const Color(0xFFFF9e02),
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                      );
-                                    } else if (index == 1) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: const <Widget>[
-                                            // SizedBox(width: 40),
-                                            Text(
-                                              "NAME",
-                                              style: TextStyle(
-                                                  fontFamily: 'Gotham',
-                                                  fontSize: 23,
-                                                  color: Color(0xFFdb1896)),
-                                            ),
-                                            Text(
-                                              "LEVEL",
-                                              style: TextStyle(
-                                                  fontFamily: 'Gotham',
-                                                  fontSize: 23,
-                                                  color: Color(0xFFdb1896)),
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    } else {
-                                      return Row(
+                                      ),
+                                    );
+                                  } else if (index == 1) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10.0),
+                                      child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Row(
+                                        children: const <Widget>[
+                                          // SizedBox(width: 40),
+
+                                          Text(
+                                            "NAME",
+                                            style: TextStyle(
+                                                fontFamily: 'Gotham',
+                                                fontSize: 23,
+                                                color: Color(0xFFe1bc9c)),
+                                          ),
+                                          Text(
+                                            "LEVEL",
+                                            style: TextStyle(
+                                                fontFamily: 'Gotham',
+                                                fontSize: 23,
+                                                color: Color(0xFFe1bc9c)),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  } else {
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        FittedBox(
+                                          child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: <Widget>[
                                               Text(
-                                                "${index - 1}.",
+                                                "${index - 1}." +
+                                                    getSpaces(index - 1),
                                                 style: TextStyle(
-                                                    fontSize: 23,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                  fontSize: 23,
+                                                  fontFamily: 'Bebas',
+                                                ),
                                               ),
                                               const SizedBox(
                                                 width: 20,
@@ -1721,24 +1724,24 @@ class _HomePageState extends State<HomePage>
                                               Text(
                                                 leaderboard[index - 2]["name"],
                                                 style: TextStyle(
-                                                    fontSize: 23,
-                                                    fontFamily: "GLITCH",
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                  fontSize: 23,
+                                                  fontFamily: "Bebas",
+                                                ),
                                               ),
                                             ],
                                           ),
-                                          Text(
-                                            "${leaderboard[index - 2]["current_level"]}",
-                                            style: TextStyle(
-                                                fontSize: 23,
-                                                fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "${leaderboard[index - 2]["current_level"]}         ",
+                                          style: TextStyle(
+                                            fontSize: 23,
+                                            fontFamily: 'Bebas',
                                           ),
-                                        ],
-                                      );
-                                    }
-                                  },
-                                ),
+                                        ),
+                                      ],
+                                    );
+                                  }
+                                },
                               ),
                             ),
                           ),
@@ -1808,7 +1811,7 @@ class _HomePageState extends State<HomePage>
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8.0, vertical: 2.5),
                             decoration: BoxDecoration(
-                              color: Color(0xFF420000).withOpacity(0.5),
+                              color: Color(0xFF420000).withOpacity(0.7),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             // height: 100.0,
@@ -1947,7 +1950,7 @@ class _GameMapState extends State<GameMap> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(
                   0.15 * MediaQuery.of(context).size.width),
-              color: Color(0xFF420000).withOpacity(0.5),
+              color: Color(0xFF420000).withOpacity(0.7),
             ),
             child: Center(
               child: FittedBox(
@@ -1981,7 +1984,7 @@ class _GameMapState extends State<GameMap> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
                     0.15 * MediaQuery.of(context).size.width),
-                color: Color(0xFF420000).withOpacity(0.5),
+                color: Color(0xFF420000).withOpacity(0.7),
               ),
               child: const Center(
                 child: Text(
