@@ -42,6 +42,8 @@ class _HomePageState extends State<HomePage>
   bool _finalAnswerGiven = false;
   bool _isUp =
       true; //to maintain state of the animation of leaderboard, instruction sheet
+  bool _isUpLeaderBoard = true;
+  bool _isUpInstructions = true;
   List<LatLng> correctLocations = [];
   Map<String, dynamic> levelData = {}; //stores data of current level of user
   Map<String, dynamic> clueData = {};
@@ -187,7 +189,6 @@ class _HomePageState extends State<HomePage>
         ),
       );
       updateMap.value = true;
-      print(correctLocations);
     });
   }
 
@@ -940,8 +941,10 @@ class _HomePageState extends State<HomePage>
     double top = _isUp
         ? (_isOpen ? deviceSize.height / 4 : (deviceSize.height * 7 / 9))
         : bottom;
-    double top2 = _isUp ? (deviceSize.height) : ((deviceSize.height) / 2) + 10;
-    var bottom3 = _isUp ? deviceSize.height : ((deviceSize.height) / 2) + 10;
+    double top2 =
+        _isUpLeaderBoard ? (deviceSize.height) : ((deviceSize.height) / 2) + 10;
+    var bottom3 =
+        _isUpInstructions ? deviceSize.height : ((deviceSize.height) / 2) + 10;
     var bottom4 = _isUp ? 10.0 : deviceSize.height - 110;
     var right4 = 20.0;
 
@@ -1104,7 +1107,7 @@ class _HomePageState extends State<HomePage>
                           child: AnimatedOpacity(
                             duration: const Duration(milliseconds: 900),
                             curve: Curves.easeOutQuart,
-                            opacity: _isUp ? 0.5 : 0.8,
+                            opacity: _isUpInstructions ? 0.5 : 0.8,
                             child: Container(
                               padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
@@ -1625,10 +1628,10 @@ class _HomePageState extends State<HomePage>
                           child: AnimatedOpacity(
                             duration: const Duration(milliseconds: 900),
                             curve: Curves.easeOutQuart,
-                            opacity: _isUp ? 0.8 : 1,
+                            opacity: _isUpLeaderBoard ? 0.8 : 1,
                             child: Container(
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 20),
+                                  vertical: 15, horizontal: 20),
                               decoration: BoxDecoration(
                                 boxShadow: [
                                   BoxShadow(
@@ -1799,40 +1802,49 @@ class _HomePageState extends State<HomePage>
                       Positioned(
                         top: 25.0,
                         right: 15.0,
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              print("he");
-                              _isUp = !_isUp;
-                              getScoreboard();
-                            });
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0, vertical: 2.5),
-                            decoration: BoxDecoration(
-                              color: Color(0xFF420000).withOpacity(0.7),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            // height: 100.0,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                const Icon(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 2.5),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF420000).withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          // height: 100.0,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    print("he");
+                                    _isUpInstructions = !_isUpInstructions;
+                                    getScoreboard();
+                                  });
+                                },
+                                child: Icon(
                                   Icons.info,
                                   color: Colors.white,
                                   size: 40,
                                 ),
-                                const SizedBox(
-                                  height: 20.0,
-                                ),
-                                const Icon(
+                              ),
+                              const SizedBox(
+                                height: 20.0,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    print("he");
+                                    _isUpLeaderBoard = !_isUpLeaderBoard;
+                                    getScoreboard();
+                                  });
+                                },
+                                child: const Icon(
                                   Icons.assessment,
                                   color: Colors.white,
                                   size: 40,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
