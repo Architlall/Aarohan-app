@@ -91,12 +91,11 @@ class _AuthPageState extends State<AuthPage> {
     print(response.body);
     print(data);
     if (data.length == 1) {
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(
-          content: Text("unable to log in with provided credentials"),
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: Duration(seconds: 1),
-        ),
-      );
+          content: Text("Unable to login with provided credentials",style: TextStyle(
+              color: Colors.black
+          ),)));
       setState(
         () {
           _isLoading = false;
@@ -115,12 +114,11 @@ class _AuthPageState extends State<AuthPage> {
       prefs.setString("password", user["password"]);
       prefs.setString("email", user["email"]);
 
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(
-          content: Text("Logged in"),
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: Duration(seconds: 1),
-        ),
-      );
+          content: Text("Logged In!",style: TextStyle(
+              color: Colors.black
+          ),)));
       setState(
         () {
           _isLoading = false;
@@ -141,10 +139,11 @@ class _AuthPageState extends State<AuthPage> {
     var data = json.decode(response.body);
     print(data);
     if (data.length == 1) {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text("a user with that username already exists"),
-        duration: Duration(seconds: 1),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text("A user with that username already exists!",style: TextStyle(
+              color: Colors.black
+          ),)));
       setState(() {
         _isLoading = false;
       });
@@ -158,10 +157,11 @@ class _AuthPageState extends State<AuthPage> {
       prefs.setString("token", user["token"]);
       prefs.setString("password", _registerFormData["password"]);
 
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text("Logged in"),
-        duration: Duration(seconds: 1),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text("Logged in!",style: TextStyle(
+              color: Colors.black
+          ),)));
       setState(() {
         _isLoading = false;
       });
@@ -395,7 +395,20 @@ class _AuthPageState extends State<AuthPage> {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            FlatButton(
+                            // FlatButton(
+                            //   child: Text(
+                            //     'switch to ${_authmode == AuthMode.login ? 'register' : 'login'}',
+                            //     style: TextStyle(color: Colors.white),
+                            //   ),
+                            //   onPressed: () {
+                            //     setState(() {
+                            //       _authmode = _authmode == AuthMode.login
+                            //           ? AuthMode.register
+                            //           : AuthMode.login;
+                            //     });
+                            //   },
+                            // ),
+                            ElevatedButton(
                               child: Text(
                                 'switch to ${_authmode == AuthMode.login ? 'register' : 'login'}',
                                 style: TextStyle(color: Colors.white),
@@ -408,24 +421,41 @@ class _AuthPageState extends State<AuthPage> {
                                 });
                               },
                             ),
+
                             _isLoading
                                 ? Container(
                                     padding: EdgeInsets.only(right: 20),
                                     child: CircularProgressIndicator(
                                       backgroundColor: Colors.red,
                                     ))
-                                : FlatButton(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    color: Colors.white.withOpacity(0.3),
-                                    splashColor: Theme.of(context).accentColor,
-                                    child: Text(
-                                      '${_authmode == AuthMode.login ? 'LOGIN' : 'REGISTER'}',
-                                      style: TextStyle(fontSize: 15.0),
-                                    ),
-                                    onPressed: () => _submitForm(user),
+                                :
+                            // FlatButton(
+                            //         shape: RoundedRectangleBorder(
+                            //           borderRadius: BorderRadius.circular(10),
+                            //         ),
+                            //         color: Colors.white.withOpacity(0.3),
+                            //         splashColor: Theme.of(context).accentColor,
+                            //         child: Text(
+                            //           '${_authmode == AuthMode.login ? 'LOGIN' : 'REGISTER'}',
+                            //           style: TextStyle(fontSize: 15.0),
+                            //         ),
+                            //         onPressed: () => _submitForm(user),
+                            //       ),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
+                                  primary:Colors.white.withOpacity(0.3),
+                                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                  shadowColor: Theme.of(context).accentColor,
+                                ),
+                              child: Text(
+                                '${_authmode == AuthMode.login ? 'LOGIN' : 'REGISTER'}',
+                                style: TextStyle(fontSize: 15.0),
+                              ),
+                              onPressed: () => _submitForm(user),
+                            )
                           ]),
                     ],
                   ),

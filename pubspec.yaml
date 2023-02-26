@@ -26,7 +26,7 @@ dependencies:
   firebase_database:
   firebase_core:
   google_sign_in:
-  provider: ^6.0.2
+  provider:
   flutter_signin_button:
   sizer:
   cached_network_image:

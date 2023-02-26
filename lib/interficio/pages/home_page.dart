@@ -206,12 +206,11 @@ class _HomePageState extends State<HomePage>
     print(response.body);
     finalAns = json.decode(response.body);
     if (finalAns["success"] == false)
-      _scaffoldKey.currentState.showSnackBar(
-        const SnackBar(
-          content: const Text("Answer already submitted once"),
-          duration: const Duration(seconds: 1),
-        ),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text("Answer already submitted once",style: TextStyle(
+              color: Colors.black
+          ),)));
     // else if (finalAns["success"] == true) {
     //   SharedPreferences prefs = await SharedPreferences.getInstance();
     //   prefs.setString("success", "true");
@@ -337,9 +336,9 @@ class _HomePageState extends State<HomePage>
     );
     var data = json.decode(response.body);
 
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
-      content: Text(data["success"] == true ? "correct location" : "try again"),
-      duration: const Duration(seconds: 1),
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: Duration(seconds: 1),
+        content: Text(data["success"] == true ? "correct location" : "try again")
     ));
     // }
     setState(() {
@@ -989,23 +988,43 @@ class _HomePageState extends State<HomePage>
                           const SizedBox(
                             height: 30,
                           ),
-                          FlatButton(
-                            padding: const EdgeInsets.symmetric(vertical: 10.0),
-                            color: const Color(0xFFFF9e02),
-                            child: const Text(
-                              "PROCEED",
-                              style: TextStyle(
-                                fontFamily: 'Norwester',
-                                fontSize: 25.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          // FlatButton(
+                          //   padding: const EdgeInsets.symmetric(vertical: 10.0),
+                          //   color: const Color(0xFFFF9e02),
+                          //   child: const Text(
+                          //     "PROCEED",
+                          //     style: TextStyle(
+                          //       fontFamily: 'Norwester',
+                          //       fontSize: 25.0,
+                          //       fontWeight: FontWeight.bold,
+                          //     ),
+                          //   ),
+                          //   onPressed: () {
+                          //     setState(() {
+                          //       intro = true;
+                          //       setIntro();
+                          //     });
+                          //   },
+                          // ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: const Color(0xFFFF9e02),
+                              padding: const EdgeInsets.symmetric(vertical: 10.0),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                intro = true;
-                                setIntro();
-                              });
-                            },
+                              child: const Text(
+                                "PROCEED",
+                                style: TextStyle(
+                                  fontFamily: 'Norwester',
+                                  fontSize: 25.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  intro = true;
+                                  setIntro();
+                                });
+                              }
                           )
                         ],
                       ),
@@ -1367,36 +1386,68 @@ class _HomePageState extends State<HomePage>
                                                         ),
                                                       ),
                                                     )
-                                                  : OutlineButton(
-                                                      borderSide:
-                                                          const BorderSide(
-                                                        color: Color(
-                                                            0xFFa94064), //Color of the border
-                                                        style: BorderStyle
-                                                            .solid, //Style of the border
-                                                        width:
-                                                            1, //width of the border
-                                                      ),
-                                                      color: const Color(
-                                                          0xFF0059B3),
-                                                      child: const Text(
-                                                        "SUBMIT ANSWER",
-                                                        style: TextStyle(
-                                                          fontFamily:
-                                                              'Mysterious',
-                                                          // fontWeight:
-                                                          //     FontWeight.bold,
-                                                          fontSize: 20.0,
-                                                        ),
-                                                      ),
-                                                      onPressed: () {
-                                                        submitFinalAnswer(
-                                                            _answerFieldController
-                                                                .value.text);
+                                                  :
+                                              // OutlineButton(
+                                              //         borderSide:
+                                              //             const BorderSide(
+                                              //           color: Color(
+                                              //               0xFFa94064), //Color of the border
+                                              //           style: BorderStyle
+                                              //               .solid, //Style of the border
+                                              //           width:
+                                              //               1, //width of the border
+                                              //         ),
+                                              //         color: const Color(
+                                              //             0xFF0059B3),
+                                              //         child: const Text(
+                                              //           "SUBMIT ANSWER",
+                                              //           style: TextStyle(
+                                              //             fontFamily:
+                                              //                 'Mysterious',
+                                              //             // fontWeight:
+                                              //             //     FontWeight.bold,
+                                              //             fontSize: 20.0,
+                                              //           ),
+                                              //         ),
+                                              //         onPressed: () {
+                                              //           submitFinalAnswer(
+                                              //               _answerFieldController
+                                              //                   .value.text);
+                                              //           _answerFieldController
+                                              //               .clear();
+                                              //         },
+                                              //       ),
+                                              OutlinedButton(
+                                                  onPressed: () {
+                                                    submitFinalAnswer(
                                                         _answerFieldController
-                                                            .clear();
-                                                      },
-                                                    ),
+                                                            .value.text);
+                                                    _answerFieldController
+                                                        .clear();
+                                                  },
+                                                child: const Text(
+                                                  "SUBMIT ANSWER",
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                    'Mysterious',
+                                                    // fontWeight:
+                                                    //     FontWeight.bold,
+                                                    fontSize: 20.0,
+                                                  ),
+                                                ),
+                                                style: OutlinedButton.styleFrom(
+                                                  side:  const BorderSide(
+                                                    color: Color(
+                                                        0xFFa94064), //Color of the border
+                                                    style: BorderStyle
+                                                        .solid, //Style of the border
+                                                    width:
+                                                    1, //width of the border
+                                                  ),
+                                                  primary: const Color(
+                                                      0xFF0059B3),
+                                                ),
+                                              )
                                             ],
                                           )
                                         : ListView(
